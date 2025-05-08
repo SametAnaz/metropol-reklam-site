@@ -1,5 +1,17 @@
-import "@/styles/globals.css";
+import '../styles/globals.css';
+// import { SessionProvider } from 'next-auth/react';
+import { DefaultSeo } from 'next-seo';
+import SEO from '../next-seo.config';
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+function MyApp({ Component, pageProps /* : { session, ...pageProps } */ }) {
+  return (
+    // <SessionProvider session={session}>
+    <>
+      <DefaultSeo {...SEO} />
+      <Component {...pageProps} />
+    </>
+    // </SessionProvider>
+  );
 }
+
+export default MyApp;

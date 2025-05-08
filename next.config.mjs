@@ -3,17 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // Configure which admin pages should not be pre-rendered
-  experimental: {
-    excludeDefaultMomentLocales: true,
-  },
-  
-  // Add build-time environment variables
-  env: {
-    APP_URL: process.env.APP_URL,
-  },
-  
-  // Define redirects and rewrites
+  // Define security headers
   async headers() {
     return [
       {

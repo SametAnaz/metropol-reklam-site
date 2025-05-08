@@ -148,7 +148,7 @@ export default function About() {
                 <p className="text-gray-500">Kişi Görseli</p>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-1 text-gray-800">Ahmet Yılmaz</h3>
+                <h3 className="text-xl font-bold mb-1 text-gray-800">Nurullah Anaz</h3>
                 <p className="text-primary font-medium mb-3">Kurucu & Genel Müdür</p>
                 <p className="text-gray-600 mb-4">
                   20 yıllık sektör deneyimiyle Metropol Reklam'ı kurmuş ve büyütmüştür.
@@ -162,7 +162,7 @@ export default function About() {
                 <p className="text-gray-500">Kişi Görseli</p>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-1 text-gray-800">Ayşe Kaya</h3>
+                <h3 className="text-xl font-bold mb-1 text-gray-800">Samet Anaz</h3>
                 <p className="text-primary font-medium mb-3">Tasarım Direktörü</p>
                 <p className="text-gray-600 mb-4">
                   Yaratıcı tasarımlarıyla müşterilerimizin hayallerini gerçeğe dönüştürür.
@@ -176,7 +176,7 @@ export default function About() {
                 <p className="text-gray-500">Kişi Görseli</p>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-1 text-gray-800">Mehmet Demir</h3>
+                <h3 className="text-xl font-bold mb-1 text-gray-800">Mırtaza Yanaz</h3>
                 <p className="text-primary font-medium mb-3">Üretim Müdürü</p>
                 <p className="text-gray-600 mb-4">
                   Teknik bilgi ve tecrübesiyle en kaliteli üretimi garantiler.

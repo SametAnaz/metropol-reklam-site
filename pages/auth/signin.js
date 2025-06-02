@@ -246,6 +246,7 @@ export default function SignIn({ providers }) {
             </div>
 
             {/* Divider */}
+            {/*
             {isGoogleEnabled && (
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -256,8 +257,10 @@ export default function SignIn({ providers }) {
                 </div>
               </div>
             )}
+            */}
 
             {/* Google Sign In Button */}
+            {/*
             {isGoogleEnabled && (
               <div>
                 <button
@@ -276,6 +279,7 @@ export default function SignIn({ providers }) {
                 </button>
               </div>
             )}
+            */}
 
             <div className="text-center">
               <button

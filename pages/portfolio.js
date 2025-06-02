@@ -1,5 +1,6 @@
 import { NextSeo } from 'next-seo';
 import MainLayout from '../components/layouts/MainLayout';
+import Hero from '../components/ui/Hero';
 
 // Sample portfolio projects
 const projects = [
@@ -74,67 +75,32 @@ export default function Portfolio() {
   return (
     <MainLayout 
       title="Portföy | Metropol Reklam" 
-      description="Metropol Reklam'ın gerçekleştirdiği projeleri ve çalışmaları keşfedin."
+      description="Metropol Reklam'ın başarıyla tamamladığı projeler ve referanslar."
     >
       <NextSeo
-        title="Portföy"
-        description="Tabela, dijital baskı, araç giydirme ve yönlendirme sistemleri üzerine tamamladığımız projeler."
+        title="Portföyümüz"
+        description="Yılların tecrübesiyle tamamladığımız projeleri inceleyin."
       />
 
-      {/* Hero Section */}
-      <section className="relative py-24 bg-dark text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Portföyümüz</h1>
-          <p className="text-xl max-w-2xl">
-            Yılların tecrübesiyle tamamladığımız projeleri inceleyin
-          </p>
-        </div>
-      </section>
+      <Hero
+        title="Portföyümüz"
+        description="Yılların tecrübesiyle tamamladığımız projeleri inceleyin"
+      />
 
-      {/* Portfolio Filter and Grid */}
+      {/* Portfolio Grid */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          {/* Filter (static for now) */}
-          <div className="flex flex-wrap justify-center mb-12 gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${
-                  category === 'Tümü' 
-                    ? 'bg-primary text-white' 
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
-              <div 
-                key={project.id}
-                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-              >
-                {/* Project Image Placeholder */}
-                <div className="h-56 bg-gray-200 flex items-center justify-center">
-                  <p className="text-gray-500">Proje Görseli</p>
-                </div>
-                
-                <div className="p-6">
-                  <span className="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">
-                    {project.category}
-                  </span>
-                  <h3 className="text-xl font-bold mb-2 text-gray-800">{project.title}</h3>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
-                  <button className="text-primary font-medium hover:underline">
-                    Detayları Gör
-                  </button>
-                </div>
+            {/* Portfolio items will be added here */}
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="h-64 bg-gray-200 flex items-center justify-center">
+                <p className="text-gray-500">Proje Görseli</p>
               </div>
-            ))}
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">Proje Adı</h3>
+                <p className="text-gray-600">Proje açıklaması burada yer alacak.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

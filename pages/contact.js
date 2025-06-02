@@ -1,214 +1,208 @@
-import { useState } from 'react';
-import { NextSeo } from 'next-seo';
-import { useForm } from 'react-hook-form';
-import MainLayout from '../components/layouts/MainLayout';
+// pages/contact.js
 
-export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
-  
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import MainLayout from "@/components/layouts/MainLayout";
+import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
+
+export default function ContactPage() {
   const {
     register,
     handleSubmit,
+    formState: { errors, isSubmitting },
     reset,
-    formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+  const [serverMessage, setServerMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
+  const onSubmit = async (data) => {
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      setServerMessage("");
+      setMessageType("");
+      
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
       const result = await response.json();
-
+      
       if (response.ok) {
-        setSubmitStatus({ success: true, message: 'Mesajınız gönderildi. En kısa sürede size dönüş yapacağız.' });
+        setMessageType("success");
+        setServerMessage("Mesajınız başarıyla gönderildi! Teşekkürler.");
         reset();
       } else {
-        setSubmitStatus({ success: false, message: result.error || 'Mesajınız gönderilemedi. Lütfen daha sonra tekrar deneyin.' });
+        setMessageType("error");
+        setServerMessage(result.message || "Bir hata oluştu.");
       }
-    } catch (error) {
-      console.error('Contact form error:', error);
-      setSubmitStatus({ success: false, message: 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.' });
-    } finally {
-      setIsSubmitting(false);
+    } catch (err) {
+      console.error(err);
+      setMessageType("error");
+      setServerMessage("Gönderim sırasında bir hata oluştu.");
     }
   };
 
   return (
-    <MainLayout title="İletişim" description="Metropol Reklam ile iletişime geçin. Adresimiz, telefon numaramız ve iletişim formumuz.">
-      <NextSeo
-        title="İletişim"
-        description="Metropol Reklam ile iletişime geçin. Sorularınız ve projeleriniz için bize ulaşın."
-      />
-
-      {/* Page Header */}
-      <section className="relative py-20 bg-dark text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-30"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl font-bold mb-4">İletişim</h1>
-          <p className="text-xl max-w-2xl">
-            Sorularınız, önerileriniz veya projeleriniz için bizimle iletişime geçebilirsiniz.
-          </p>
+    <MainLayout>
+      {/* Hero Section */}
+      <section className="relative h-[40vh] flex items-center justify-center text-white">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-dark opacity-80 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-dark/20 to-dark z-20"></div>
+        </div>
+        <div className="relative z-30 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">İletişim</h1>
+          <p className="text-xl text-gray-200">Sizinle çalışmak için sabırsızlanıyoruz</p>
         </div>
       </section>
 
-      {/* Contact Content */}
-      <section className="py-16 bg-gray-50">
+      {/* Contact Info & Form Section */}
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Contact Information */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6">İletişim Bilgilerimiz</h2>
+            <div className="space-y-8">
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">İletişim Bilgileri</h2>
               
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">Adres</h3>
-                    <p className="text-gray-600">
-                      1234 Sokak No: 56, <br />
-                      Metropol İş Merkezi, <br />
-                      İzmir, Türkiye
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">Telefon</h3>
-                    <p className="text-gray-600">+90 123 456 7890</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">E-posta</h3>
-                    <p className="text-gray-600">info@metropolreklam.com</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-1">Çalışma Saatleri</h3>
-                    <p className="text-gray-600">
-                      Pazartesi - Cumartesi: 09:00 - 18:00 <br />
-                      Pazar: Kapalı
-                    </p>
-                  </div>
+              <div className="flex items-start space-x-4">
+                <MapPinIcon className="h-6 w-6 text-primary flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold text-gray-800">Adres</h3>
+                  <p className="text-gray-600 mt-1">Aydın/Kusadasi, Türkiye</p>
                 </div>
               </div>
-              
-              {/* Map Placeholder */}
-              <div className="mt-8 h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500">Google Harita Burada Görünecek</p>
+
+              <div className="flex items-start space-x-4">
+                <PhoneIcon className="h-6 w-6 text-primary flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold text-gray-800">Telefon</h3>
+                  <p className="text-gray-600 mt-1">+90 (555) 123 45 67</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <EnvelopeIcon className="h-6 w-6 text-primary flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold text-gray-800">E-posta</h3>
+                  <p className="text-gray-600 mt-1">info@metropolreklam.com</p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <ClockIcon className="h-6 w-6 text-primary flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold text-gray-800">Çalışma Saatleri</h3>
+                  <p className="text-gray-600 mt-1">Pazartesi - Cumartesi: 09:00 - 18:00</p>
+                  <p className="text-gray-600">Pazar: Kapalı</p>
+                </div>
               </div>
             </div>
-            
+
             {/* Contact Form */}
-            <div>
-              <h2 className="text-2xl font-bold mb-6">İletişim Formu</h2>
-              
-              {submitStatus && (
-                <div className={`p-4 mb-6 rounded-md ${submitStatus.success ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                  {submitStatus.message}
-                </div>
-              )}
-              
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="bg-white p-8 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">Bize Ulaşın</h2>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* İsim */}
                 <div>
-                  <label htmlFor="name" className="block text-gray-700 font-medium mb-1">Ad Soyad *</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    İsim
+                  </label>
                   <input
-                    id="name"
                     type="text"
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="Adınız Soyadınız"
-                    {...register('name', { required: 'İsim alanı zorunludur' })}
+                    id="name"
+                    {...register("name", { required: "İsim zorunludur." })}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-primary focus:border-primary"
                   />
-                  {errors.name && <p className="mt-1 text-red-500 text-sm">{errors.name.message}</p>}
+                  {errors.name && (
+                    <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>
+                  )}
                 </div>
-                
+
+                {/* E-Posta */}
                 <div>
-                  <label htmlFor="email" className="block text-gray-700 font-medium mb-1">E-posta *</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    E-Posta
+                  </label>
                   <input
-                    id="email"
                     type="email"
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="E-posta adresiniz"
-                    {...register('email', { 
-                      required: 'E-posta alanı zorunludur',
+                    id="email"
+                    {...register("email", {
+                      required: "E-posta zorunludur.",
                       pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                        message: 'Geçerli bir e-posta adresi giriniz'
-                      }
+                        value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                        message: "Geçerli bir e-posta girin.",
+                      },
                     })}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-primary focus:border-primary"
                   />
-                  {errors.email && <p className="mt-1 text-red-500 text-sm">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                  )}
                 </div>
-                
+
+                {/* Mesaj */}
                 <div>
-                  <label htmlFor="phone" className="block text-gray-700 font-medium mb-1">Telefon</label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Telefon numaranız"
-                    {...register('phone')}
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-gray-700 font-medium mb-1">Mesaj *</label>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                    Mesaj
+                  </label>
                   <textarea
                     id="message"
-                    rows="5"
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary ${errors.message ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="Mesajınız..."
-                    {...register('message', { required: 'Mesaj alanı zorunludur' })}
-                  ></textarea>
-                  {errors.message && <p className="mt-1 text-red-500 text-sm">{errors.message.message}</p>}
+                    rows={5}
+                    {...register("message", {
+                      required: "Mesaj zorunludur.",
+                      minLength: {
+                        value: 10,
+                        message: "Mesaj en az 10 karakter olmalı.",
+                      },
+                    })}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-primary focus:border-primary"
+                  />
+                  {errors.message && (
+                    <p className="text-red-600 text-sm mt-1">{errors.message.message}</p>
+                  )}
                 </div>
-                
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-md font-medium transition-colors ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                >
-                  {isSubmitting ? 'Gönderiliyor...' : 'Mesaj Gönder'}
-                </button>
+
+                {/* Gönder Butonu */}
+                <div>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? "Gönderiliyor..." : "Mesaj Gönder"}
+                  </button>
+                </div>
+
+                {/* Sunucu Mesajı */}
+                {serverMessage && (
+                  <p className={`text-center p-3 rounded ${
+                    messageType === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                  }`}>
+                    {serverMessage}
+                  </p>
+                )}
               </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Map Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-12">Bizi Ziyaret Edin</h2>
+          <div className="h-[400px] rounded-lg overflow-hidden shadow-lg">
+            {/* Buraya Google Maps iframe eklenecek */}
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+              <p className="text-gray-600">Harita yükleniyor...</p>
             </div>
           </div>
         </div>
       </section>
     </MainLayout>
   );
-} 
+}

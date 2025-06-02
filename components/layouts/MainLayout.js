@@ -9,7 +9,7 @@ export default function MainLayout({ children, title, description }) {
         <title>{title || 'Metropol Reklam'}</title>
         <meta name="description" content={description || 'Metropol Reklam - Profesyonel Tabela ve Dijital Baskı Hizmetleri'} />
       </Head>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-white">
         <Navbar />
         <main className="flex-grow pt-20">{children}</main>
         <Footer />

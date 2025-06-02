@@ -1,6 +1,7 @@
 import { NextSeo } from 'next-seo';
 import Image from 'next/image';
 import MainLayout from '../components/layouts/MainLayout';
+import Hero from '../components/ui/Hero';
 
 export default function About() {
   return (
@@ -13,16 +14,10 @@ export default function About() {
         description="Metropol Reklam ekibi, vizyonu, değerleri ve hikayesi hakkında bilgi edinin."
       />
 
-      {/* Hero Section */}
-      <section className="relative py-24 bg-dark text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80 opacity-20"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Hakkımızda</h1>
-          <p className="text-xl md:text-2xl max-w-2xl">
-            Profesyonel ve yaratıcı çözümlerle markanızı öne çıkarıyoruz
-          </p>
-        </div>
-      </section>
+      <Hero
+        title="Hakkımızda"
+        description="Profesyonel ve yaratıcı çözümlerle markanızı öne çıkarıyoruz"
+      />
 
       {/* Company Overview */}
       <section className="py-16">

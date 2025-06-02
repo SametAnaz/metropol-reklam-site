@@ -3,7 +3,7 @@ import '../styles/globals.css';
 import { DefaultSeo } from 'next-seo';
 import SEO from '../next-seo.config';
 
-function MyApp({ Component, pageProps /* : { session, ...pageProps } */ }) {
+function App({ Component, pageProps /* : { session, ...pageProps } */ }) {
   return (
     // <SessionProvider session={session}>
     <>
@@ -14,4 +14,4 @@ function MyApp({ Component, pageProps /* : { session, ...pageProps } */ }) {
   );
 }
 
-export default MyApp;
+export default App;

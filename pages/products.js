@@ -1,6 +1,7 @@
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import MainLayout from '../components/layouts/MainLayout';
+import Hero from '../components/ui/Hero';
 
 // Product categories
 const productCategories = [
@@ -57,26 +58,20 @@ const productCategories = [
 export default function Products() {
   return (
     <MainLayout 
-      title="Ürünlerimiz | Metropol Reklam" 
-      description="Metropol Reklam'ın ürün kataloğunu inceleyin. Tabela, dijital baskı, araç giydirme ve daha fazlası."
+      title="Ürünler | Metropol Reklam" 
+      description="Metropol Reklam'ın tabela ve reklam ürünleri. Kaliteli ve profesyonel çözümler."
     >
       <NextSeo
         title="Ürünlerimiz"
-        description="Metropol Reklam ürün ve çözümleri. Tabela, dijital baskı, araç giydirme ve daha fazlası."
+        description="Reklam ve tabela ihtiyaçlarınız için kaliteli ve profesyonel ürün yelpazemiz"
       />
 
-      {/* Hero Section */}
-      <section className="relative py-24 bg-dark text-white">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Ürünlerimiz</h1>
-          <p className="text-xl max-w-2xl">
-            Reklam ve tabela ihtiyaçlarınız için kaliteli ve profesyonel ürün yelpazemiz
-          </p>
-        </div>
-      </section>
+      <Hero
+        title="Ürünlerimiz"
+        description="Reklam ve tabela ihtiyaçlarınız için kaliteli ve profesyonel ürün yelpazemiz"
+      />
 
-      {/* Products Section */}
+      {/* Products Grid */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

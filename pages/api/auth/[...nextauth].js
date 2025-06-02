@@ -199,6 +199,7 @@ export default NextAuth({
         }
 
         try {
+          // Firebase auth ile giriş yap
           const userCredential = await signInWithEmailAndPassword(
             auth,
             credentials.email,
@@ -206,11 +207,33 @@ export default NextAuth({
           );
 
           if (userCredential.user) {
+            // Firestore'dan admin role kontrolü yap
+            const docId = emailToDocId(credentials.email);
+            const userDoc = await getDoc(doc(db, 'users', docId));
+            
+            let userRole = ROLES.USER;
+            if (userDoc.exists()) {
+              const userData = userDoc.data();
+              userRole = userData.role || ROLES.USER;
+              console.log('Admin login - user role from Firestore:', userRole);
+            } else {
+              console.log('Admin login - user not found in Firestore');
+              return null;
+            }
+
+            // Admin role kontrolü
+            if (userRole !== ROLES.ADMIN) {
+              console.log('Admin login failed - insufficient privileges:', userRole);
+              return null;
+            }
+
+            console.log('Admin login successful for:', credentials.email);
             return {
               id: userCredential.user.uid,
               email: userCredential.user.email,
-              name: userCredential.user.displayName,
-              role: 'admin',
+              name: userCredential.user.displayName || credentials.email.split('@')[0],
+              role: ROLES.ADMIN,
+              uid: userCredential.user.uid,
             };
           }
           return null;
@@ -454,17 +477,20 @@ export default NextAuth({
         token.id = user.id;
         token.role = user.role;
         token.email = user.email;
+        token.uid = user.id;
       }
+      console.log('JWT callback final token:', token);
       return token;
     },
     async session({ session, token }) {
-      console.log('Session callback - session:', session, 'token:', token);
+      console.log('Session callback - session before:', session, 'token:', token);
       if (token) {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.email = token.email;
+        session.user.uid = token.uid || token.id;
       }
-      console.log('Final session:', session);
+      console.log('Session callback - final session:', session);
       return session;
     }
   },

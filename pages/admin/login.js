@@ -26,11 +26,10 @@ export default function AdminLogin() {
     try {
       console.log('Admin login attempt for:', email);
       
-      // NextAuth ile giriş yap
-      const result = await signIn('credentials', {
+      // NextAuth ile giriş yap - Admin credentials provider kullan
+      const result = await signIn('admin-credentials', {
         email,
         password,
-        action: 'signin',
         redirect: false,
       });
 
@@ -56,21 +55,19 @@ export default function AdminLogin() {
       }
 
       // Session kontrolü yap
-      const session = await getSession();
-      console.log('Session:', session);
+      const sessionResult = await getSession();
+      console.log('Session:', sessionResult);
+      console.log('Session user:', sessionResult?.user);
+      console.log('Session user role:', sessionResult?.user?.role);
+      console.log('Session user email:', sessionResult?.user?.email);
       
-      if (!session) {
-        throw new Error('Session oluşturulamadı');
+      if (sessionResult?.user?.role === 'admin') {
+        console.log('Admin login successful');
+        router.push('/admin/dashboard');
+      } else {
+        console.log('Not admin role:', sessionResult?.user?.role);
+        setError('Admin yetkisi gerekli');
       }
-
-      // Admin rolü kontrolü
-      if (session.user.role !== 'admin') {
-        throw new Error('Bu sayfaya erişim yetkiniz yok. Sadece admin kullanıcıları giriş yapabilir.');
-      }
-
-      console.log('Admin login successful');
-      // Admin girişi başarılı, yönlendir
-      router.push('/admin/dashboard');
     } catch (error) {
       console.error('Admin login error:', error);
       setError(error.message);

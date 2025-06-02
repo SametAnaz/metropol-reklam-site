@@ -44,7 +44,6 @@ firebase-debug.log
 firebase-debug.*.log
 .firebase/
 .firebaserc
-firebase.json
 
 # Firebase functions
 functions/node_modules/

@@ -11,6 +11,7 @@ export default function SignIn({ providers }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -57,6 +58,12 @@ export default function SignIn({ providers }) {
       return;
     }
 
+    if (isSignUp && !acceptTerms) {
+      setError('Kullanıcı sözleşmesini kabul etmeniz gerekiyor');
+      setLoading(false);
+      return;
+    }
+
     try {
       console.log('Attempting sign in with:', { email, action: isSignUp ? 'signup' : 'signin' });
       
@@ -64,6 +71,7 @@ export default function SignIn({ providers }) {
         email,
         password,
         action: isSignUp ? 'signup' : 'signin',
+        acceptTerms: isSignUp ? acceptTerms.toString() : undefined,
         redirect: false,
       });
 
@@ -73,7 +81,7 @@ export default function SignIn({ providers }) {
         console.error('Authentication error:', result.error);
         
         if (result.error === 'CredentialsSignin') {
-          setError(isSignUp ? 'Kayıt sırasında bir hata oluştu. Firebase Authentication etkinleştirildi mi?' : 'Email veya şifre hatalı');
+          setError(isSignUp ? 'Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.' : 'Email veya şifre hatalı');
         } else if (result.error.includes('auth/')) {
           // Firebase specific errors
           const firebaseErrors = {
@@ -86,26 +94,37 @@ export default function SignIn({ providers }) {
           };
           setError(firebaseErrors[result.error] || `Firebase hatası: ${result.error}`);
         } else {
-          setError(`Giriş hatası: ${result.error}`);
+          setError(result.error);
         }
+        setLoading(false);
+        return;
+      }
+
+      // Başarılı giriş/kayıt - Session kontrolü
+      console.log('Authentication successful, waiting for session...');
+      
+      // Kısa bir bekleme süresi ekle ki session oluşsun
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const session = await getSession();
+      console.log('Session after auth:', session);
+      
+      if (session) {
+        console.log('Session found, redirecting to dashboard...');
+        if (isSignUp) {
+          console.log('Signup successful, user created with security tracking');
+        }
+        router.push('/customer/dashboard');
       } else {
-        // Başarılı giriş/kayıt
-        console.log('Authentication successful, checking session...');
-        const session = await getSession();
-        console.log('Session:', session);
-        
-        if (session) {
-          router.push('/customer/dashboard');
-        } else {
-          setError('Session oluşturulamadı. Lütfen tekrar deneyin.');
-        }
+        console.error('No session found after authentication');
+        setError('Giriş başarılı ancak oturum oluşturulamadı. Lütfen sayfayı yenileyin.');
       }
     } catch (error) {
       console.error('Caught error:', error);
       setError(`Beklenmeyen hata: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -226,6 +245,27 @@ export default function SignIn({ providers }) {
                   </div>
                 </div>
               )}
+
+              {isSignUp && (
+                <div className="flex items-start space-x-3">
+                  <div className="flex items-center h-5 mt-0.5">
+                    <input
+                      id="acceptTerms"
+                      name="acceptTerms"
+                      type="checkbox"
+                      checked={acceptTerms}
+                      onChange={(e) => setAcceptTerms(e.target.checked)}
+                      className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
+                      required
+                    />
+                  </div>
+                  <div className="text-sm">
+                    <label htmlFor="acceptTerms" className="text-gray-700">
+                      <span className="font-medium text-red-500">*</span> Kullanıcı sözleşmesini ve gizlilik politikasını okudum, kabul ediyorum.
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>
@@ -289,6 +329,7 @@ export default function SignIn({ providers }) {
                   setError('');
                   setPassword('');
                   setConfirmPassword('');
+                  setAcceptTerms(false);
                 }}
                 className="text-primary hover:text-secondary font-medium transition-colors duration-300"
               >

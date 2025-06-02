@@ -10,10 +10,19 @@ export default function CustomerDashboard() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log('Customer dashboard - session status:', status);
+    console.log('Customer dashboard - session:', session);
+    
     if (status === 'unauthenticated') {
+      console.log('User not authenticated, redirecting to signin');
       router.push('/auth/signin');
-    } else if (session && session.user.role !== 'customer') {
-      router.push('/'); // Admin kullanıcıları ana sayfaya yönlendir
+    } else if (session && session.user.role !== 'user') {
+      console.log('User role is not "user", role:', session.user.role);
+      if (session.user.role === 'admin') {
+        router.push('/admin/dashboard'); // Admin kullanıcıları admin paneline yönlendir
+      } else {
+        router.push('/'); // Diğer roller ana sayfaya
+      }
     }
   }, [status, session, router]);
 
@@ -27,7 +36,8 @@ export default function CustomerDashboard() {
     );
   }
 
-  if (!session || session.user.role !== 'customer') {
+  if (!session || session.user.role !== 'user') {
+    console.log('Access denied - session:', session);
     return null;
   }
 

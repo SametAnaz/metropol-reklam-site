@@ -118,7 +118,7 @@ export default function Navbar() {
             {/* Customer Authentication Section */}
             {status === 'loading' ? (
               <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
-            ) : session && session.user.role === 'customer' ? (
+            ) : session && session.user.role === 'user' ? (
               <div className="relative group">
                 <button className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
                   scrolled 
@@ -132,6 +132,53 @@ export default function Navbar() {
                 {/* Dropdown Menu */}
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform scale-95 group-hover:scale-100">
                   <div className="py-1">
+                    <Link
+                      href="/customer/dashboard"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <UserIcon className="h-4 w-4 mr-3" />
+                      Müşteri Paneli
+                    </Link>
+                    {session.user.role === 'admin' && (
+                      <Link
+                        href="/admin/dashboard"
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                      >
+                        <UserIcon className="h-4 w-4 mr-3" />
+                        Admin Paneli
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <ArrowRightOnRectangleIcon className="h-4 w-4 mr-3" />
+                      Çıkış Yap
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : session && session.user.role === 'admin' ? (
+              <div className="relative group">
+                <button className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
+                  scrolled 
+                    ? 'bg-red-100 text-red-800 hover:bg-red-200' 
+                    : 'bg-red-500/20 text-red-300 hover:bg-red-500/30'
+                }`}>
+                  <UserIcon className="h-5 w-5" />
+                  <span className="font-medium">Admin: {session.user.name}</span>
+                </button>
+                
+                {/* Admin Dropdown Menu */}
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform scale-95 group-hover:scale-100">
+                  <div className="py-1">
+                    <Link
+                      href="/admin/dashboard"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <UserIcon className="h-4 w-4 mr-3" />
+                      Admin Paneli
+                    </Link>
                     <Link
                       href="/customer/dashboard"
                       className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
@@ -209,7 +256,7 @@ export default function Navbar() {
                         
                         {/* Mobile Customer Auth */}
                         <div className="pt-2 pb-1">
-                          {session && session.user.role === 'customer' ? (
+                          {session && session.user.role === 'user' ? (
                             <div className="space-y-1">
                               <Link
                                 href="/customer/dashboard"
@@ -217,6 +264,33 @@ export default function Navbar() {
                               >
                                 <UserIcon className="h-4 w-4 mr-3" />
                                 Müşteri Paneli ({session.user.name})
+                              </Link>
+                              <button
+                                onClick={() => signOut({ callbackUrl: '/' })}
+                                className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-300"
+                              >
+                                <ArrowRightOnRectangleIcon className="h-4 w-4 mr-3" />
+                                Çıkış Yap
+                              </button>
+                            </div>
+                          ) : session && session.user.role === 'admin' ? (
+                            <div className="space-y-1">
+                              <div className="px-4 py-2 text-xs font-semibold text-red-600 uppercase">
+                                Admin: {session.user.name}
+                              </div>
+                              <Link
+                                href="/admin/dashboard"
+                                className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-300"
+                              >
+                                <UserIcon className="h-4 w-4 mr-3" />
+                                Admin Paneli
+                              </Link>
+                              <Link
+                                href="/customer/dashboard"
+                                className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-300"
+                              >
+                                <UserIcon className="h-4 w-4 mr-3" />
+                                Müşteri Paneli
                               </Link>
                               <button
                                 onClick={() => signOut({ callbackUrl: '/' })}

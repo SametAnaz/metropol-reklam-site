@@ -180,7 +180,7 @@ const collectUserInfo = async (req) => {
   }
 };
 
-export default NextAuth({
+export const authOptions = {
   providers: [
     // GoogleProvider({
     //   clientId: process.env.GOOGLE_CLIENT_ID,
@@ -495,4 +495,6 @@ export default NextAuth({
     }
   },
   debug: process.env.NODE_ENV === 'development',
-}); 
+};
+
+export default NextAuth(authOptions); 

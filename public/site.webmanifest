@@ -1,0 +1,9 @@
+{
+  "name": "Metropol Reklam",
+  "short_name": "Metropol",
+  "description": "Metropol Reklam - Dijital Reklam ve Tasarım Hizmetleri",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f97316"
+} 

@@ -1,15 +1,11 @@
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { db } from '../../lib/firebase/firestore';
 import UserManagement from '../../components/admin/UserManagement';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
@@ -24,33 +20,7 @@ export default function AdminDashboard() {
       router.push('/admin/login');
       return;
     }
-
-    // Admin ise kullanıcı verilerini yükle
-    loadUsers();
   }, [session, status, router]);
-
-  const loadUsers = async () => {
-    try {
-      setLoading(true);
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, orderBy('createdAt', 'desc'));
-      const snapshot = await getDocs(q);
-      
-      const usersData = [];
-      snapshot.forEach((doc) => {
-        usersData.push({
-          id: doc.id,
-          ...doc.data()
-        });
-      });
-      
-      setUsers(usersData);
-    } catch (error) {
-      console.error('Error loading users:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (status === 'loading') {
     return (
@@ -112,7 +82,7 @@ export default function AdminDashboard() {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                Kullanıcı Yönetimi ({users.length})
+                Kullanıcı Yönetimi (0)
               </button>
             </nav>
           </div>
@@ -148,13 +118,12 @@ export default function AdminDashboard() {
                       Kullanıcı Yönetimi
                     </h3>
                     <p className="text-gray-600 mb-3">
-                      Kullanıcıları görüntüle, düzenle ve yönet
+                      Kullanıcıları görüntüle ve listele
                     </p>
                     <div className="flex items-center justify-center">
-                      <span className="text-2xl font-bold text-primary">
-                        {users.length}
+                      <span className="text-gray-500">
+                        Kullanıcıları görüntülemek için tıklayın
                       </span>
-                      <span className="text-gray-500 ml-2">kullanıcı</span>
                     </div>
                   </div>
                   
@@ -193,26 +162,12 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 </div>
-                
-                <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center justify-center">
-                    <svg className="h-5 w-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p className="text-green-800 font-medium">
-                      Admin girişi başarılı! Rolünüz: <strong>{session.user.role}</strong>
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           )}
 
           {activeTab === 'users' && (
-            <UserManagement 
-              users={users} 
-              onUsersChange={loadUsers}
-            />
+            <UserManagement />
           )}
         </div>
       </div>

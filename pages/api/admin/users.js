@@ -15,33 +15,31 @@ import { db } from '../../../lib/firebase/firestore';
 export default async function handler(req, res) {
   console.log('API called with method:', req.method);
   
-  const session = await getServerSession(req, res, authOptions);
-  console.log('Session:', session);
-  
-  // Admin yetkisi kontrolü
-  if (!session) {
-    console.log('No session found');
-    return res.status(401).json({ message: 'Session bulunamadı' });
-  }
-  
-  if (session.user.role !== 'admin') {
-    console.log('User role:', session.user.role);
-    return res.status(401).json({ message: 'Admin yetkisi gerekli' });
-  }
-
-  const { method } = req;
-
   try {
+    const session = await getServerSession(req, res, authOptions);
+    console.log('Session:', session);
+    
+    // Session kontrolü
+    if (!session || !session.user) {
+      console.log('No session or user found');
+      return res.status(401).json({ message: 'Giriş gerekli' });
+    }
+    
+    // Admin yetkisi kontrolü
+    if (session.user.role !== 'admin') {
+      console.log('User role:', session.user.role);
+      return res.status(401).json({ message: 'Admin yetkisi gerekli' });
+    }
+
+    const { method } = req;
+
     switch (method) {
       case 'GET':
-        await handleGet(req, res);
-        break;
+        return await handleGet(req, res);
       case 'PUT':
-        await handlePut(req, res, session);
-        break;
+        return await handlePut(req, res, session);
       case 'DELETE':
-        await handleDelete(req, res, session);
-        break;
+        return await handleDelete(req, res, session);
       default:
         res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
         return res.status(405).json({ message: `Method ${method} not allowed` });

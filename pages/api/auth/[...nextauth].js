@@ -230,15 +230,15 @@ export default NextAuth({
       },
       async authorize(credentials, req) {
         try {
-          console.log('NextAuth authorize called with:', { 
-            email: credentials?.email, 
+        console.log('NextAuth authorize called with:', { 
+          email: credentials?.email, 
             action: credentials?.action,
             acceptTerms: credentials?.acceptTerms
-          });
+        });
 
-          if (!credentials?.email || !credentials?.password) {
-            throw new Error('Email ve şifre gerekli');
-          }
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Email ve şifre gerekli');
+        }
 
           let userCredential;
           const docId = emailToDocId(credentials.email);
@@ -259,11 +259,11 @@ export default NextAuth({
             try {
               // Kullanıcıyı Firebase Auth'da oluştur
               console.log('Creating Firebase Auth user...');
-              userCredential = await createUserWithEmailAndPassword(
-                auth,
-                credentials.email,
-                credentials.password
-              );
+            userCredential = await createUserWithEmailAndPassword(
+              auth,
+              credentials.email,
+              credentials.password
+            );
               console.log('Firebase Auth user created:', userCredential.user.uid);
 
               // Firestore'a kullanıcı bilgilerini kaydet (geliştirilmiş)
@@ -317,11 +317,11 @@ export default NextAuth({
             
             try {
               // Firebase ile giriş yap
-              userCredential = await signInWithEmailAndPassword(
-                auth,
-                credentials.email,
-                credentials.password
-              );
+            userCredential = await signInWithEmailAndPassword(
+              auth,
+              credentials.email,
+              credentials.password
+            );
 
               // Firestore'dan kullanıcı bilgilerini al
               const userDoc = await getDoc(doc(db, 'users', docId));
@@ -411,7 +411,7 @@ export default NextAuth({
               console.log('User signed in successfully with role:', userRole);
 
               return {
-                id: userCredential.user.uid,
+              id: userCredential.user.uid,
                 email: credentials.email,
                 name: credentials.email.split('@')[0],
                 role: userRole

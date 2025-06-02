@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signIn, getSession } from 'next-auth/react';
+import Link from 'next/link';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -13,6 +16,12 @@ export default function AdminLogin() {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    if (password.length < 6) {
+      setError('Şifre en az 6 karakter olmalıdır');
+      setLoading(false);
+      return;
+    }
 
     try {
       console.log('Admin login attempt for:', email);
@@ -28,7 +37,22 @@ export default function AdminLogin() {
       console.log('SignIn result:', result);
 
       if (result?.error) {
-        throw new Error(result.error || 'Giriş başarısız');
+        if (result.error === 'CredentialsSignin') {
+          setError('Email veya şifre hatalı');
+        } else if (result.error.includes('auth/')) {
+          // Firebase specific errors
+          const firebaseErrors = {
+            'auth/user-not-found': 'Bu email ile kayıtlı kullanıcı bulunamadı',
+            'auth/wrong-password': 'Şifre hatalı',
+            'auth/invalid-email': 'Geçersiz email adresi',
+            'auth/too-many-requests': 'Çok fazla deneme. Lütfen daha sonra tekrar deneyin',
+          };
+          setError(firebaseErrors[result.error] || `Giriş hatası: ${result.error}`);
+        } else {
+          setError(result.error || 'Giriş başarısız');
+        }
+        setLoading(false);
+        return;
       }
 
       // Session kontrolü yap
@@ -56,69 +80,137 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Admin Girişi
-          </h2>
+        <div className="bg-white rounded-lg shadow-xl p-8">
+          <div className="text-center">
+            <Link href="/" className="inline-block">
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  METROPOL
+                </span>
+                <span className="text-2xl font-light text-gray-900">
+                  REKLAM
+                </span>
+              </div>
+            </Link>
+            <div className="mb-6">
+              <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-secondary">
+                <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Admin Girişi
+            </h2>
+            <p className="text-gray-600">
+              Yönetim paneline erişim için giriş yapın
+            </p>
+          </div>
+
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
+                <div className="font-medium">Hata:</div>
+                <div className="text-sm mt-1">{error}</div>
+                {error.includes('erişim yetkiniz yok') && (
+                  <div className="text-xs mt-2 text-red-500">
+                    Sadece admin yetkisine sahip kullanıcılar bu sayfaya erişebilir.
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Admin E-posta Adresi
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                  placeholder="admin@metropolreklam.com"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Admin Şifresi
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="appearance-none relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                    placeholder="Admin şifrenizi girin"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5 text-gray-400" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-primary to-secondary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <div className="flex items-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Giriş yapılıyor...
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    Admin Girişi
+                  </div>
+                )}
+              </button>
+            </div>
+
+            <div className="text-center space-y-2">
+              <Link
+                href="/auth/signin"
+                className="text-primary hover:text-secondary font-medium transition-colors duration-300"
+              >
+                Müşteri girişi için buraya tıklayın
+              </Link>
+              <div>
+                <Link
+                  href="/"
+                  className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-300"
+                >
+                  Ana sayfaya dön
+                </Link>
+              </div>
+            </div>
+          </form>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email adresi
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email adresi"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Şifre
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Şifre"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {error && (
-            <div className="text-red-500 text-sm text-center bg-red-50 border border-red-200 rounded-md p-3">
-              {error}
-            </div>
-          )}
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${
-                loading
-                  ? 'bg-indigo-400'
-                  : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-              }`}
-            >
-              {loading ? 'Giriş yapılıyor...' : 'Admin Girişi'}
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );

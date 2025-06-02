@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Disclosure, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, UserIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Ana Sayfa', href: '/' },
@@ -14,6 +15,7 @@ const navigation = [
 ];
 
 export default function Navbar() {
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -111,14 +113,55 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Contact Button */}
+          {/* Customer Login Only */}
           <div className="hidden lg:flex items-center">
-            <Link
-              href="/contact"
-              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white font-medium px-6 py-2.5 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
-            >
-              Bizimle İletişime Geçin
-            </Link>
+            {/* Customer Authentication Section */}
+            {status === 'loading' ? (
+              <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
+            ) : session && session.user.role === 'customer' ? (
+              <div className="relative group">
+                <button className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 ${
+                  scrolled 
+                    ? 'bg-gray-100 text-gray-900 hover:bg-gray-200' 
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}>
+                  <UserIcon className="h-5 w-5" />
+                  <span className="font-medium">{session.user.name}</span>
+                </button>
+                
+                {/* Dropdown Menu */}
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform scale-95 group-hover:scale-100">
+                  <div className="py-1">
+                    <Link
+                      href="/customer/dashboard"
+                      className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <UserIcon className="h-4 w-4 mr-3" />
+                      Müşteri Paneli
+                    </Link>
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <ArrowRightOnRectangleIcon className="h-4 w-4 mr-3" />
+                      Çıkış Yap
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link
+                href="/auth/signin"
+                className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium transition-all duration-300 border-2 hover:scale-105 active:scale-95 ${
+                  scrolled 
+                    ? 'border-primary text-primary hover:bg-primary hover:text-white' 
+                    : 'border-white text-white hover:bg-white hover:text-gray-900'
+                }`}
+              >
+                <UserIcon className="h-5 w-5" />
+                <span>Müşteri Girişi</span>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -163,13 +206,35 @@ export default function Navbar() {
                             </Disclosure.Button>
                           );
                         })}
+                        
+                        {/* Mobile Customer Auth */}
                         <div className="pt-2 pb-1">
-                          <Link
-                            href="/contact"
-                            className="block w-full bg-gradient-to-r from-primary to-secondary text-white text-center px-4 py-2 rounded-md font-medium hover:opacity-90 transition-opacity duration-300"
-                          >
-                            Bizimle İletişime Geçin
-                          </Link>
+                          {session && session.user.role === 'customer' ? (
+                            <div className="space-y-1">
+                              <Link
+                                href="/customer/dashboard"
+                                className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-300"
+                              >
+                                <UserIcon className="h-4 w-4 mr-3" />
+                                Müşteri Paneli ({session.user.name})
+                              </Link>
+                              <button
+                                onClick={() => signOut({ callbackUrl: '/' })}
+                                className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-300"
+                              >
+                                <ArrowRightOnRectangleIcon className="h-4 w-4 mr-3" />
+                                Çıkış Yap
+                              </button>
+                            </div>
+                          ) : (
+                            <Link
+                              href="/auth/signin"
+                              className="flex items-center justify-center w-full border-2 border-primary text-primary px-4 py-2 rounded-md font-medium hover:bg-primary hover:text-white transition-all duration-300"
+                            >
+                              <UserIcon className="h-4 w-4 mr-2" />
+                              Müşteri Girişi
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </Disclosure.Panel>

@@ -1,0 +1,170 @@
+=============================================================================
+METROPOL REKLAM - FIREBASE ENVIRONMENT VARIABLES SETUP GUIDE
+=============================================================================
+
+1. .env.local DOSYASINDA TANIMLANMASI GEREKEN DEĞIŞKENLER:
+=============================================================================
+
+Aşağıdaki satırları .env.local dosyasına ekleyin:
+
+# Firebase Configuration
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDFBZIrWuxcBzJxsJoLsjt2pY-9CIbr-f0
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=metropol-reklam.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=metropol-reklam
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=metropol-reklam.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=481863979305
+NEXT_PUBLIC_FIREBASE_APP_ID=1:481863979305:web:91a18d019cb2fa9fc32738
+
+# NextAuth Secret (güvenlik için)
+NEXTAUTH_SECRET=your_random_secret_key_here
+NEXTAUTH_URL=http://localhost:3000
+
+=============================================================================
+2. FIREBASE CONFIGURATION BİLGİLERİ (HAZIR):
+=============================================================================
+
+✅ Firebase projeniz zaten oluşturulmuş! Aşağıdaki bilgiler alınmış:
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDFBZIrWuxcBzJxsJoLsjt2pY-9CIbr-f0",
+  authDomain: "metropol-reklam.firebaseapp.com",
+  projectId: "metropol-reklam", 
+  storageBucket: "metropol-reklam.firebasestorage.app",
+  messagingSenderId: "481863979305",
+  appId: "1:481863979305:web:91a18d019cb2fa9fc32738"
+};
+
+Bu bilgiler yukarıdaki .env.local değişkenlerine karşılık gelir.
+
+=============================================================================
+3. FIREBASE AUTHENTICATION KURULUMU (YAPILMASI GEREKEN):
+=============================================================================
+
+✅ ADIM 1: Firebase Console'a gidin
+- https://console.firebase.google.com/ adresine gidin
+- "metropol-reklam" projenizi seçin
+
+⚠️ ADIM 2: Authentication'ı etkinleştirin
+- Sol menüden "Authentication" seçin
+- "Get started" butonuna tıklayın (eğer henüz etkinleştirilmemişse)
+
+⚠️ ADIM 3: Sign-in method'ları etkinleştirin
+- "Sign-in method" sekmesine gidin
+- "Email/Password" seçeneğini bulun
+- "Enable" toggleını açın ve "Save" edin
+
+⚠️ ADIM 4: İlk admin kullanıcısını oluşturun
+- "Users" sekmesine gidin
+- "Add user" butonuna tıklayın
+- Admin email ve şifresini girin (örn: admin@metropolreklam.com)
+- Bu admin hesabıyla /admin/login sayfasından giriş yapabilirsiniz
+
+=============================================================================
+4. NEXTAUTH_SECRET OLUŞTURMA:
+=============================================================================
+
+Güvenli bir secret key oluşturmak için aşağıdaki yöntemlerden birini kullanın:
+
+YÖNTEM 1: Online generator kullanın
+- https://generate-secret.vercel.app/32 adresine gidin
+- Oluşturulan key'i kopyalayın
+
+YÖNTEM 2: Terminal'de oluşturun
+- Terminal açın ve şu komutu çalıştırın:
+  openssl rand -base64 32
+
+YÖNTEM 3: Node.js ile oluşturun
+- Terminal'de şu komutu çalıştırın:
+  node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+
+=============================================================================
+5. TAM .env.local DOSYASI (HAZIR KULLANIM):
+=============================================================================
+
+Aşağıdaki içeriği kopyalayıp .env.local dosyasına yapıştırın:
+
+# Firebase Configuration (Metropol Reklam)
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyDFBZIrWuxcBzJxsJoLsjt2pY-9CIbr-f0
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=metropol-reklam.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=metropol-reklam
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=metropol-reklam.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=481863979305
+NEXT_PUBLIC_FIREBASE_APP_ID=1:481863979305:web:91a18d019cb2fa9fc32738
+
+# NextAuth Configuration (NEXTAUTH_SECRET'i değiştirin!)
+NEXTAUTH_SECRET=P8fJ3kL9mN2qR5sT7vW0xY1zA4bC6dE8
+NEXTAUTH_URL=http://localhost:3000
+
+⚠️ ÖNEMLİ: NEXTAUTH_SECRET değerini yukarıdaki yöntemlerden biriyle oluşturduğunuz 
+güvenli bir key ile değiştirin!
+
+=============================================================================
+6. HIZLI KURULUM ADIMLARı:
+=============================================================================
+
+1. ✅ Firebase projesi oluşturuldu → TAMAM
+2. ✅ Web app kaydedildi → TAMAM
+3. ⚠️ .env.local dosyası oluşturun → YAPILACAK
+4. ⚠️ NEXTAUTH_SECRET oluşturun → YAPILACAK
+5. ⚠️ Firebase Authentication'ı etkinleştirin → YAPILACAK
+6. ⚠️ Email/Password provider'ını açın → YAPILACAK
+7. ⚠️ İlk admin kullanıcısı oluşturun → YAPILACAK
+8. ⚠️ Dev server'ı yeniden başlatın → YAPILACAK
+
+=============================================================================
+7. PRODUCTION İÇİN EK AYARLAR:
+=============================================================================
+
+Production ortamında:
+- NEXTAUTH_URL'yi gerçek domain'inizle değiştirin (örn: https://metropolreklam.com)
+- Firebase Console'da "Authorized domains" listesine production domain'inizi ekleyin:
+  - Authentication → Settings → Authorized domains → "Add domain"
+
+=============================================================================
+8. GÜVENLİK NOTLARI:
+=============================================================================
+
+- .env.local dosyasını asla Git'e commit etmeyin (.gitignore'da zaten mevcut)
+- NEXTAUTH_SECRET değerini kimseyle paylaşmayın
+- Production'da farklı ve güçlü bir NEXTAUTH_SECRET kullanın
+- Firebase API anahtarları public olabilir ama rate limiting ayarları yapın
+
+=============================================================================
+9. TEST ETMEK İÇİN:
+=============================================================================
+
+1. .env.local dosyasını proje root dizinine oluşturun
+2. Yukarıdaki değerleri kopyalayıp yapıştırın
+3. NEXTAUTH_SECRET'i güvenli bir değerle değiştirin
+4. Firebase Authentication kurulumunu tamamlayın
+5. Development server'ı yeniden başlatın: npm run dev
+6. http://localhost:3000 adresine gidin
+7. Navbar'daki "Müşteri Girişi" butonunu test edin
+8. Yeni hesap oluşturmayı deneyin
+
+=============================================================================
+10. SORUN GİDERME:
+=============================================================================
+
+❌ "Firebase not initialized" hatası:
+- .env.local dosyasının proje root dizininde olduğundan emin olun
+- Development server'ı yeniden başlatın (Ctrl+C, sonra npm run dev)
+
+❌ "Auth domain not authorized" hatası:
+- Firebase Console → Authentication → Settings → Authorized domains
+- localhost'un listede olduğundan emin olun
+
+❌ "Email/password provider not enabled" hatası:
+- Firebase Console → Authentication → Sign-in method
+- Email/Password'ün enabled olduğundan emin olun
+
+=============================================================================
+
+🎉 Firebase kurulumu tamamlandıktan sonra müşteri giriş sistemi tamamen 
+çalışır durumda olacak!
+
+Herhangi bir sorun yaşarsanız Firebase Console'un sol alt köşesindeki 
+"?" işaretinden yardım alabilir veya Firebase documentation'ına 
+başvurabilirsiniz: https://firebase.google.com/docs
+
+============================================================================= 

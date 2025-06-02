@@ -1,20 +1,20 @@
 import Head from 'next/head';
-// import { useSession, signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 
 export default function AdminLayout({ children, title }) {
-  // Admin authentication işlevselliği şimdilik yorum satırına alındı
-  /*
   const { data: session, status } = useSession();
   const router = useRouter();
   
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/admin/login');
+    } else if (session && session.user.role !== 'admin') {
+      router.push('/'); // Admin olmayan kullanıcıları ana sayfaya yönlendir
     }
-  }, [status, router]);
+  }, [status, session, router]);
 
   if (status === 'loading') {
     return (
@@ -24,10 +24,9 @@ export default function AdminLayout({ children, title }) {
     );
   }
 
-  if (status === 'unauthenticated') {
+  if (status === 'unauthenticated' || (session && session.user.role !== 'admin')) {
     return null;
   }
-  */
 
   return (
     <>
@@ -51,8 +50,11 @@ export default function AdminLayout({ children, title }) {
                 <Link href="/admin/products" className="hover:text-blue-400 transition-colors">
                   Ürünler
                 </Link>
+                <span className="text-sm text-gray-300">
+                  {session.user.name || session.user.email}
+                </span>
                 <button 
-                  // onClick={() => signOut({ callbackUrl: '/admin/login' })}
+                  onClick={() => signOut({ callbackUrl: '/admin/login' })}
                   className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm transition-colors"
                 >
                   Çıkış Yap

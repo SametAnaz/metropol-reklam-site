@@ -3,9 +3,20 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 // import GoogleProvider from 'next-auth/providers/google';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../lib/firebase/firebase';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../../../lib/firebase/firestore';
 
-export const authOptions = {
-  // Configure one or more authentication providers
+const ROLES = {
+  USER: 'user',
+  ADMIN: 'admin'
+};
+
+// Email'i doküman ID'sine çevir
+const emailToDocId = (email) => {
+  return email.replace(/[.#$[\]]/g, '_');
+};
+
+export default NextAuth({
   providers: [
     // GoogleProvider({
     //   clientId: process.env.GOOGLE_CLIENT_ID,
@@ -46,73 +57,133 @@ export const authOptions = {
       }
     }),
     CredentialsProvider({
-      id: 'customer-credentials',
-      name: 'Customer Credentials',
+      name: 'Credentials',
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
         action: { label: "Action", type: "text" }
       },
       async authorize(credentials) {
-        console.log('NextAuth authorize called with:', { 
-          email: credentials?.email, 
-          action: credentials?.action 
-        });
-
-        if (!credentials?.email || !credentials?.password) {
-          console.error('Missing email or password');
-          throw new Error('Email ve şifre gerekli');
-        }
-
         try {
-          let userCredential;
-          
-          if (credentials.action === 'signup') {
-            console.log('Attempting to create user...');
-            userCredential = await createUserWithEmailAndPassword(
-              auth,
-              credentials.email,
-              credentials.password
-            );
-            console.log('User created successfully');
-          } else {
-            console.log('Attempting to sign in user...');
-            userCredential = await signInWithEmailAndPassword(
-              auth,
-              credentials.email,
-              credentials.password
-            );
-            console.log('User signed in successfully');
+          console.log('NextAuth authorize called with:', {
+            email: credentials?.email,
+            action: credentials?.action
+          });
+
+          if (!credentials?.email || !credentials?.password) {
+            throw new Error('Email ve şifre gerekli');
           }
 
-          if (userCredential.user) {
-            const user = {
-              id: userCredential.user.uid,
-              email: userCredential.user.email,
-              name: userCredential.user.displayName || credentials.email.split('@')[0],
-              role: 'customer',
-            };
-            console.log('Returning user:', user);
-            return user;
+          let userCredential;
+          const docId = emailToDocId(credentials.email);
+
+          if (credentials.action === 'signup') {
+            console.log('Creating new user...');
+            
+            try {
+              // Kullanıcıyı Firebase Auth'da oluştur
+              userCredential = await createUserWithEmailAndPassword(
+                auth,
+                credentials.email,
+                credentials.password
+              );
+
+              // Firestore'a kullanıcı bilgilerini kaydet
+              const userData = {
+                uid: userCredential.user.uid,
+                email: credentials.email,
+                role: ROLES.USER,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+              };
+
+              await setDoc(doc(db, 'users', docId), userData);
+              console.log('User created successfully');
+
+              return {
+                id: userCredential.user.uid,
+                email: credentials.email,
+                name: credentials.email.split('@')[0],
+                role: ROLES.USER
+              };
+            } catch (firebaseError) {
+              console.error('Firebase signup error:', firebaseError);
+              
+              // Firebase hatalarını daha iyi handle edelim
+              if (firebaseError.code === 'auth/email-already-in-use') {
+                throw new Error('Bu email adresi zaten kullanımda');
+              } else if (firebaseError.code === 'auth/weak-password') {
+                throw new Error('Şifre çok zayıf. En az 6 karakter olmalıdır');
+              } else if (firebaseError.code === 'auth/invalid-email') {
+                throw new Error('Geçersiz email adresi');
+              } else {
+                throw new Error('Kayıt sırasında bir hata oluştu: ' + firebaseError.message);
+              }
+            }
+
+          } else {
+            console.log('Signing in user...');
+            
+            try {
+              // Firebase ile giriş yap
+              userCredential = await signInWithEmailAndPassword(
+                auth,
+                credentials.email,
+                credentials.password
+              );
+
+              // Firestore'dan kullanıcı bilgilerini al
+              const userDoc = await getDoc(doc(db, 'users', docId));
+              
+              let userRole = ROLES.USER;
+              if (userDoc.exists()) {
+                userRole = userDoc.data().role || ROLES.USER;
+              } else {
+                // Firestore'da kullanıcı yoksa oluştur
+                const userData = {
+                  uid: userCredential.user.uid,
+                  email: credentials.email,
+                  role: ROLES.USER,
+                  createdAt: serverTimestamp(),
+                  updatedAt: serverTimestamp()
+                };
+                await setDoc(doc(db, 'users', docId), userData);
+              }
+
+              console.log('User signed in successfully with role:', userRole);
+
+              return {
+                id: userCredential.user.uid,
+                email: credentials.email,
+                name: credentials.email.split('@')[0],
+                role: userRole
+              };
+            } catch (firebaseError) {
+              console.error('Firebase signin error:', firebaseError);
+              
+              if (firebaseError.code === 'auth/user-not-found') {
+                throw new Error('Bu email ile kayıtlı kullanıcı bulunamadı');
+              } else if (firebaseError.code === 'auth/wrong-password') {
+                throw new Error('Şifre hatalı');
+              } else if (firebaseError.code === 'auth/invalid-email') {
+                throw new Error('Geçersiz email adresi');
+              } else if (firebaseError.code === 'auth/too-many-requests') {
+                throw new Error('Çok fazla deneme. Lütfen daha sonra tekrar deneyin');
+              } else {
+                throw new Error('Giriş sırasında bir hata oluştu: ' + firebaseError.message);
+              }
+            }
           }
-          
-          console.error('No user in credential');
-          return null;
         } catch (error) {
-          console.error('Firebase auth error:', error);
-          
-          // Firebase error codes'larını daha iyi handle edelim
-          if (error.code) {
-            throw new Error(error.code);
-          }
-          
-          throw new Error(error.message || 'Authentication failed');
+          console.error('Authorization error:', error);
+          return null; // NextAuth expects null on failure
         }
       }
     })
   ],
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/auth/login',
+    error: '/auth/error'
   },
   session: {
     strategy: 'jwt',
@@ -140,12 +211,10 @@ export const authOptions = {
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.role = token.role || 'customer'; // Default customer role
+        session.user.role = token.role;
       }
       return session;
     }
   },
-  debug: true, // Development debug modu
-};
-
-export default NextAuth(authOptions); 
+  debug: process.env.NODE_ENV === 'development',
+}); 

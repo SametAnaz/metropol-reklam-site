@@ -60,7 +60,7 @@ export default function SignIn({ providers }) {
     try {
       console.log('Attempting sign in with:', { email, action: isSignUp ? 'signup' : 'signin' });
       
-      const result = await signIn('customer-credentials', {
+      const result = await signIn('credentials', {
         email,
         password,
         action: isSignUp ? 'signup' : 'signin',

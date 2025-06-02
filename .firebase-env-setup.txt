@@ -20,7 +20,115 @@ NEXTAUTH_SECRET=your_random_secret_key_here
 NEXTAUTH_URL=http://localhost:3000
 
 =============================================================================
-2. FIREBASE CONFIGURATION BİLGİLERİ (HAZIR):
+2. FIREBASE AUTHENTICATION VE FIRESTORE KURULUMU:
+=============================================================================
+
+A) Authentication Kurulumu:
+-------------------------
+1. Firebase Console → Authentication → Sign-in method
+2. "Email/Password" provider'ı etkinleştirin
+3. "Save" butonuna tıklayın
+
+B) Firestore Database Kurulumu:
+-----------------------------
+1. Firebase Console → Firestore Database
+2. "Create Database" butonuna tıklayın
+3. Production mode'u seçin
+4. Bölge olarak "eur3 (europe-west)" seçin
+5. "Enable" butonuna tıklayın
+
+C) Firestore Güvenlik Kuralları:
+------------------------------
+Firebase Console → Firestore Database → Rules sekmesine aşağıdaki kuralları ekleyin:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Yardımcı fonksiyonlar
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isUserAuthenticated(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && getUserData().role == 'admin';
+    }
+    
+    // Users koleksiyonu kuralları
+    match /users/{userId} {
+      // Okuma kuralları:
+      // - Kullanıcı kendi belgesini okuyabilir
+      // - Adminler tüm kullanıcıları okuyabilir
+      allow read: if isUserAuthenticated(userId) || isAdmin();
+      
+      // Oluşturma kuralları:
+      // - Yeni kayıt olan kullanıcı kendi belgesini oluşturabilir
+      // - Sadece 'user' rolü ile oluşturulabilir
+      allow create: if isUserAuthenticated(userId) 
+        && request.resource.data.role == 'user'
+        && request.resource.data.email == request.auth.token.email;
+      
+      // Güncelleme kuralları:
+      // - Kullanıcılar kendi bilgilerini güncelleyebilir (rol hariç)
+      // - Adminler tüm kullanıcıların bilgilerini güncelleyebilir
+      allow update: if (isUserAuthenticated(userId) 
+        && request.resource.data.role == resource.data.role)
+        || isAdmin();
+      
+      // Silme kuralları:
+      // - Sadece adminler kullanıcı silebilir
+      allow delete: if isAdmin();
+    }
+  }
+}
+```
+
+=============================================================================
+3. KULLANICI ROLLERİ VE YÖNETİMİ:
+=============================================================================
+
+A) Varsayılan Kullanıcı Kaydı:
+----------------------------
+- Yeni kayıt olan her kullanıcı otomatik olarak "user" rolü ile kaydedilir
+- Kullanıcı bilgileri hem Authentication hem de Firestore'a kaydedilir
+
+B) Admin Rolü Atama:
+------------------
+1. Firebase Console → Firestore Database → users koleksiyonu
+2. İlgili kullanıcının dokümanını bulun
+3. "role" alanını "admin" olarak güncelleyin
+4. Değişikliği kaydedin
+
+NOT: Rol değişikliği anında etkili olur, kullanıcının yeniden giriş yapmasına gerek yoktur.
+
+=============================================================================
+4. GÜVENLİK NOTLARI:
+=============================================================================
+
+- Kullanıcılar kendi rollerini değiştiremezler
+- Sadece adminler diğer kullanıcıların rollerini değiştirebilir
+- Authentication ve Firestore senkronize çalışır
+- Tüm işlemler güvenlik kuralları ile korunur
+
+=============================================================================
+5. HATA DURUMUNDA KONTROL LİSTESİ:
+=============================================================================
+
+1. Authentication'da kullanıcının var olduğunu kontrol edin
+2. Firestore'da users/{userId} dokümanının var olduğunu kontrol edin
+3. Firestore kurallarının doğru yapılandırıldığını kontrol edin
+4. Kullanıcı rolünün doğru atandığını kontrol edin
+
+=============================================================================
+6. FIREBASE CONFIGURATION BİLGİLERİ (HAZIR):
 =============================================================================
 
 ✅ Firebase projeniz zaten oluşturulmuş! Aşağıdaki bilgiler alınmış:
@@ -37,7 +145,7 @@ const firebaseConfig = {
 Bu bilgiler yukarıdaki .env.local değişkenlerine karşılık gelir.
 
 =============================================================================
-3. FIREBASE AUTHENTICATION KURULUMU (YAPILMASI GEREKEN):
+7. FIREBASE AUTHENTICATION KURULUMU (YAPILMASI GEREKEN):
 =============================================================================
 
 ✅ ADIM 1: Firebase Console'a gidin
@@ -60,7 +168,7 @@ Bu bilgiler yukarıdaki .env.local değişkenlerine karşılık gelir.
 - Bu admin hesabıyla /admin/login sayfasından giriş yapabilirsiniz
 
 =============================================================================
-4. NEXTAUTH_SECRET OLUŞTURMA:
+8. NEXTAUTH_SECRET OLUŞTURMA:
 =============================================================================
 
 Güvenli bir secret key oluşturmak için aşağıdaki yöntemlerden birini kullanın:
@@ -78,7 +186,7 @@ YÖNTEM 3: Node.js ile oluşturun
   node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 =============================================================================
-5. TAM .env.local DOSYASI (HAZIR KULLANIM):
+9. TAM .env.local DOSYASI (HAZIR KULLANIM):
 =============================================================================
 
 Aşağıdaki içeriği kopyalayıp .env.local dosyasına yapıştırın:
@@ -99,7 +207,7 @@ NEXTAUTH_URL=http://localhost:3000
 güvenli bir key ile değiştirin!
 
 =============================================================================
-6. HIZLI KURULUM ADIMLARı:
+10. HIZLI KURULUM ADIMLARı:
 =============================================================================
 
 1. ✅ Firebase projesi oluşturuldu → TAMAM
@@ -112,7 +220,7 @@ güvenli bir key ile değiştirin!
 8. ⚠️ Dev server'ı yeniden başlatın → YAPILACAK
 
 =============================================================================
-7. PRODUCTION İÇİN EK AYARLAR:
+11. PRODUCTION İÇİN EK AYARLAR:
 =============================================================================
 
 Production ortamında:
@@ -121,16 +229,7 @@ Production ortamında:
   - Authentication → Settings → Authorized domains → "Add domain"
 
 =============================================================================
-8. GÜVENLİK NOTLARI:
-=============================================================================
-
-- .env.local dosyasını asla Git'e commit etmeyin (.gitignore'da zaten mevcut)
-- NEXTAUTH_SECRET değerini kimseyle paylaşmayın
-- Production'da farklı ve güçlü bir NEXTAUTH_SECRET kullanın
-- Firebase API anahtarları public olabilir ama rate limiting ayarları yapın
-
-=============================================================================
-9. TEST ETMEK İÇİN:
+12. TEST ETMEK İÇİN:
 =============================================================================
 
 1. .env.local dosyasını proje root dizinine oluşturun
@@ -143,7 +242,7 @@ Production ortamında:
 8. Yeni hesap oluşturmayı deneyin
 
 =============================================================================
-10. SORUN GİDERME:
+13. SORUN GİDERME:
 =============================================================================
 
 ❌ "Firebase not initialized" hatası:
@@ -168,3 +267,32 @@ Herhangi bir sorun yaşarsanız Firebase Console'un sol alt köşesindeki
 başvurabilirsiniz: https://firebase.google.com/docs
 
 ============================================================================= 
+       email: "admin@metropolreklam.com" (oluşturduğunuz email)
+       role: "admin"
+       createdAt: [timestamp şu anki zaman]
+
+=============================================================================
+MANUEL KOLEKSİYON OLUŞTURMA ADIMLARI:
+=============================================================================
+
+Eğer otomatik koleksiyon oluşturma çalışmazsa, manuel olarak şu adımları izleyin:
+
+1. Firebase Console'a gidin (https://console.firebase.google.com)
+2. Projenizi seçin
+3. Sol menüden "Firestore Database" seçin
+4. "Start collection" veya "Koleksiyon başlat" butonuna tıklayın
+5. Collection ID olarak "users" yazın
+6. "Next" veya "İleri" butonuna tıklayın
+7. İlk doküman için:
+   - Document ID: "Auto-ID" seçeneğini kullanın
+   - Alanlar:
+     - Field: email, Type: string, Value: admin@metropolreklam.com
+     - Field: role, Type: string, Value: admin
+     - Field: createdAt, Type: timestamp, Value: [current timestamp]
+     - Field: updatedAt, Type: timestamp, Value: [current timestamp]
+8. "Save" veya "Kaydet" butonuna tıklayın
+
+NOT: Bu adımları sadece koleksiyon otomatik oluşmazsa uygulayın.
+Normalde uygulama ilk kullanıcı kaydında koleksiyonu otomatik oluşturacaktır.
+
+=============================================================================

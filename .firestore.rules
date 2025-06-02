@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Yardımcı fonksiyonlar
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isUserAuthenticated(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Email'i doküman ID'sine çeviren fonksiyon (JavaScript emailToDocId ile aynı)
+    function emailToDocId(email) {
+      return email.replace('[.#$\\[\\]]', '_');
+    }
+    
+    // Kullanıcının kendi dokümanı mı kontrol et
+    function isOwnDocument(email) {
+      return isAuthenticated() && 
+             request.auth.token.email == email;
+    }
+    
+    // Admin rolü kontrolü
+    function isAdmin() {
+      return isAuthenticated() && 
+             exists(/databases/$(database)/documents/users/$(emailToDocId(request.auth.token.email))) &&
+             get(/databases/$(database)/documents/users/$(emailToDocId(request.auth.token.email))).data.role == 'admin';
+    }
+    
+    // Users koleksiyonu kuralları
+    match /users/{userId} {
+      // Okuma kuralları
+      allow read: if 
+        // Kullanıcı kendi email'ine göre oluşturulmuş dokümanını okuyabilir
+        (isAuthenticated() && userId == emailToDocId(request.auth.token.email)) ||
+        // Adminler tüm kullanıcıları okuyabilir
+        isAdmin();
+      
+      // Oluşturma kuralları (yeni kayıt)
+      allow create: if 
+        // Authenticate edilmiş kullanıcı
+        isAuthenticated() &&
+        // Doküman ID'si kendi email'ine göre oluşturulmuş olmalı
+        userId == emailToDocId(request.auth.token.email) &&
+        // Email alanı kendi email'i olmalı
+        request.resource.data.email == request.auth.token.email &&
+        // UID alanı kendi UID'si olmalı
+        request.resource.data.uid == request.auth.uid &&
+        // Rol varsayılan olarak 'user' olmalı
+        request.resource.data.role == 'user' &&
+        // Gerekli alanların varlığını kontrol et
+        request.resource.data.keys().hasAll(['email', 'role', 'uid', 'createdAt', 'updatedAt']) &&
+        // Sadece izin verilen alanları içermeli
+        request.resource.data.keys().hasOnly(['email', 'role', 'uid', 'createdAt', 'updatedAt']);
+      
+      // Güncelleme kuralları
+      allow update: if 
+        // Admin tüm kullanıcıları güncelleyebilir (rol değişiklikleri için)
+        isAdmin() ||
+        // Kullanıcı kendi bilgilerini güncelleyebilir (ama rolünü değiştiremez)
+        (isAuthenticated() && 
+         userId == emailToDocId(request.auth.token.email) &&
+         request.resource.data.role == resource.data.role &&
+         request.resource.data.email == resource.data.email &&
+         request.resource.data.uid == resource.data.uid);
+      
+      // Silme kuralları
+      allow delete: if 
+        // Sadece adminler kullanıcı silebilir
+        isAdmin();
+    }
+    
+    // Diğer tüm koleksiyonlar için varsayılan kurallar
+    match /{document=**} {
+      // Adminler her şeye erişebilir
+      allow read, write: if isAdmin();
+      
+      // Authenticated kullanıcılar okuyabilir (genel içerik için)
+      allow read: if isAuthenticated();
+    }
+  }
+}

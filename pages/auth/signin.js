@@ -3,6 +3,7 @@ import { signIn, getSession, getProviders } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import ParticleBackground from '../../components/ui/ParticleBackground';
 
 export default function SignIn({ providers }) {
   const [email, setEmail] = useState('');
@@ -128,9 +129,10 @@ export default function SignIn({ providers }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary to-secondary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="bg-white rounded-lg shadow-xl p-8">
+    <div className="min-h-screen relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <ParticleBackground />
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl p-8">
           <div className="text-center">
             <Link href="/" className="inline-block">
               <div className="flex items-center justify-center gap-2 mb-6">
@@ -362,4 +364,4 @@ export async function getServerSideProps() {
       providers: providers || {},
     },
   };
-} 
+}

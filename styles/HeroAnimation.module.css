@@ -1,0 +1,150 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
+
+.container { 
+  background-color: #000; 
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: -80px; /* Navbar yüksekliğini telafi etmek için */
+  padding-top: 80px; /* İçeriğin navbar altından başlaması için */
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+  color: hsla(360, 45%, 95%, .9);
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: .8em;
+  font-size: 4vw;
+  font-weight: bold;
+  opacity: .2;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  text-shadow: hsla(0, 45%, 5%, .3) 0 0 1px, hsla(360, 55%, 95%, .3) 0 -1px 2px, hsla(0, 45%, 5%, .3) 0 -1px 2px, hsla(360, 55%, 95%, .3) 0 20px 15px;
+}
+
+.subtitle {
+  width: 100%;
+  text-align: center;
+  color: hsla(360, 45%, 95%, .9);
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: .8em;
+  font-size: 1.5vw;
+  font-weight: normal;
+  opacity: .2;
+  text-transform: uppercase;
+  text-shadow: hsla(0, 45%, 5%, .3) 0 0 1px, hsla(360, 55%, 95%, .3) 0 -1px 2px, hsla(0, 45%, 5%, .3) 0 -1px 2px, hsla(360, 55%, 95%, .3) 0 20px 15px;
+}
+
+.text_fade {
+  animation: fade_text 8s infinite ease-in;
+}
+
+.orb {
+  position: absolute;
+  width: .001vmin;
+  height: .001vmin;
+  border-radius: 50%;
+  opacity: .25;
+}
+
+.orb:nth-child(1) {
+  box-shadow: 0 0 45vmax 45vmax #ff00ff;
+  animation: hue 10s 0s linear infinite, move1 19s 0s linear infinite;
+}
+
+.orb:nth-child(2) {
+  box-shadow: 0 0 45vmax 45vmax #ffffff;
+  animation: hue 15s 0s linear infinite, move2 25s 0s linear infinite;
+}
+
+.orb:nth-child(3) {
+  box-shadow: 0 0 45vmax 45vmax #00ffff;
+  animation: hue 20s 0s linear infinite, move3 15s 0s linear infinite;
+  opacity: .2;
+}
+
+@keyframes fade_text {
+  0%  { opacity: 1; }
+  10% { opacity: .8; }
+  25% { opacity: .5; }
+  50% { opacity: .3; }
+  65% { opacity: .5; }
+  90% { opacity: .8; }
+  100% { opacity: 1; }
+}
+
+@keyframes hue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes move1 {
+  0% {
+    top: 0vh;
+    left: 50vw;
+  }
+  25% {
+    left: 0vw;
+  }
+  50% {
+    top: 100vh;
+  }
+  75% {
+    left: 100vw;
+  }
+  100% {
+    top: 0vh;
+    left: 50vw;
+  }
+}
+
+@keyframes move2 {
+  0% {
+    top: 50vh;
+    left: 100vw;
+  }
+  25% {
+    top: 100vh;
+  }
+  50% {
+    left: 0vw;
+  }
+  75% {
+    top: 0vh;
+  }
+  100% {
+    top: 50vh;
+    left: 100vw;
+  }
+}
+
+@keyframes move3 {
+  0% {
+    top: 100vh;
+    left: 50vw;
+  }
+  25% {
+    left: 100vw;
+  }
+  50% {
+    top: 0vh;
+  }
+  75% {
+    left: 0vw;
+  }
+  100% {
+    top: 100vh;
+    left: 50vw;
+  }
+}

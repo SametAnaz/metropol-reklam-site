@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
 import MainLayout from '../components/layouts/MainLayout';
+import styles from '../styles/HeroAnimation.module.css';
 
 // Sample services data
 const services = [
@@ -33,42 +34,16 @@ export default function Home() {
       />
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center text-white overflow-hidden -mt-20">
-        {/* Hero Background */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gray-900 opacity-70 z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/20 to-gray-900 z-20"></div>
-          <div className="w-full h-full relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-blue-500 opacity-40"></div>
-          </div>
-        </div>
-
-        {/* Hero Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              METROPOL REKLAM
-            </h1>
-            <p className="text-xl md:text-2xl mb-8">
-              Profesyonel Tabela ve Dijital Baskı Hizmetleri
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/services" className="bg-orange-500 text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition-all">
-                Hizmetlerimizi Keşfedin
-              </Link>
-              <Link href="/contact" className="bg-white text-orange-500 px-6 py-2 rounded-md hover:bg-opacity-90 transition-all">
-                İletişime Geçin
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll down indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 animate-bounce">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
+      <section className={styles.container}>
+        <h1 className={`${styles.title} ${styles.text_fade}`}>
+          METROPOL REKLAM
+        </h1>
+        <h3 className={`${styles.subtitle} ${styles.text_fade}`}>
+          Profesyonel Tabela ve Dijital Baskı Hizmetleri
+        </h3>
+        <div className={styles.orb}></div>
+        <div className={styles.orb}></div>
+        <div className={styles.orb}></div>
       </section>
 
       {/* Services Section */}

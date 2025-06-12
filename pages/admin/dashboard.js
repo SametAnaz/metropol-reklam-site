@@ -2,6 +2,8 @@ import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import UserManagement from '../../components/admin/UserManagement';
+import AdminBackground from '../../components/ui/AdminBackground';
+import Script from 'next/script';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();

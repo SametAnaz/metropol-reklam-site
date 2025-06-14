@@ -13,8 +13,8 @@ export default async function handler(req, res) {
 
   const { email, password, name } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
+  if (!email || !password || !name) {
+    return res.status(400).json({ error: 'Email, password, and name are required' });
   }
 
   try {
@@ -31,12 +31,26 @@ export default async function handler(req, res) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Get user's IP address
+    const forwarded = req.headers["x-forwarded-for"];
+    const ip = forwarded ? forwarded.split(', ')[0] : req.socket.remoteAddress;
+    
+    // Get user agent info
+    const userAgent = req.headers["user-agent"];
+
     // Create user
     const user = await prisma.user.create({
       data: {
         email,
-        name: name || email.split('@')[0], // Use part of email as name if not provided
+        name, // Now required
         password: hashedPassword,
+        ipAddress: ip,
+        userAgent: userAgent,
+        // We'll get more detailed device info from userAgent
+        deviceInfo: JSON.stringify({
+          browser: userAgent?.split('(')[0] || 'Unknown',
+          os: userAgent?.split('(')[1]?.split(')')[0] || 'Unknown'
+        }),
         role: 'USER', // Default role - must match the enum in schema.prisma
       },
     });

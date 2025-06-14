@@ -21,11 +21,16 @@ model User {
   email         String    @unique
   password      String
   role          Role      @default(USER)
-  name          String?
+  name          String
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  // User device and location info
+  ipAddress     String?
+  userAgent     String?   @db.Text
+  location      String?   @db.Text
+  deviceInfo    String?   @db.Text
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

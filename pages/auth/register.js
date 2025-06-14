@@ -21,6 +21,12 @@ export default function Register() {
     setLoading(true);
 
     // Validate input
+    if (!name.trim()) {
+      setError('Ad Soyad alanı zorunludur');
+      setLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Şifreler eşleşmiyor');
       setLoading(false);
@@ -88,7 +94,7 @@ export default function Register() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm text-gray-600 mb-2">
-                Ad Soyad (İsteğe bağlı)
+                Ad Soyad *
               </label>
               <input
                 type="text"
@@ -96,6 +102,7 @@ export default function Register() {
                 onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#FF5714] focus:ring-1 focus:ring-[#FF5714] outline-none transition-colors"
                 placeholder="Ad Soyad"
+                required
               />
             </div>
 

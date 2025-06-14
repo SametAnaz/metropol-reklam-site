@@ -2,15 +2,16 @@ import { useState, useEffect, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useActiveSection } from '../../hooks/useActiveSection';
 import styles from '@/styles/Navbar.module.css';
 
 const navigation = [
-  { name: 'Ana Sayfa', href: '/' },
-  { name: 'Hakkımızda', href: '/about' },
-  { name: 'Hizmetlerimiz', href: '/services' },
-  { name: 'Portföy', href: '/portfolio' },
-  { name: 'Ürünler', href: '/products' },
-  { name: 'İletişim', href: '/contact' },
+  { name: 'Ana Sayfa', href: '/', isScroll: false },
+  { name: 'Hakkımızda', href: '#about', fallbackHref: '/about', isScroll: true, sectionId: 'about' },
+  { name: 'Hizmetlerimiz', href: '#services', fallbackHref: '/services', isScroll: true, sectionId: 'services' },
+  { name: 'Portföy', href: '#portfolio', fallbackHref: '/portfolio', isScroll: true, sectionId: 'portfolio' },
+  { name: 'Ürünler', href: '#products', fallbackHref: '/products', isScroll: true, sectionId: 'products' },
+  { name: 'İletişim', href: '#contact', fallbackHref: '/contact', isScroll: true, sectionId: 'contact' },
 ];
 
 export default function Navbar() {
@@ -20,6 +21,10 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  
+  // Use active section hook only on homepage
+  const sectionIds = ['about', 'services', 'portfolio', 'products', 'contact'];
+  const activeSection = useActiveSection(router.pathname === '/' ? sectionIds : []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,6 +57,27 @@ export default function Navbar() {
     await signOut({ callbackUrl: '/' });
   };
 
+  const handleNavClick = (item, e) => {
+    // If we're on homepage and it's a scroll item, scroll to section
+    if (router.pathname === '/' && item.isScroll) {
+      e.preventDefault();
+      const targetId = item.href.substring(1); // Remove the #
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+        setIsMenuOpen(false); // Close mobile menu
+      }
+    }
+    // If we're not on homepage, navigate to the fallback page
+    else if (item.isScroll && item.fallbackHref) {
+      // Let the default Link behavior handle this
+      setIsMenuOpen(false);
+    }
+  };
+
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.affix : ''}`}>
       <div className={styles.container}>
@@ -64,16 +90,23 @@ export default function Navbar() {
 
         <div className={`${styles.main_list} ${isMenuOpen ? styles.show_list : ''}`} id="mainListDiv">
           <ul className="flex items-center">
-            {navigation.map((item) => (
-              <li key={item.name}>
-                <Link 
-                  href={item.href}
-                  className={`${router.pathname === item.href ? styles.active : ''}`}
-                >
-                  {item.name}
-                </Link>
-              </li>
-            ))}
+            {navigation.map((item) => {
+              const isActive = router.pathname === '/' && item.sectionId 
+                ? activeSection === item.sectionId 
+                : router.pathname === (item.fallbackHref || item.href);
+              
+              return (
+                <li key={item.name}>
+                  <Link 
+                    href={router.pathname === '/' && item.isScroll ? item.href : item.fallbackHref || item.href}
+                    className={`${isActive ? styles.active : ''}`}
+                    onClick={(e) => handleNavClick(item, e)}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              );
+            })}
             
             {status === 'loading' ? (
               <li className="animate-pulse bg-white/20 w-20 h-8 rounded-full" />

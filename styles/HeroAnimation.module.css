@@ -148,3 +148,34 @@
     left: 50vw;
   }
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .title {
+    font-size: 8vw;
+    letter-spacing: .4em;
+    margin-bottom: 1rem;
+  }
+  
+  .subtitle {
+    font-size: 3vw;
+    letter-spacing: .4em;
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 10vw;
+    letter-spacing: .2em;
+  }
+  
+  .subtitle {
+    font-size: 4vw;
+    letter-spacing: .2em;
+  }
+}

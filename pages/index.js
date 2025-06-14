@@ -1,28 +1,162 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { NextSeo } from 'next-seo';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import MainLayout from '../components/layouts/MainLayout';
+import AnimatedSection from '../components/ui/AnimatedSection';
 import styles from '../styles/HeroAnimation.module.css';
+import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
 
-// Sample services data
+// Services data - expanded from services page
 const services = [
   {
     id: 'tabela',
     title: 'Tabela',
     description: 'Işıklı, ışıksız, kutu harf, totem ve her tür profesyonel tabela çözümleri.',
+    features: ['Işıklı Tabela', 'Işıksız Tabela', 'LED Tabela', 'Pleksi Tabela', 'Vinil Tabela', 'Alüminyum Tabela']
   },
   {
     id: 'dijital-baski',
     title: 'Dijital Baskı',
     description: 'Yüksek kaliteli baskı teknolojileri ile banner, afiş, branda ve daha fazlası.',
+    features: ['Banner Baskı', 'Afiş Baskı', 'Branda Baskı', 'UV Baskı', 'Folyo Baskı', 'Mesh Baskı']
   },
   {
     id: 'arac-giydirme',
     title: 'Araç Giydirme',
     description: 'Kurumsal veya kişisel araçlarınız için tam veya parçalı araç giydirme hizmetleri.',
+    features: ['Tam Araç Giydirme', 'Parçalı Araç Giydirme', 'Araç Logosu', 'Ticari Araç Giydirme', 'Otobüs Giydirme', 'Araba Folyo Kaplama']
   },
+  {
+    id: 'kutu-harf',
+    title: 'Kutu Harf',
+    description: 'Modern ve profesyonel görünüm sağlayan 3 boyutlu kutu harf çözümleri.',
+    features: ['Pleksi Kutu Harf', 'Alüminyum Kutu Harf', 'Işıklı Kutu Harf', 'Paslanmaz Kutu Harf', 'LED Kutu Harf', 'Kabartma Harfler']
+  },
+  {
+    id: 'yonlendirme',
+    title: 'Yönlendirme Sistemleri',
+    description: 'İç ve dış mekan için profesyonel yönlendirme ve işaretleme sistemleri.',
+    features: ['İç Mekan Yönlendirme', 'Dış Mekan Yönlendirme', 'Işıklı Yönlendirme', 'Pano Yönlendirme', 'Kapı İsimlikleri', 'Kat Planları']
+  },
+  {
+    id: 'promosyon',
+    title: 'Promosyon Ürünleri',
+    description: 'Markanızı tanıtmak için özel tasarım promosyon ürünleri.',
+    features: ['Özel Tasarım Ürünler', 'Kalemler ve Defterler', 'Çantalar', 'T-shirt ve Tekstil', 'Bardak ve Termos', 'Anahtarlıklar']
+  }
+];
+
+// Portfolio projects
+const portfolioProjects = [
+  {
+    id: 1,
+    title: 'Mega AVM Tabela Projesi',
+    category: 'Tabela',
+    description: 'Modern ve göz alıcı kutu harf ışıklı tabela uygulaması.'
+  },
+  {
+    id: 2,
+    title: 'Lüks Restoran Yönlendirme',
+    category: 'Yönlendirme',
+    description: 'Şık iç mekan yönlendirme ve kapı isimlikleri tasarım ve uygulaması.'
+  },
+  {
+    id: 3,
+    title: 'Özel Tasarım Araç Giydirme',
+    category: 'Araç Giydirme',
+    description: 'Kurumsal filo için özel tasarım tam araç giydirme çalışması.'
+  },
+  {
+    id: 4,
+    title: 'Büyük Format Dijital Baskı',
+    category: 'Dijital Baskı',
+    description: 'Fuar için büyük format dijital baskı ve uygulama.'
+  },
+  {
+    id: 5,
+    title: 'Mağaza Konsept Tasarımı',
+    category: 'Konsept Tasarım',
+    description: 'Zincir mağazalar için kurumsal kimlik ve konsept tasarım uygulaması.'
+  },
+  {
+    id: 6,
+    title: 'Festival Alanı Promosyon',
+    category: 'Promosyon',
+    description: 'Büyük festival için kurumsal promosyon ürünleri tasarım ve üretimi.'
+  }
+];
+
+// Product categories
+const productCategories = [
+  {
+    id: 'totem-tabela',
+    title: 'Totem Tabelalar',
+    description: 'İşletmenizi uzaktan fark edilir kılan ve dikkat çeken sağlam yapıdaki totem tabelalar.',
+    features: ['Işıklı Totemler', 'Işıksız Totemler', 'Dijital Ekranlı Totemler', 'Yön Gösterici Totemler']
+  },
+  {
+    id: 'isikli-tabela',
+    title: 'Işıklı Tabelalar',
+    description: 'Gece ve gündüz dikkat çeken, markanızı öne çıkaran modern ışıklı tabela sistemleri.',
+    features: ['LED Tabelalar', 'Neon Tabelalar', 'Lightbox Tabelalar', 'Çift Taraflı Tabelalar']
+  },
+  {
+    id: 'isiksiz-tabela',
+    title: 'Işıksız Tabelalar',
+    description: 'Klasik ve dayanıklı, her bütçeye uygun kurumsal ışıksız tabela sistemleri.',
+    features: ['Vinil Tabelalar', 'Branda Tabelalar', 'Metal Tabelalar', 'Ahşap Tabelalar']
+  },
+  {
+    id: 'kutu-harf',
+    title: 'Kutu Harfler',
+    description: 'Şık ve profesyonel görünüm sağlayan 3 boyutlu kutu harf çözümleri.',
+    features: ['Pleksi Kutu Harf', 'Alüminyum Kutu Harf', 'Paslanmaz Kutu Harf', 'LED Kutu Harf']
+  }
 ];
 
 export default function Home() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm();
+
+  const [serverMessage, setServerMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
+  const onSubmit = async (data) => {
+    try {
+      setServerMessage("");
+      setMessageType("");
+      
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      
+      if (response.ok) {
+        setMessageType("success");
+        setServerMessage("Mesajınız başarıyla gönderildi! Teşekkürler.");
+        reset();
+      } else {
+        setMessageType("error");
+        setServerMessage(result.message || "Bir hata oluştu.");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessageType("error");
+      setServerMessage("Gönderim sırasında bir hata oluştu.");
+    }
+  };
+
   return (
     <MainLayout
       title="Metropol Reklam | Profesyonel Tabela & Dijital Baskı Hizmetleri"
@@ -46,53 +180,573 @@ export default function Home() {
         <div className={styles.orb}></div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-12 md:py-24 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Hizmetlerimiz</h2>
-            <p className="text-lg max-w-2xl mx-auto">
-              Müşterilerimize sunduğumuz geniş yelpazedeki profesyonel hizmetlerimizle tanışın.
-            </p>
-          </div>
+      {/* About Section - Hakkımızda İçeriği */}
+      <section className="py-20 bg-white relative" id="about">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-br from-orange-100 to-blue-100 rounded-full opacity-20"></div>
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-gradient-to-tr from-blue-100 to-orange-100 rounded-full opacity-20"></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">Hakkımızda</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
+            </div>
+          </AnimatedSection>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
-              <div 
-                key={service.id}
-                className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
-              >
-                <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-orange-100">
-                  <div className="w-8 h-8 bg-orange-500 rounded-full"></div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-                <Link href={`/services#${service.id}`} className="text-orange-500 hover:underline font-medium">
-                  Detaylı Bilgi &rarr;
-                </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+            <AnimatedSection animation="fade-right">
+              <div>
+                <h3 className="text-3xl font-bold mb-6 text-gray-800">Biz Kimiz?</h3>
+                <p className="text-gray-600 mb-4">
+                  Metropol Reklam olarak, 15 yılı aşkın tecrübemizle reklam ve tanıtım sektöründe hizmet vermekteyiz. Modern teknolojiler ve yaratıcı çözümlerle müşterilerimizin markalarını güçlendirmeyi ve görünürlüklerini artırmayı hedefliyoruz.
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Profesyonel ekibimiz, her projeye özel yaklaşımla müşterilerimizin ihtiyaçlarını anlar ve en uygun çözümleri sunar. Kaliteli malzemeler ve son teknoloji ekipmanlarımızla her işi titizlikle gerçekleştiririz.
+                </p>
+                <p className="text-gray-600">
+                  Amacımız, müşterilerimizin beklentilerinin ötesine geçerek uzun vadeli iş birlikleri kurmak ve markaların başarı hikayelerinin bir parçası olmaktır.
+                </p>
               </div>
-            ))}
+            </AnimatedSection>
+            <AnimatedSection animation="fade-left">
+              <div className="bg-gray-200 h-80 rounded-lg flex justify-center items-center">
+                <p className="text-gray-500">Şirket Görseli</p>
+              </div>
+            </AnimatedSection>
           </div>
+
+          {/* Vision & Mission */}
+          <AnimatedSection animation="fade-up">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+              <div className="bg-gray-50 p-8 rounded-lg">
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-800">Vizyonumuz</h3>
+                <p className="text-gray-600">
+                  Türkiye'nin reklam ve tanıtım sektöründe öncü firmalarından biri olarak, yaratıcı ve yenilikçi çözümlerimizle müşterilerimizin markalarını en üst seviyelere taşımak ve sektördeki standartları belirlemek.
+                </p>
+              </div>
+
+              <div className="bg-gray-50 p-8 rounded-lg">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-gray-800">Misyonumuz</h3>
+                <p className="text-gray-600">
+                  Müşterilerimizin ihtiyaçlarını en iyi şekilde anlayarak, beklentilerini aşan kaliteli, zamanında ve bütçe dostu çözümler sunmak. Her bir proje için yaratıcı, özgün ve etkileyici ürünler geliştirmek ve müşteri memnuniyetini en üst düzeyde tutmak.
+                </p>
+              </div>
+            </div>
+          </AnimatedSection>
+
+          {/* Values */}
+          <AnimatedSection animation="fade-up">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-gray-800">Kalite</h3>
+                <p className="text-gray-600">
+                  Her işimizde en yüksek kalite standartlarını uygular, müşterilerimize dayanıklı ve etkileyici ürünler sunarız.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-gray-800">Yenilikçilik</h3>
+                <p className="text-gray-600">
+                  Sektördeki son trendleri ve teknolojileri takip ederek yenilikçi çözümler sunar, her zaman bir adım önde olmayı hedefleriz.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-gray-800">Müşteri Odaklılık</h3>
+                <p className="text-gray-600">
+                  Müşterilerimizin ihtiyaçlarını ve beklentilerini anlamak için zaman ayırır, en uygun çözümleri sunmak için çalışırız.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-gray-800">Zamanında Teslimat</h3>
+                <p className="text-gray-600">
+                  Projelerimizi planlandığı şekilde zamanında teslim etmeyi taahhüt eder, müşterilerimizi asla bekletmeyiz.
+                </p>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Services Section - Hizmetlerimiz İçeriği */}
+      <section className="py-20 bg-gray-50 relative" id="services">
+        {/* Decorative background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">Hizmetlerimiz</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
+              <p className="text-lg max-w-2xl mx-auto text-gray-600">
+                Markanızı öne çıkarmak için profesyonel reklam çözümlerimizi keşfedin
+              </p>
+            </div>
+          </AnimatedSection>
           
-          <div className="text-center mt-10">
-            <Link href="/services" className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-opacity-90 transition-all">
-              Tüm Hizmetlerimiz
-            </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {services.map((service, index) => (
+              <AnimatedSection key={service.id} animation="fade-up" delay={index * 100}>
+                <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
+                  <div className="h-3 bg-gradient-to-r from-orange-400 to-blue-500"></div>
+                  <div className="p-6">
+                    <h2 className="text-2xl font-bold mb-4 text-gray-800">{service.title}</h2>
+                    <p className="text-gray-600 mb-6">{service.description}</p>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-700">Özellikler:</h3>
+                    <ul className="space-y-2 mb-6">
+                      {service.features.map((feature, index) => (
+                        <li key={index} className="flex items-center text-gray-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href={`/contact?service=${service.id}`} className="inline-block bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white font-medium px-6 py-2 rounded-md transition-opacity duration-200">
+                      Teklif Alın
+                    </Link>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-orange-500 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6">Projeleriniz İçin Bizimle İletişime Geçin</h2>
+      {/* Portfolio Section - Portföy İçeriği */}
+      <section className="py-20 bg-white" id="portfolio">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">Portföyümüz</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
+              <p className="text-lg max-w-2xl mx-auto text-gray-600">
+                Yılların tecrübesiyle tamamladığımız projeleri inceleyin
+              </p>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {portfolioProjects.map((project, index) => (
+              <AnimatedSection key={project.id} animation="fade-up" delay={index * 100}>
+                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <div className="h-64 bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-500">Proje Görseli</p>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center mb-2">
+                      <span className="text-xs font-semibold px-2 py-1 bg-orange-100 text-orange-600 rounded-full mr-2">
+                        {project.category}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-2 text-gray-800">{project.title}</h3>
+                    <p className="text-gray-600">{project.description}</p>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          {/* Testimonials */}
+          <AnimatedSection animation="fade-up">
+            <div className="bg-gray-50 rounded-2xl p-12 mb-12">
+              <h3 className="text-3xl font-bold mb-12 text-center text-gray-800">Müşterilerimizin Yorumları</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <AnimatedSection animation="fade-right" delay={100}>
+                  <div className="bg-white p-6 rounded-lg shadow">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-orange-100 rounded-full mr-4 flex items-center justify-center">
+                        <span className="text-orange-500 font-bold">AY</span>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-800">Ali Yılmaz</h3>
+                        <p className="text-gray-500 text-sm">XYZ Şirketi CEO'su</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 italic">
+                      "Metropol Reklam ile çalışmak gerçekten profesyonel bir deneyimdi. Mağazalarımız için tasarladıkları tabelalar beklentilerimizin ötesinde oldu."
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                <AnimatedSection animation="fade-up" delay={200}>
+                  <div className="bg-white p-6 rounded-lg shadow">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full mr-4 flex items-center justify-center">
+                        <span className="text-blue-500 font-bold">SD</span>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-800">Selin Demir</h3>
+                        <p className="text-gray-500 text-sm">ABC Restaurant Sahibi</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 italic">
+                      "Restoranımız için yaptıkları özel tasarım yönlendirme tabelaları müşterilerimizden çok olumlu geri dönüşler aldı."
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                <AnimatedSection animation="fade-left" delay={300}>
+                  <div className="bg-white p-6 rounded-lg shadow">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-green-100 rounded-full mr-4 flex items-center justify-center">
+                        <span className="text-green-500 font-bold">MK</span>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-800">Mehmet Kaya</h3>
+                        <p className="text-gray-500 text-sm">123 Nakliyat Genel Müdürü</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 italic">
+                      "Araç filomuz için yaptıkları giydirme çalışması olağanüstüydü. Araçlarımız artık şehrin her yerinde dikkat çekiyor."
+                    </p>
+                  </div>
+                </AnimatedSection>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Products Section - Ürünler İçeriği */}
+      <section className="py-20 bg-gray-50" id="products">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">Ürünlerimiz</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
+              <p className="text-lg max-w-2xl mx-auto text-gray-600">
+                Reklam ve tabela ihtiyaçlarınız için kaliteli ve profesyonel ürün yelpazemiz
+              </p>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {productCategories.map((category, index) => (
+              <AnimatedSection key={category.id} animation="fade-up" delay={index * 100}>
+                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                  <div className="h-56 bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-500">Ürün Görseli</p>
+                  </div>
+                  
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">{category.title}</h3>
+                    <p className="text-gray-600 mb-4">{category.description}</p>
+                    
+                    <h4 className="font-semibold text-gray-700 mb-2">Ürün Çeşitleri:</h4>
+                    <ul className="mb-5 space-y-1">
+                      {category.features.map((feature, index) => (
+                        <li key={index} className="flex items-center text-gray-600 text-sm">
+                          <svg className="h-4 w-4 text-orange-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <div className="flex gap-2">
+                      <Link href={`/contact?product=${category.id}`} className="bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-4 py-2 rounded text-sm font-medium transition-opacity duration-200">
+                        Teklif Alın
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          {/* Custom Products */}
+          <AnimatedSection animation="fade-up">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="bg-gray-200 h-full flex items-center justify-center p-12">
+                  <p className="text-gray-500">Özel Üretim Görseli</p>
+                </div>
+                <div className="p-8 md:p-12">
+                  <h3 className="text-2xl font-bold mb-4 text-gray-800">Özel Üretim Çözümler</h3>
+                  <p className="text-gray-600 mb-6">
+                    Katalogda yer almayan, size özel tasarım ve üretim gerektiren projeleriniz için uzman ekibimizle çözüm sunuyoruz.
+                  </p>
+                  
+                  <ul className="mb-8 space-y-3">
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-800">Ücretsiz Keşif ve Danışmanlık</span>
+                        <p className="text-gray-600 text-sm">Projeleriniz için yerinde inceleme ve profesyonel tavsiyeler</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-800">Özel Tasarım</span>
+                        <p className="text-gray-600 text-sm">Kurumsal kimliğinize uygun yaratıcı ve özgün tasarımlar</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-800">Anahtar Teslim Hizmet</span>
+                        <p className="text-gray-600 text-sm">Tasarımdan üretime, montajdan bakıma tam kapsamlı hizmet</p>
+                      </div>
+                    </li>
+                  </ul>
+                  
+                  <Link href="/contact?service=custom" className="bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-6 py-3 rounded-md font-medium transition-opacity duration-200 inline-block">
+                    Özel Teklif Alın
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Contact Section - İletişim İçeriği */}
+      <section className="py-20 bg-white" id="contact">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">İletişim</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
+              <p className="text-lg max-w-2xl mx-auto text-gray-600">
+                Profesyonel reklam çözümleri için bize ulaşın
+              </p>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Contact Information */}
+            <AnimatedSection animation="fade-right">
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">İletişim Bilgileri</h3>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                  <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <MapPinIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-gray-800">Adres</h4>
+                      <p className="text-gray-600 mt-1">Kuşadası/Aydın, Türkiye</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <PhoneIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-gray-800">Telefon</h4>
+                      <a href="tel:+905551234567" className="text-gray-600 mt-1 hover:text-orange-500 transition-colors">
+                        +90 (555) 123 45 67
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <EnvelopeIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-gray-800">E-posta</h4>
+                      <a href="mailto:info@metropolreklam.com" className="text-gray-600 mt-1 hover:text-orange-500 transition-colors">
+                        info@metropolreklam.com
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+                    <ClockIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-gray-800">Çalışma Saatleri</h4>
+                      <p className="text-gray-600 mt-1">Pazartesi - Cumartesi: 09:00 - 18:00</p>
+                      <p className="text-gray-600">Pazar: Kapalı</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            {/* Contact Form */}
+            <AnimatedSection animation="fade-left">
+              <div className="bg-gray-50 p-8 rounded-lg">
+                <h3 className="text-2xl font-bold text-gray-800 mb-6">Bize Ulaşın</h3>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    İsim
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    {...register("name", { required: "İsim zorunludur." })}
+                    className="w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    placeholder="Adınız Soyadınız"
+                  />
+                  {errors.name && (
+                    <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    E-Posta
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    {...register("email", {
+                      required: "E-posta zorunludur.",
+                      pattern: {
+                        value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                        message: "Geçerli bir e-posta girin.",
+                      },
+                    })}
+                    className="w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    placeholder="ornek@email.com"
+                  />
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                    Mesaj
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={4}
+                    {...register("message", {
+                      required: "Mesaj zorunludur.",
+                      minLength: {
+                        value: 10,
+                        message: "Mesaj en az 10 karakter olmalı.",
+                      },
+                    })}
+                    className="w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    placeholder="Mesajınızı buraya yazın..."
+                  />
+                  {errors.message && (
+                    <p className="text-red-600 text-sm mt-1">{errors.message.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white font-medium py-3 px-4 rounded-md transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? "Gönderiliyor..." : "Mesaj Gönder"}
+                  </button>
+                </div>
+
+                {serverMessage && (
+                  <div className={`p-3 rounded-md ${
+                    messageType === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                  }`}>
+                    {serverMessage}
+                  </div>
+                )}
+              </form>
+              </div>
+            </AnimatedSection>
+          </div>
+
+          {/* Google Maps */}
+          <AnimatedSection animation="fade-up">
+            <div className="mt-16">
+              <h3 className="text-3xl font-bold text-gray-800 text-center mb-8">Bizi Ziyaret Edin</h3>
+              <div className="max-w-6xl mx-auto">
+                <div className="h-[450px] rounded-xl overflow-hidden shadow-lg border border-gray-200">
+                  <iframe
+                    src="https://maps.google.com/maps?q=37.73802538464112,27.29327684619427&hl=tr&z=16&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Metropol Reklam Konum - Kuşadası, Aydın"
+                  ></iframe>
+                </div>
+                <div className="mt-6 text-center">
+                  <a
+                    href="https://maps.app.goo.gl/3LVeZZvC1885Te9f8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-6 py-3 rounded-lg font-medium transition-opacity duration-300"
+                  >
+                    <MapPinIcon className="h-5 w-5" />
+                    <span>Google Maps'te Aç</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Final Call to Action */}
+      <section className="py-20 bg-gradient-to-r from-orange-500 to-blue-500 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-6">Projeleriniz İçin Bizimle İletişime Geçin</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
             Markanızı güçlendirmek ve görünürlüğünüzü artırmak için 
             profesyonel çözümlerimizden faydalanın.
           </p>
-          <Link href="/contact" className="bg-white text-orange-500 px-8 py-3 rounded-md text-lg font-medium hover:bg-opacity-90 transition-all">
-            Hemen İletişime Geçin
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="#contact" className="bg-white text-orange-500 px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100 transition-colors">
+              Hemen İletişime Geçin
+            </Link>
+            <Link href="/services" className="border-2 border-white text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-white hover:text-orange-500 transition-colors">
+              Tüm Hizmetlerimiz
+            </Link>
+          </div>
         </div>
       </section>
     </MainLayout>

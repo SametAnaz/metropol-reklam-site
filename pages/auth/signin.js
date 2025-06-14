@@ -54,7 +54,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen relative bg-[#150C35]">
+    <div className="min-h-screen relative bg-[#0d0d0d]">
       <ParticleBackground />
       <div className="absolute inset-0 flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">

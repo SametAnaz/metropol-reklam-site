@@ -90,11 +90,11 @@ export default function Navbar() {
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                  <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-xl py-1 z-50">
                     {session.user.role && (
                       <Link
                         href={session.user.role === 'admin' ? '/admin/dashboard' : '/customer/dashboard'}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
                         onClick={() => setDropdownOpen(false)}
                       >
                         {session.user.role === 'admin' ? 'Admin Panel' : 'Müşteri Paneli'}
@@ -104,14 +104,14 @@ export default function Navbar() {
                       <>
                         <Link
                           href="/settings"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Ayarlar
                         </Link>
                         <Link
                           href="/settings/change-password"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
                           onClick={() => setDropdownOpen(false)}
                         >
                           Şifre Değiştir
@@ -120,7 +120,7 @@ export default function Navbar() {
                     )}
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300"
                     >
                       Çıkış Yap
                     </button>

@@ -218,3 +218,5 @@ NOTES.md
 # Test files
 test-data/
 mock-data/
+
+/lib/generated/prisma

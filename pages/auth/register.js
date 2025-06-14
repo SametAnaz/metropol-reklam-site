@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import ParticleBackground from '../../components/ui/ParticleBackground';
+import Link from 'next/link';
 
-export default function SignIn() {
+export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,7 +20,36 @@ export default function SignIn() {
     setError('');
     setLoading(true);
 
+    // Validate input
+    if (password !== confirmPassword) {
+      setError('Şifreler eşleşmiyor');
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Şifre en az 6 karakter olmalıdır');
+      setLoading(false);
+      return;
+    }
+
     try {
+      // Register user
+      console.log('Registering user:', { email, name });
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, name }),
+      });
+
+      const data = await res.json();
+      console.log('Registration response:', data);
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Kayıt işlemi başarısız');
+      }
+
+      // If registration successful, sign in automatically
       const result = await signIn('credentials', {
         email,
         password,
@@ -26,28 +57,14 @@ export default function SignIn() {
       });
 
       if (result?.error) {
-        if (result.error === 'No user found with this email') {
-          setError('Bu email ile kayıtlı kullanıcı bulunamadı');
-        } else if (result.error === 'Invalid password') {
-          setError('Hatalı şifre');
-        } else {
-          setError(result.error);
-        }
-      } else {
-        // Get session to check user role
-        const session = await fetch('/api/auth/session').then(res => res.json());
-        let callbackUrl = '/services';  // Default redirect to services page
-        
-        // Only redirect admins to admin dashboard
-        if (session?.user?.role === 'admin') {
-          callbackUrl = '/admin/dashboard';
-        }
-        
-        router.push(callbackUrl);
+        throw new Error(result.error);
       }
+
+      // Redirect to services page after successful registration and login
+      router.push('/services');
     } catch (error) {
-      console.error('Giriş hatası:', error);
-      setError('Giriş sırasında bir hata oluştu');
+      console.error('Registration error:', error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -64,11 +81,24 @@ export default function SignIn() {
               <span className="text-[#333]">POL</span>
               <span className="text-[#333] ml-2">REKLAM</span>
             </h1>
-            <h2 className="text-2xl font-bold text-[#333] mt-6 mb-2">Müşteri Girişi</h2>
-            <p className="text-gray-600">Hesabınıza giriş yapın</p>
+            <h2 className="text-2xl font-bold text-[#333] mt-6 mb-2">Hesap Oluştur</h2>
+            <p className="text-gray-600">Yeni bir hesap oluşturun</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm text-gray-600 mb-2">
+                Ad Soyad (İsteğe bağlı)
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#FF5714] focus:ring-1 focus:ring-[#FF5714] outline-none transition-colors"
+                placeholder="Ad Soyad"
+              />
+            </div>
+
             <div>
               <label className="block text-sm text-gray-600 mb-2">
                 E-posta Adresi
@@ -110,6 +140,22 @@ export default function SignIn() {
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm text-gray-600 mb-2">
+                Şifre Tekrar
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#FF5714] focus:ring-1 focus:ring-[#FF5714] outline-none transition-colors pr-10"
+                  placeholder="Şifrenizi tekrar girin"
+                  required
+                />
+              </div>
+            </div>
+
             {error && (
               <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg">
                 {error}
@@ -121,18 +167,18 @@ export default function SignIn() {
               disabled={loading}
               className="w-full py-3 bg-gradient-to-r from-[#FF5714] to-[#EE9D55] text-white rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
             >
-              {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+              {loading ? 'Hesap Oluşturuluyor...' : 'Hesap Oluştur'}
             </button>
 
             <div className="text-center space-y-3">
-              <Link 
-                href="/auth/register" 
+              <Link
+                href="/auth/signin"
                 className="block text-[#FF5714] hover:text-[#EE9D55] text-sm font-medium"
               >
-                Hesabınız yok mu? Üye olun
+                Zaten hesabınız var mı? Giriş yapın
               </Link>
-              <Link 
-                href="/" 
+              <Link
+                href="/"
                 className="block text-gray-600 hover:text-gray-800 text-sm"
               >
                 Ana sayfaya dön
@@ -143,10 +189,4 @@ export default function SignIn() {
       </div>
     </div>
   );
-}
-
-export async function getServerSideProps(context) {
-  return {
-    props: {},
-  };
 }

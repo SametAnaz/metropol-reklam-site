@@ -9,10 +9,20 @@ export default function AdminLayout({ children, title }) {
   const router = useRouter();
   
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/admin/login');
-    } else if (session && session.user.role !== 'admin') {
-      router.push('/'); // Admin olmayan kullanıcıları ana sayfaya yönlendir
+    if (status === 'loading') return;
+
+    if (!session || !session.user) {
+      router.replace('/admin/login');
+      return;
+    }
+
+    if (session.user.role !== 'admin') {
+      // Admin olmayan kullanıcıları uygun sayfaya yönlendir
+      if (session.user.role === 'user') {
+        router.replace('/customer/dashboard');
+      } else {
+        router.replace('/');
+      }
     }
   }, [status, session, router]);
 

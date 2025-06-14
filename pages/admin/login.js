@@ -37,17 +37,8 @@ export default function AdminLogin() {
       console.log('SignIn result:', result);
 
       if (result?.error) {
-        if (result.error === 'CredentialsSignin') {
+        if (result.error === 'CredentialsSignin' || result.error === 'No user found with this email' || result.error === 'Invalid password') {
           setError('Email veya şifre hatalı');
-        } else if (result.error.includes('auth/')) {
-          // Firebase specific errors
-          const firebaseErrors = {
-            'auth/user-not-found': 'Bu email ile kayıtlı kullanıcı bulunamadı',
-            'auth/wrong-password': 'Şifre hatalı',
-            'auth/invalid-email': 'Geçersiz email adresi',
-            'auth/too-many-requests': 'Çok fazla deneme. Lütfen daha sonra tekrar deneyin',
-          };
-          setError(firebaseErrors[result.error] || `Giriş hatası: ${result.error}`);
         } else {
           setError(result.error || 'Giriş başarısız');
         }

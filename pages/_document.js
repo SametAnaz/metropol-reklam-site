@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <script
           defer
-          src="http://95.70.204.147:8085/script.js"
+          src="https://umami.metropolreklam.net/script.js"
           data-website-id="39ae1eab-9238-4554-ab85-a17aa271b929"
         />
       </Head>

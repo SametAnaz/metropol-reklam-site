@@ -1,8 +1,6 @@
 import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import SEO from '../next-seo.config';
 
 function App({ Component, pageProps: { session, ...pageProps } }) {
@@ -10,8 +8,6 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
     <SessionProvider session={session}>
       <DefaultSeo {...SEO} />
       <Component {...pageProps} />
-      <Analytics />
-      <SpeedInsights />
     </SessionProvider>
   );
 }

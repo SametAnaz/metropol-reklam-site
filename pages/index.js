@@ -7,8 +7,7 @@ import MainLayout from '../components/layouts/MainLayout';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import styles from '../styles/HeroAnimation.module.css';
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
-import Hero from "@/components/ui/Hero";
-// Services data - expanded from services page
+
 const services = [
   {
     id: 'tabela',

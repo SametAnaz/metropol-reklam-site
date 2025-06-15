@@ -11,6 +11,7 @@ A modern and dynamic advertising agency website. Built with Next.js, Prisma ORM,
 ## 📋 Table of Contents
 
 - [Features](#features)
+- [Architecture](#architecture)
 - [Technology Stack](#technology-stack)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
@@ -54,6 +55,31 @@ A modern and dynamic advertising agency website. Built with Next.js, Prisma ORM,
 - Automatic email notifications
 - Contact form
 - Real-time notifications
+
+## 🏗 Architecture
+
+### General Architecture
+The website follows a component-based architecture using Next.js and React. Here's a high-level overview of how different parts of the application interact:
+
+![General Architecture](/Assets/Diagrams/general-architecture.png)
+
+### Detailed Component Architecture
+This diagram shows the detailed relationships between components, including page sections, shared components, and how they interact with the backend services:
+
+![Detailed Component Architecture](/Assets/Diagrams/general-diagram.png)
+
+The architecture is designed to be:
+- Modular and maintainable
+- Easy to scale
+- Performance optimized
+- SEO friendly
+
+Key architectural features:
+- Component-based structure
+- Centralized state management
+- API-first approach
+- Static and dynamic rendering optimization
+- Efficient data fetching strategies
 
 ## 🔧 Technology Stack
 

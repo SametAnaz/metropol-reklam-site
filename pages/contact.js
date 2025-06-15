@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { NextSeo } from 'next-seo';
 import MainLayout from "@/components/layouts/MainLayout";
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
 
@@ -48,6 +49,10 @@ export default function ContactPage() {
 
   return (
     <MainLayout title="İletişim" description="Metropol Reklam ile iletişime geçin. Profesyonel reklam çözümleri için bize ulaşın.">
+      <NextSeo
+        title="İletişim"
+        description="İzmir'deki profesyonel reklam çözümleri için bize ulaşın. Tabela, dijital baskı ve reklam hizmetleri için ücretsiz teklif alın."
+      />
       {/* Compact Hero Section */}
       <section className="relative h-[25vh] min-h-[200px] flex items-center justify-center text-white bg-gradient-to-r from-primary to-secondary">
         <div className="relative z-30 text-center">

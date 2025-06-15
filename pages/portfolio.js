@@ -78,8 +78,8 @@ export default function Portfolio() {
       description="Metropol Reklam'ın başarıyla tamamladığı projeler ve referanslar."
     >
       <NextSeo
-        title="Portföyümüz"
-        description="Yılların tecrübesiyle tamamladığımız projeleri inceleyin."
+        title="Portföy"
+        description="İzmir'de gerçekleştirdiğimiz başarılı tabela, dijital baskı ve reklam projelerinden örnekler. Referanslarımız ve tamamlanmış işlerimizi inceleyin."
       />
 
       <Hero
@@ -176,4 +176,4 @@ export default function Portfolio() {
       </section>
     </MainLayout>
   );
-} 
+}

@@ -11,7 +11,7 @@ export default function About() {
     >
       <NextSeo
         title="Hakkımızda"
-        description="Metropol Reklam ekibi, vizyonu, değerleri ve hikayesi hakkında bilgi edinin."
+        description="20 yılı aşkın tecrübemiz ile İzmir'de profesyonel tabela, dijital baskı ve reklam çözümleri sunuyoruz. Kaliteli hizmet ve müşteri memnuniyeti önceliğimizdir."
       />
 
       <Hero
@@ -196,4 +196,4 @@ export default function About() {
       </section>
     </MainLayout>
   );
-} 
+}

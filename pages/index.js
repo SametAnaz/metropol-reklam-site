@@ -93,7 +93,7 @@ const productCategories = [
   {
     id: 'totem-tabela',
     title: 'Totem Tabelalar',
-    description: 'İşletmenizi uzaktan fark edilir kılan ve dikkat çeken sağlam yapıdaki totem tabelalar.',
+    description: 'İşletmenizi uzaktan fark edilir kılan ve dikkat çeken sağlam yapıdaki totem tabelar.',
     features: ['Işıklı Totemler', 'Işıksız Totemler', 'Dijital Ekranlı Totemler', 'Yön Gösterici Totemler']
   },
   {
@@ -106,7 +106,7 @@ const productCategories = [
     id: 'isiksiz-tabela',
     title: 'Işıksız Tabelalar',
     description: 'Klasik ve dayanıklı, her bütçeye uygun kurumsal ışıksız tabela sistemleri.',
-    features: ['Vinil Tabelalar', 'Branda Tabelalar', 'Metal Tabelalar', 'Ahşap Tabelalar']
+    features: ['Vinil Tabelalar', 'Branda Tabelalar', 'Metal Tabelar', 'Ahşap Tabelar']
   },
   {
     id: 'kutu-harf',
@@ -164,7 +164,7 @@ export default function Home() {
     >
       <NextSeo
         title="Ana Sayfa"
-        description="Metropol Reklam ile firmanızı öne çıkarın. Tabela, dijital baskı ve araç giydirme hizmetleri."
+        description="İzmir'in öncü reklam şirketi. Profesyonel tabela yapımı, dijital baskı, araç giydirme ve kurumsal reklam çözümleri için doğru adres."
       />
 
       {/* Hero Section */}

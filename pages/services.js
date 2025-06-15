@@ -92,7 +92,7 @@ export default function Services() {
     >
       <NextSeo
         title="Hizmetlerimiz"
-        description="Tabela, dijital baskı, araç giydirme ve daha fazla profesyonel reklamcılık hizmetleri."
+        description="Tabela yapımı, dijital baskı, araç giydirme, kutu harf, yönlendirme sistemleri ve promosyon ürünleri dahil kapsamlı reklam çözümleri sunuyoruz."
       />
 
       {/* Hero Section */}
@@ -154,4 +154,4 @@ export default function Services() {
       </section>
     </MainLayout>
   );
-} 
+}

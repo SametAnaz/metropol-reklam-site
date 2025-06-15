@@ -48,18 +48,27 @@ export default function ContactPage() {
   };
 
   return (
-    <MainLayout title="İletişim" description="Metropol Reklam ile iletişime geçin. Profesyonel reklam çözümleri için bize ulaşın.">
+    <MainLayout 
+      // Title and description are now primarily handled by NextSeo below
+    >
       <NextSeo
-        title="İletişim"
-        description="İzmir'deki profesyonel reklam çözümleri için bize ulaşın. Tabela, dijital baskı ve reklam hizmetleri için ücretsiz teklif alın."
+        title="İletişim | Metropol Reklam Kuşadası - Tabelacı ve Reklam Hizmetleri Telefon"
+        description="Kuşadası Metropol Reklam iletişim bilgileri. Tabela, dijital baskı ve reklam ihtiyaçlarınız için bize ulaşın. Kuşadası tabelacı telefon ve adres."
+        canonical="https://metropolreklam.net/contact"
+        openGraph={{
+          url: 'https://metropolreklam.net/contact',
+          title: 'İletişim - Metropol Reklam Kuşadası',
+          description: 'Kuşadası\'ndaki tabela ve reklam ihtiyaçlarınız için Metropol Reklam ile iletişime geçin. Adres, telefon ve e-posta bilgileri.',
+        }}
+        additionalMetaTags={[{
+          name: 'keywords',
+          content: 'kuşadası tabelacı iletişim, kuşadası reklam telefon, metropol reklam adres, kuşadası tabela firması ulaşım, reklam ajansı kuşadası iletişim'
+        }]}
       />
-      {/* Compact Hero Section */}
-      <section className="relative h-[25vh] min-h-[200px] flex items-center justify-center text-white bg-gradient-to-r from-primary to-secondary">
-        <div className="relative z-30 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">İletişim</h1>
-          <p className="text-lg text-white/90">Profesyonel reklam çözümleri için bize ulaşın</p>
-        </div>
-      </section>
+      <Hero
+        title="İletişim"
+        description="Profesyonel reklam çözümleri için bize ulaşın"
+      />
 
       {/* Contact Info & Form Section */}
       <section className="py-12">

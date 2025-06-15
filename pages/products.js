@@ -68,17 +68,25 @@ const productCategories = [
 	},
 ];
 
-export default function Products() {
+export default function ProductsPage() {
 	return (
 		<MainLayout
-			title="Ürünler | Metropol Reklam"
-			description="Metropol Reklam'ın tabela ve reklam ürünleri. Kaliteli ve profesyonel çözümler."
+			// Title and description are now primarily handled by NextSeo below
 		>
 			<NextSeo
-				title="Ürünlerimiz"
-				description="Yüksek kaliteli tabela sistemleri, dijital baskı malzemeleri ve reklam ürünleri. Markanız için en uygun reklam çözümlerini keşfedin."
+				title="Ürünlerimiz | Metropol Reklam Kuşadası - Tabela Çeşitleri ve Reklam Malzemeleri"
+				description="Kuşadası Metropol Reklam ürün yelpazesi: Işıklı tabela, totem tabela, kutu harf, dijital baskı ürünleri ve diğer reklam malzemeleri. Kuşadası'nda kaliteli ürünler."
+				canonical="https://metropolreklam.net/products"
+				openGraph={{
+					url: 'https://metropolreklam.net/products',
+					title: 'Ürünlerimiz - Metropol Reklam Kuşadası',
+					description: 'Metropol Reklam\'ın Kuşadası\'nda sunduğu tabela çeşitleri, dijital baskı malzemeleri ve reklam ürünlerini inceleyin.',
+				}}
+				additionalMetaTags={[{
+					name: 'keywords',
+					content: 'kuşadası tabela ürünleri, kuşadası reklam malzemeleri, ışıklı tabela kuşadası, totem tabela kuşadası, dijital baskı ürünleri kuşadası, metropol reklam ürünler'
+				}]}
 			/>
-
 			<Hero
 				title="Ürünlerimiz"
 				description="Reklam ve tabela ihtiyaçlarınız için kaliteli ve profesyonel ürün yelpazemiz"

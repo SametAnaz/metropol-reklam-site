@@ -159,14 +159,30 @@ export default function Home() {
 
   return (
     <MainLayout
-      title="Metropol Reklam | Profesyonel Tabela & Dijital Baskı Hizmetleri"
-      description="Metropol Reklam ile firmanızı öne çıkarın. Tabela, dijital baskı ve araç giydirme hizmetleri."
+      // Title and description are now primarily handled by NextSeo below
     >
       <NextSeo
-        title="Ana Sayfa"
-        description="İzmir'in öncü reklam şirketi. Profesyonel tabela yapımı, dijital baskı, araç giydirme ve kurumsal reklam çözümleri için doğru adres."
+        title="Ana Sayfa | Metropol Reklam Kuşadası - Tabela ve Reklamcılık"
+        description="Kuşadası Metropol Reklam: Lider tabelacı ve reklam ajansınız. Işıklı tabela, dijital baskı, araç giydirme, fuar standları ve tüm reklam ihtiyaçlarınız için Kuşadası'nda hizmetinizdeyiz."
+        canonical="https://metropolreklam.net/"
+        openGraph={{
+          url: 'https://metropolreklam.net/',
+          title: 'Metropol Reklam Kuşadası | Tabela, Reklam, Dijital Baskı',
+          description: 'Kuşadası tabelacı ve reklam ihtiyaçlarınız için Metropol Reklam. Yaratıcı tasarımlar, kaliteli üretim ve profesyonel montaj hizmetleri.',
+          images: [
+            {
+              url: 'https://metropolreklam.net/images/og-home.jpg', // Specific OG image for home
+              width: 1200,
+              height: 630,
+              alt: 'Metropol Reklam Kuşadası Ana Sayfa',
+            },
+          ],
+        }}
+        additionalMetaTags={[{
+          name: 'keywords',
+          content: 'kuşadası tabelacı, kuşadası reklam, ana sayfa metropol reklam, tabela kuşadası, dijital baskı kuşadası, araç giydirme kuşadası, fuar standı kuşadası, reklam ajansı kuşadası, metropol reklam iletişim'
+        }]}
       />
-
       {/* Hero Section */}
       <section className={styles.container}>
         <h1 className={`${styles.title} ${styles.text_fade}`}>

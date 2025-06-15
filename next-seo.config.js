@@ -1,25 +1,25 @@
 const SEO = {
-  titleTemplate: '%s | Metropol Reklam',
-  defaultTitle: 'Metropol Reklam | Profesyonel Tabela & Dijital Baskı Hizmetleri',
-  description: 'Metropol Reklam ile firmanızı öne çıkarın. Tabela, dijital baskı, araç giydirme ve daha fazlası için profesyonel reklam çözümleri.',
+  titleTemplate: '%s | Metropol Reklam Kuşadası',
+  defaultTitle: 'Metropol Reklam Kuşadası | Tabela, Reklam ve Dijital Baskı',
+  description: 'Kuşadası Metropol Reklam: Profesyonel tabela, reklam çözümleri, dijital baskı, araç giydirme ve fuar standları. Kuşadası tabelacı arayışınız için doğru adres.',
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
-    url: 'https://metropolreklam.com/',
-    site_name: 'Metropol Reklam',
+    url: 'https://metropolreklam.net/',
+    site_name: 'Metropol Reklam Kuşadası',
+    title: 'Metropol Reklam Kuşadası | Tabela, Reklam ve Dijital Baskı Hizmetleri',
+    description: 'Kuşadası ve çevresinde profesyonel tabela, reklam, dijital baskı ve fuar standı hizmetleri. Kaliteli ve etkili çözümler için Metropol Reklam. Instagram: https://www.instagram.com/metropolreklam2020/',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: 'https://metropolreklam.net/images/og-image.jpg', // Ensure this path is correct
         width: 1200,
         height: 630,
-        alt: 'Metropol Reklam',
+        alt: 'Metropol Reklam Kuşadası Tabela ve Reklam Hizmetleri',
       },
     ],
-  },
-  twitter: {
-    handle: '@metropolreklam',
-    site: '@metropolreklam',
-    cardType: 'summary_large_image',
+    see_also: [
+      'https://www.instagram.com/metropolreklam2020/'
+    ],
   },
   additionalLinkTags: [
     {
@@ -43,9 +43,33 @@ const SEO = {
     },
     {
       name: 'theme-color',
-      content: '#FF5733',
+      content: '#FF5733', // Consider updating to a brand color
+    },
+    {
+      name: 'keywords',
+      content: 'kuşadası tabelacı, kuşadası reklam, kuşadası tabela, metropol reklam kuşadası, tabela kuşadası, reklam kuşadası, dijital baskı kuşadası, araç giydirme kuşadası, fuar standı kuşadası, kuşadası açık hava reklamcılığı, aydın tabelacı, aydın reklam',
+    },
+    {
+      name: 'google-site-verification', // Add your verification code if you have one
+      content: 'YOUR_GOOGLE_SITE_VERIFICATION_CODE',
+    },
+    {
+      name: 'geo.region',
+      content: 'TR-09', // ISO 3166-2 code for Aydın
+    },
+    {
+      name: 'geo.placename',
+      content: 'Kuşadası',
+    },
+    {
+      name: 'geo.position',
+      content: '37.8579;27.2610', // Latitude and Longitude for Kuşadası
+    },
+    {
+      name: 'ICBM',
+      content: '37.8579, 27.2610', // Latitude and Longitude for Kuşadası
     },
   ],
 };
 
-export default SEO; 
+export default SEO;

@@ -84,15 +84,25 @@ const services = [
   },
 ];
 
-export default function Services() {
+export default function ServicesPage() {
   return (
     <MainLayout
       title="Hizmetlerimiz | Metropol Reklam" 
       description="Metropol Reklam profesyonel tabela, dijital baskı, araç giydirme hizmetleri ve daha fazlası."
     >
       <NextSeo
-        title="Hizmetlerimiz"
-        description="Tabela yapımı, dijital baskı, araç giydirme, kutu harf, yönlendirme sistemleri ve promosyon ürünleri dahil kapsamlı reklam çözümleri sunuyoruz."
+        title="Hizmetlerimiz | Metropol Reklam Kuşadası - Tabela, Dijital Baskı, Reklam"
+        description="Kuşadası Metropol Reklam hizmetleri: Tabela imalatı, dijital baskı çözümleri, araç giydirme, fuar standı tasarımı ve tüm reklamcılık faaliyetleri. Kuşadası'nda profesyonel hizmet."
+        canonical="https://metropolreklam.net/services"
+        openGraph={{
+          url: 'https://metropolreklam.net/services',
+          title: 'Hizmetlerimiz - Metropol Reklam Kuşadası',
+          description: 'Metropol Reklam\'ın Kuşadası\'nda sunduğu tabela, dijital baskı, araç giydirme ve diğer reklam hizmetlerini keşfedin.',
+        }}
+        additionalMetaTags={[{
+          name: 'keywords',
+          content: 'kuşadası tabela hizmetleri, kuşadası dijital baskı, kuşadası araç giydirme, kuşadası fuar standı, reklam hizmetleri kuşadası, metropol reklam hizmetler, kuşadası tabelacı hizmetleri'
+        }]}
       />
 
       {/* Hero Section */}

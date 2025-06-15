@@ -71,19 +71,27 @@ const categories = [
   'Promosyon',
 ];
 
-export default function Portfolio() {
+export default function PortfolioPage() {
   return (
-    <MainLayout 
-      title="Portföy | Metropol Reklam" 
-      description="Metropol Reklam'ın başarıyla tamamladığı projeler ve referanslar."
+    <MainLayout
+      // Title and description are now primarily handled by NextSeo below
     >
       <NextSeo
-        title="Portföy"
-        description="İzmir'de gerçekleştirdiğimiz başarılı tabela, dijital baskı ve reklam projelerinden örnekler. Referanslarımız ve tamamlanmış işlerimizi inceleyin."
+        title="Portfolyo | Metropol Reklam Kuşadası - Tabela ve Reklam Projeleri"
+        description="Kuşadası Metropol Reklam tarafından tamamlanan tabela, dijital baskı ve reklam projeleri. Referanslarımızı ve önceki çalışmalarımızı inceleyin."
+        canonical="https://metropolreklam.net/portfolio"
+        openGraph={{
+          url: 'https://metropolreklam.net/portfolio',
+          title: 'Portfolyo - Metropol Reklam Kuşadası Projeleri',
+          description: 'Kuşadası\'nda gerçekleştirdiğimiz başarılı tabela, reklam ve dijital baskı projelerimizden örnekler.',
+        }}
+        additionalMetaTags={[{
+          name: 'keywords',
+          content: 'kuşadası tabela projeleri, kuşadası reklam portfolyo, metropol reklam referanslar, dijital baskı örnekleri kuşadası, tamamlanmış tabela işleri kuşadası'
+        }]}
       />
-
       <Hero
-        title="Portföyümüz"
+        title="Portfolyo"
         description="Yılların tecrübesiyle tamamladığımız projeleri inceleyin"
       />
 

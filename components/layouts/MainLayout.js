@@ -9,7 +9,7 @@ export default function MainLayout({ children, title, description }) {
   const router = useRouter();
   const is404Page = router.pathname === '/404';
 
-  const pageTitle = title || 'Metropol Reklam Kuşadası | Tabela ve Reklam Çözümleri';
+  const pageTitle = title || 'Metropol Reklam Kusadasi | Tabela ve Reklam Çözümleri';
   const pageDescription = description || 'Kuşadası Metropol Reklam - Profesyonel tabela, dijital baskı, araç giydirme ve fuar standı hizmetleri.';
 
   return (

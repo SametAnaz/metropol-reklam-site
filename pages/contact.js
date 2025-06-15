@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { NextSeo } from 'next-seo';
 import MainLayout from "@/components/layouts/MainLayout";
+import Hero from "@/components/ui/Hero";
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 export default function ContactPage() {
@@ -52,13 +53,13 @@ export default function ContactPage() {
       // Title and description are now primarily handled by NextSeo below
     >
       <NextSeo
-        title="İletişim | Metropol Reklam Kuşadası - Tabelacı ve Reklam Hizmetleri Telefon"
+        title="İletişim | Metropol Reklam Kusadasi - Tabelacı ve Reklam Hizmetleri Telefon"
         description="Kuşadası Metropol Reklam iletişim bilgileri. Tabela, dijital baskı ve reklam ihtiyaçlarınız için bize ulaşın. Kuşadası tabelacı telefon ve adres."
         canonical="https://metropolreklam.net/contact"
         openGraph={{
           url: 'https://metropolreklam.net/contact',
-          title: 'İletişim - Metropol Reklam Kuşadası',
-          description: 'Kuşadası\'ndaki tabela ve reklam ihtiyaçlarınız için Metropol Reklam ile iletişime geçin. Adres, telefon ve e-posta bilgileri.',
+          title: 'İletişim - Metropol Reklam Kusadasi',
+          description: 'Kuşadası\\\'ndaki tabela ve reklam ihtiyaçlarınız için Metropol Reklam ile iletişime geçin. Adres, telefon ve e-posta bilgileri.',
         }}
         additionalMetaTags={[{
           name: 'keywords',

@@ -74,13 +74,13 @@ export default function ProductsPage() {
 			// Title and description are now primarily handled by NextSeo below
 		>
 			<NextSeo
-				title="Ürünlerimiz | Metropol Reklam Kuşadası - Tabela Çeşitleri ve Reklam Malzemeleri"
+				title="Ürünlerimiz | Metropol Reklam Kusadasi - Tabela Çeşitleri ve Reklam Malzemeleri"
 				description="Kuşadası Metropol Reklam ürün yelpazesi: Işıklı tabela, totem tabela, kutu harf, dijital baskı ürünleri ve diğer reklam malzemeleri. Kuşadası'nda kaliteli ürünler."
 				canonical="https://metropolreklam.net/products"
 				openGraph={{
 					url: 'https://metropolreklam.net/products',
-					title: 'Ürünlerimiz - Metropol Reklam Kuşadası',
-					description: 'Metropol Reklam\'ın Kuşadası\'nda sunduğu tabela çeşitleri, dijital baskı malzemeleri ve reklam ürünlerini inceleyin.',
+					title: 'Ürünlerimiz - Metropol Reklam Kusadasi',
+					description: 'Metropol Reklam\\\'ın Kuşadası\\\'nda sunduğu tabela çeşitleri, dijital baskı malzemeleri ve reklam ürünlerini inceleyin.',
 				}}
 				additionalMetaTags={[{
 					name: 'keywords',

@@ -7,7 +7,7 @@ import MainLayout from '../components/layouts/MainLayout';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import styles from '../styles/HeroAnimation.module.css';
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
-
+import Hero from "@/components/ui/Hero";
 // Services data - expanded from services page
 const services = [
   {
@@ -162,12 +162,12 @@ export default function Home() {
       // Title and description are now primarily handled by NextSeo below
     >
       <NextSeo
-        title="Ana Sayfa | Metropol Reklam Kuşadası - Tabela ve Reklamcılık"
+        title="Ana Sayfa | Metropol Reklam Kusadasi - Tabela ve Reklamcılık"
         description="Kuşadası Metropol Reklam: Lider tabelacı ve reklam ajansınız. Işıklı tabela, dijital baskı, araç giydirme, fuar standları ve tüm reklam ihtiyaçlarınız için Kuşadası'nda hizmetinizdeyiz."
         canonical="https://metropolreklam.net/"
         openGraph={{
           url: 'https://metropolreklam.net/',
-          title: 'Metropol Reklam Kuşadası | Tabela, Reklam, Dijital Baskı',
+          title: 'Metropol Reklam Kusadasi | Tabela, Reklam, Dijital Baskı',
           description: 'Kuşadası tabelacı ve reklam ihtiyaçlarınız için Metropol Reklam. Yaratıcı tasarımlar, kaliteli üretim ve profesyonel montaj hizmetleri.',
           images: [
             {

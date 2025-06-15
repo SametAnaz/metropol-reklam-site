@@ -1,13 +1,13 @@
 const SEO = {
-  titleTemplate: '%s | Metropol Reklam Kuşadası',
-  defaultTitle: 'Metropol Reklam Kuşadası | Tabela, Reklam ve Dijital Baskı',
+  titleTemplate: '%s | Metropol Reklam Kusadasi',
+  defaultTitle: 'Metropol Reklam Kusadasi',
   description: 'Kuşadası Metropol Reklam: Profesyonel tabela, reklam çözümleri, dijital baskı, araç giydirme ve fuar standları. Kuşadası tabelacı arayışınız için doğru adres.',
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
     url: 'https://metropolreklam.net/',
-    site_name: 'Metropol Reklam Kuşadası',
-    title: 'Metropol Reklam Kuşadası | Tabela, Reklam ve Dijital Baskı Hizmetleri',
+    site_name: 'Metropol Reklam Kusadasi',
+    title: 'Metropol Reklam Kusadasi | Tabela, Reklam ve Dijital Baskı Hizmetleri',
     description: 'Kuşadası ve çevresinde profesyonel tabela, reklam, dijital baskı ve fuar standı hizmetleri. Kaliteli ve etkili çözümler için Metropol Reklam. Instagram: https://www.instagram.com/metropolreklam2020/',
     images: [
       {

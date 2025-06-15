@@ -1,7 +1,7 @@
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import MainLayout from '../components/layouts/MainLayout';
-
+import Hero from "@/components/ui/Hero";
 // Expanded services data
 const services = [
   {
@@ -91,13 +91,13 @@ export default function ServicesPage() {
       description="Metropol Reklam profesyonel tabela, dijital baskı, araç giydirme hizmetleri ve daha fazlası."
     >
       <NextSeo
-        title="Hizmetlerimiz | Metropol Reklam Kuşadası - Tabela, Dijital Baskı, Reklam"
+        title="Hizmetlerimiz | Metropol Reklam Kusadasi - Tabela, Dijital Baskı, Reklam"
         description="Kuşadası Metropol Reklam hizmetleri: Tabela imalatı, dijital baskı çözümleri, araç giydirme, fuar standı tasarımı ve tüm reklamcılık faaliyetleri. Kuşadası'nda profesyonel hizmet."
         canonical="https://metropolreklam.net/services"
         openGraph={{
           url: 'https://metropolreklam.net/services',
-          title: 'Hizmetlerimiz - Metropol Reklam Kuşadası',
-          description: 'Metropol Reklam\'ın Kuşadası\'nda sunduğu tabela, dijital baskı, araç giydirme ve diğer reklam hizmetlerini keşfedin.',
+          title: 'Hizmetlerimiz - Metropol Reklam Kusadasi',
+          description: 'Metropol Reklam\\\'ın Kuşadası\\\'nda sunduğu tabela, dijital baskı, araç giydirme ve diğer reklam hizmetlerini keşfedin.',
         }}
         additionalMetaTags={[{
           name: 'keywords',

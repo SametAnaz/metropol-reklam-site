@@ -9,13 +9,13 @@ export default function About() {
       // Title and description are now primarily handled by NextSeo below
     >
       <NextSeo
-        title="Hakkımızda | Metropol Reklam Kuşadası - Tabelacı ve Reklam Ajansı"
+        title="Hakkımızda | Metropol Reklam Kusadasi - Tabelacı ve Reklam Ajansı"
         description="Kuşadası Metropol Reklam hakkında: Misyonumuz, vizyonumuz ve değerlerimiz. Kuşadası'nın önde gelen tabelacı ve reklam firması olarak yılların tecrübesiyle hizmetinizdeyiz."
         canonical="https://metropolreklam.net/about"
         openGraph={{
           url: 'https://metropolreklam.net/about',
-          title: 'Hakkımızda - Metropol Reklam Kuşadası',
-          description: 'Kuşadası reklam ve tabela sektöründe Metropol Reklam\'ın deneyimi, vizyonu ve misyonu hakkında daha fazla bilgi edinin.',
+          title: 'Hakkımızda - Metropol Reklam Kusadasi',
+          description: 'Kuşadası reklam ve tabela sektöründe Metropol Reklam\\\'ın deneyimi, vizyonu ve misyonu hakkında daha fazla bilgi edinin.',
         }}
         additionalMetaTags={[{
           name: 'keywords',

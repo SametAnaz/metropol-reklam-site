@@ -3,8 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // Enable Vercel Analytics and Speed Insights
-  analytics: true,
+  // Vercel Analytics and Speed Insights are automatically enabled when deployed to Vercel
+  // We don't need any explicit configuration here
 
   // Define security headers
   async headers() {

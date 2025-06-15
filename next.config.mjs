@@ -3,6 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
+  // Enable Vercel Analytics and Speed Insights
+  analytics: true,
+
   // Define security headers
   async headers() {
     return [

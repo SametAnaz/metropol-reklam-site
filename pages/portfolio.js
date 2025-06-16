@@ -109,12 +109,12 @@ const projects = [
   },
   {
     id: 11,
-    title: 'Restoran Dekorasyon Tasarımı',
+    title: 'Kişiye Özel Tasarım Masa Oyun Seti',
     category: 'Konsept Tasarım',
-    description: 'Restoranlar için atmosfer oluşturan özel dekorasyon ve tasarım çözümleri.',
+    description: 'Taraftarlara özel baskı ile hazırlanan bu masa oyunu, hem eğlenceli hem de dekoratif bir deneyim sunar. Kaliteli malzeme ve canlı görsellerle kişisel zevkinizi yansıtın.',
     primaryColor: '#ef4444',
-    secondaryColor: '#dc2626'
-    // image: '/portfolio/restoran_dekor.jpg' // Görsel ekleyebilirsiniz
+    secondaryColor: '#dc2626',
+    image: '/portfolio/konsept1.jpg' 
   },
 
   // PROMOSYON KATEGORİSİ (2 adet)

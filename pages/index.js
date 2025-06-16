@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import MainLayout from '../components/layouts/MainLayout';
 import AnimatedSection from '../components/ui/AnimatedSection';
+import InteractivePortfolio from '../components/ui/InteractivePortfolio';
 import styles from '../styles/HeroAnimation.module.css';
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
 
@@ -53,38 +54,34 @@ const portfolioProjects = [
     id: 1,
     title: 'Mega AVM Tabela Projesi',
     category: 'Tabela',
-    description: 'Modern ve göz alıcı kutu harf ışıklı tabela uygulaması.'
+    description: 'Modern ve göz alıcı kutu harf ışıklı tabela uygulaması.',
+    primaryColor: '#c776a3',
+    secondaryColor: '#ee8877'
   },
   {
     id: 2,
     title: 'Lüks Restoran Yönlendirme',
     category: 'Yönlendirme',
-    description: 'Şık iç mekan yönlendirme ve kapı isimlikleri tasarım ve uygulaması.'
+    description: 'Şık iç mekan yönlendirme ve kapı isimlikleri tasarım ve uygulaması.',
+    primaryColor: '#7d54c1',
+    secondaryColor: '#c776a3'
   },
   {
     id: 3,
     title: 'Özel Tasarım Araç Giydirme',
     category: 'Araç Giydirme',
-    description: 'Kurumsal filo için özel tasarım tam araç giydirme çalışması.'
+    description: 'Kurumsal filo için özel tasarım tam araç giydirme çalışması.',
+    primaryColor: '#37c4b1',
+    secondaryColor: '#25aad8'
   },
   {
     id: 4,
     title: 'Büyük Format Dijital Baskı',
     category: 'Dijital Baskı',
-    description: 'Fuar için büyük format dijital baskı ve uygulama.'
+    description: 'Fuar için büyük format dijital baskı ve uygulama.',
+    primaryColor: '#4092e3',
+    secondaryColor: '#7d54c1'
   },
-  {
-    id: 5,
-    title: 'Mağaza Konsept Tasarımı',
-    category: 'Konsept Tasarım',
-    description: 'Zincir mağazalar için kurumsal kimlik ve konsept tasarım uygulaması.'
-  },
-  {
-    id: 6,
-    title: 'Festival Alanı Promosyon',
-    category: 'Promosyon',
-    description: 'Büyük festival için kurumsal promosyon ürünleri tasarım ve üretimi.'
-  }
 ];
 
 // Product categories
@@ -381,30 +378,20 @@ export default function Home() {
             </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {portfolioProjects.map((project, index) => (
-              <AnimatedSection key={project.id} animation="fade-up" delay={index * 100}>
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                  <div className="h-64 bg-gray-200 flex items-center justify-center">
-                    <p className="text-gray-500">Proje Görseli</p>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center mb-2">
-                      <span className="text-xs font-semibold px-2 py-1 bg-orange-100 text-orange-600 rounded-full mr-2">
-                        {project.category}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 text-gray-800">{project.title}</h3>
-                    <p className="text-gray-600">{project.description}</p>
-                  </div>
-                </div>
-              </AnimatedSection>
-            ))}
+          <InteractivePortfolio 
+            projects={portfolioProjects}
+            showCategoryFilter={false}
+          />
+
+          <div className="text-center mt-12">
+            <Link href="/portfolio" className="bg-gradient-to-r from-orange-500 to-blue-500 text-white font-bold px-8 py-3 rounded-md hover:from-orange-600 hover:to-blue-600 transition-all duration-200">
+              Tüm Projelerimizi Görün
+            </Link>
           </div>
 
           {/* Testimonials */}
           <AnimatedSection animation="fade-up">
-            <div className="bg-gray-50 rounded-2xl p-12 mb-12">
+            <div className="bg-gray-50 rounded-2xl p-12 mb-12 mt-16">
               <h3 className="text-3xl font-bold mb-12 text-center text-gray-800">Müşterilerimizin Yorumları</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -28,7 +28,7 @@ export default function ScrollToTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-20 right-4 z-50 bg-gradient-to-r from-orange-500 to-blue-500 text-white p-3 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 hover:scale-110"
+      className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-orange-500 to-blue-500 text-white p-4 rounded-full shadow-lg hover:opacity-90 transition-all duration-300 hover:scale-110"
       aria-label="Yukarı çık"
     >
       <svg

@@ -48,40 +48,173 @@ const services = [
   }
 ];
 
-// Portfolio projects
+// Portfolio projects - Güncel proje listesi
 const portfolioProjects = [
+  // TABELA KATEGORİSİ (2 adet)
   {
     id: 1,
-    title: 'Mega AVM Tabela Projesi',
+    title: 'Işıklı Kutu Harf Tabela',
     category: 'Tabela',
-    description: 'Modern ve göz alıcı kutu harf ışıklı tabela uygulaması.',
+    description: 'Göz alıcı ışıklı kutu harf tabela, markanızı gece ve gündüz öne çıkarır. Yüksek görünürlüğüyle dikkat çeker, işletmenizin profesyonel ve davetkar bir imaja sahip olmasını sağlar.',
     primaryColor: '#c776a3',
-    secondaryColor: '#ee8877'
+    secondaryColor: '#ee8877',
+    image: '/portfolio/kutuharf.jpg'
   },
   {
     id: 2,
-    title: 'Lüks Restoran Yönlendirme',
-    category: 'Yönlendirme',
-    description: 'Şık iç mekan yönlendirme ve kapı isimlikleri tasarım ve uygulaması.',
+    title: 'Neon Yazı Tabela',
+    category: 'Tabela',
+    description: 'Motivasyonu ve enerjiyi mekâna yansıtan bu neon tabela, parlak renkleri ve dinamik tasarımıyla ortamda fark yaratır. Özellikle spor salonları için ideal olan bu çözüm, müşteri ilgisini anında üzerine çekiyor.',
     primaryColor: '#7d54c1',
-    secondaryColor: '#c776a3'
+    secondaryColor: '#c776a3',
+    image: '/portfolio/neon_tabela.jpg'
   },
+
+  // DİJİTAL BASKI KATEGORİSİ (2 adet)
   {
     id: 3,
-    title: 'Özel Tasarım Araç Giydirme',
-    category: 'Araç Giydirme',
-    description: 'Kurumsal filo için özel tasarım tam araç giydirme çalışması.',
-    primaryColor: '#37c4b1',
-    secondaryColor: '#25aad8'
+    title: 'Dış Cephe Giydirme',
+    category: 'Dijital Baskı',
+    description: 'Büyük projeler için etkili tanıtım! Bu dev vinil cephe afişi, projelerinizi şehirde en iyi şekilde öne çıkarır ve dikkat çekici görsellerle potansiyel müşterilerinizin ilgisini anında yakalar.',
+    primaryColor: '#4092e3',
+    secondaryColor: '#7d54c1',
+    image: '/portfolio/cephe_giydirme.jpg'
   },
   {
     id: 4,
-    title: 'Büyük Format Dijital Baskı',
+    title: 'Dijital Baskı Uygulaması',
     category: 'Dijital Baskı',
-    description: 'Fuar için büyük format dijital baskı ve uygulama.',
-    primaryColor: '#4092e3',
-    secondaryColor: '#7d54c1'
+    description: 'Yüksek çözünürlüklü dijital baskı ile tanıtımınızı profesyonel ve göz alıcı şekilde hazırlayın. Dayanıklı malzeme ve canlı renkler sayesinde markanız her ortamda fark edilir.',
+    primaryColor: '#25aad8',
+    secondaryColor: '#4092e3',
+    image: '/portfolio/dijital_baski.jpg'
   },
+
+  // ARAÇ GİYDİRME KATEGORİSİ (3 adet)  
+  {
+    id: 5,
+    title: 'Kurumsal Araç Giydirme',
+    category: 'Araç Giydirme',
+    description: 'Markanızı yolda da konuşturun! Bu özel tasarım tam araç kaplama çalışması, kurumsal kimliğinizi güçlü bir şekilde yansıtarak her yolculuğu bir reklam fırsatına dönüştürür. Filo ve bireysel çözümlerle fark yaratın.',
+    primaryColor: '#37c4b1',
+    secondaryColor: '#25aad8',
+    image: '/portfolio/arac_giydirme.jpg'
+  },
+  {
+    id: 6,
+    title: 'Ticari Araç Giydirme',
+    category: 'Araç Giydirme',
+    description: 'Ticari araçlar için etkili reklam ve tanıtım amaçlı araç giydirme hizmeti.',
+    primaryColor: '#2dd4bf',
+    secondaryColor: '#37c4b1',
+    image: '/portfolio/arac_kaplama2.jpg'
+  },
+  {
+    id: 7,
+    title: 'Kişisel Araç Giydirme',
+    category: 'Araç Giydirme',
+    description: 'Aracınıza karakter katmak ve sıradanlıktan ayrışmak için uygulanan bu kişisel araç giydirme, tarzınızı yolda da göstermenin en etkili yoludur. Fark yaratan tasarım seçenekleriyle öne çıkın.',
+    primaryColor: '#2dd4bf',
+    secondaryColor: '#37c4b1',
+    image: '/portfolio/arac_kaplama3.jpg'
+  },
+
+  // YÖNLENDİRME KATEGORİSİ (2 adet)
+  {
+    id: 8,
+    title: 'İç Mekan Yönlendirme Sistemi',
+    category: 'Yönlendirme',
+    description: 'Ofis ve iş merkezleri için profesyonel iç mekan yönlendirme ve bilgilendirme sistemleri.',
+    primaryColor: '#8b5cf6',
+    secondaryColor: '#a855f7'
+  },
+  {
+    id: 9,
+    title: 'Hastane Yönlendirme Tabelaları',
+    category: 'Yönlendirme',
+    description: 'Hastane ve sağlık kuruluşları için kapsamlı yönlendirme ve bilgilendirme çözümleri.',
+    primaryColor: '#ec4899',
+    secondaryColor: '#8b5cf6'
+  },
+
+  // KONSEPT TASARIM KATEGORİSİ (2 adet)
+  {
+    id: 10,
+    title: 'Işıklı Sahne Platformu',
+    category: 'Konsept Tasarım',
+    description: 'Konser, etkinlik ve tanıtımlar için tasarlanan bu ışıklı sahne platformu, modern görüntüsü ve parlak detaylarıyla dikkat çeker. Mekâna enerji katar ve markanızı sahnede öne çıkarır.',
+    primaryColor: '#f59e0b',
+    secondaryColor: '#ef4444',
+    image: '/portfolio/sahne_konsept.jpg'
+  },
+  {
+    id: 11,
+    title: 'Kişiye Özel Tasarım Masa Oyun Seti',
+    category: 'Konsept Tasarım',
+    description: 'Taraftarlara özel baskı ile hazırlanan bu masa oyunu, hem eğlenceli hem de dekoratif bir deneyim sunar. Kaliteli malzeme ve canlı görsellerle kişisel zevkinizi yansıtın.',
+    primaryColor: '#ef4444',
+    secondaryColor: '#dc2626',
+    image: '/portfolio/konsept1.jpg'
+  },
+
+  // PROMOSYON KATEGORİSİ (2 adet)
+  {
+    id: 12,
+    title: 'Kurumsal Promosyon Ürünleri',
+    category: 'Promosyon',
+    description: 'Şirketler için özel tasarım kurumsal promosyon ürünleri ve hediyeler.',
+    primaryColor: '#10b981',
+    secondaryColor: '#059669'
+  },
+  {
+    id: 13,
+    title: 'Festival Etkinlik Ürünleri',
+    category: 'Promosyon',
+    description: 'Festival ve etkinlikler için özel tasarım promosyon ürünleri ve tanıtım malzemeleri.',
+    primaryColor: '#f97316',
+    secondaryColor: '#ea580c'
+  },
+
+  // OKUL TABELALARİ KATEGORİSİ (3 adet)
+  {
+    id: 14,
+    title: 'Okul Giriş Tabelası',
+    category: 'Okul Tabelaları',
+    description: 'MEB standartlarına uygun, uzun ömürlü tabelalar eğitim kurumlarının ciddiyetini vurgular. Okulunuzun adını uzaktan bile kolayca fark ettirir, prestij kazandırır ve güven yaratır.',
+    primaryColor: '#3b82f6',
+    secondaryColor: '#1d4ed8',
+    image: '/portfolio/okul_tabela1.jpg'
+  },
+  {
+    id: 15,
+    title: 'Atatürk Köşesi Tasarımı',
+    category: 'Okul Tabelaları',
+    description: 'Modern ışıklandırma ile hazırlanan Atatürk köşesi, kurumunuzun girişinde etkileyici ve anlamlı bir atmosfer yaratır.',
+    primaryColor: '#0ea5e9',
+    secondaryColor: '#0284c7',
+    image: '/portfolio/ataturk_kosesi.jpg'
+  },
+  {
+    id: 16,
+    title: 'Okul İç Mekan Yönlendirme',
+    category: 'Okul Tabelaları',
+    description: 'Tarihi anlatıları ve görselleri bir araya getiren bu duvar tasarımı, okullarda hem bilgilendirici hem de ilham verici bir ortam sunar.',
+    primaryColor: '#0ea5e9',
+    secondaryColor: '#0284c7',
+    image: '/portfolio/okul_tabela2.jpg'
+  }
+];
+
+// Categories for filter - Portfolio sayfası ile aynı kategoriler
+const categories = [
+  'Tümü',
+  'Tabela',
+  'Dijital Baskı',
+  'Araç Giydirme',
+  'Yönlendirme',
+  'Konsept Tasarım',
+  'Promosyon',
+  'Okul Tabelaları',
 ];
 
 // Product categories
@@ -380,7 +513,8 @@ export default function Home() {
 
           <InteractivePortfolio 
             projects={portfolioProjects}
-            showCategoryFilter={false}
+            showCategoryFilter={true}
+            categories={categories}
           />
 
           <div className="text-center mt-12">

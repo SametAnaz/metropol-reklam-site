@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories = [] }) => {
   const [selectedCategory, setSelectedCategory] = useState('Tümü');
-  const [activeProject, setActiveProject] = useState(projects[0]?.id || 1); // İlk projenin ID'sini kullan
+  const [activeProject, setActiveProject] = useState(projects[0]?.id || 1);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const containerRef = useRef(null); // İlk projenin ID'sini kullan
 
   const filteredProjects = showCategoryFilter && selectedCategory !== 'Tümü' 
     ? projects.filter(project => project.category === selectedCategory)
@@ -23,6 +26,42 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
 
   const handleProjectClick = (projectId) => {
     setActiveProject(projectId);
+  };
+
+  // Touch event handlers for swipe navigation
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe || isRightSwipe) {
+      const currentIndex = filteredProjects.findIndex(p => p.id === activeProject);
+      let nextIndex;
+
+      if (isLeftSwipe) {
+        // Sol kaydırma - sonraki proje
+        nextIndex = (currentIndex + 1) % filteredProjects.length;
+      } else {
+        // Sağ kaydırma - önceki proje  
+        nextIndex = currentIndex === 0 ? filteredProjects.length - 1 : currentIndex - 1;
+      }
+
+      setActiveProject(filteredProjects[nextIndex]?.id);
+    }
+
+    // Reset values
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   return (
@@ -135,27 +174,38 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             opacity: 0;
             cursor: pointer;
             overflow: hidden;
+            text-align: center;
+            align-items: center;
           }
 
           .project-image-container {
-            width: min(53vmin, 368px);
-            height: min(53vmin, 368px);
+            width: min(30vmin, 220px);
+            height: min(30vmin, 220px);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: min(12px, 3vmin);
             overflow: hidden;
-            margin: min(2vmin, 15px) 0;
+            margin: min(2vmin, 15px) auto;
             position: relative;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            max-width: 368px;
-            max-height: 368px;
+            max-width: 220px;
+            max-height: 220px;
+            flex-shrink: 0;
           }
 
           .project-image {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
             object-fit: cover;
+            object-position: center;
             border-radius: 10px;
             transition: transform 0.3s ease;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
           }
 
           .project-image:hover {
@@ -198,6 +248,29 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             color: rgba(255, 255, 255, 0.6);
           }
 
+          .swipe-indicator {
+            position: relative;
+            margin-top: 20px;
+            display: none;
+            justify-content: center;
+            gap: 8px;
+            z-index: 10;
+          }
+
+          .swipe-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+          }
+
+          .swipe-dot.active {
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(1.2);
+          }
+
           @media (max-width: 768px) {
             .portfolio-app {
               height: min(70vh, 450px);
@@ -226,6 +299,19 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
               margin: min(2vmin, 12px) auto;
               max-width: 238px;
               max-height: 238px;
+              flex-shrink: 0;
+            }
+
+            .project-image {
+              width: 100% !important;
+              height: 100% !important;
+              max-width: 100% !important;
+              max-height: 100% !important;
+              object-fit: cover;
+              object-position: center;
+              position: absolute !important;
+              top: 0 !important;
+              left: 0 !important;
             }
 
             .portfolio-article {
@@ -245,6 +331,11 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             .background[data-active] + .background,
             .portfolio-article[data-active] + .portfolio-article {
               transform: translateX(70%) translateZ(-15vmin) rotateY(-25deg);
+            }
+
+            .swipe-indicator {
+              display: flex;
+              margin-top: 15px;
             }
           }
 
@@ -273,6 +364,19 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
               margin: min(1.5vmin, 10px) auto;
               max-width: 199px;
               max-height: 199px;
+              flex-shrink: 0;
+            }
+
+            .project-image {
+              width: 100% !important;
+              height: 100% !important;
+              max-width: 100% !important;
+              max-height: 100% !important;
+              object-fit: cover;
+              object-position: center;
+              position: absolute !important;
+              top: 0 !important;
+              left: 0 !important;
             }
 
             .portfolio-article {
@@ -292,7 +396,7 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
           </filter>
         </svg>
 
-        <div className="portfolio-app">
+        <div className="portfolio-app" ref={containerRef}>
           <section className="backgrounds portfolio-section">
             {filteredProjects.map((project) => (
               <div 
@@ -307,7 +411,12 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             ))}
           </section>
           
-          <section className="content portfolio-section">
+          <section 
+            className="content portfolio-section"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {filteredProjects.map((project) => (
               <article 
                 key={`article-${project.id}`}
@@ -338,6 +447,17 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
               </article>
             ))}
           </section>
+        </div>
+
+        {/* Swipe indicators - slider'ın altında */}
+        <div className="swipe-indicator">
+          {filteredProjects.map((project) => (
+            <div 
+              key={`indicator-${project.id}`}
+              className={`swipe-dot ${activeProject === project.id ? 'active' : ''}`}
+              onClick={() => handleProjectClick(project.id)}
+            />
+          ))}
         </div>
       </div>
     </div>

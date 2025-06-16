@@ -176,21 +176,22 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             overflow: hidden;
             text-align: center;
             align-items: center;
+            position: relative;
           }
 
           .project-image-container {
-            width: min(33vmin, 242px);
-            height: min(33vmin, 242px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: min(12px, 3vmin);
+            width: min(38vmin, 280px);
+            height: min(38vmin, 280px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: min(3vmin, 18px);
             overflow: hidden;
-            margin: min(2vmin, 15px) auto;
+            margin: min(1vmin, 8px) auto min(3vmin, 20px) auto;
             position: relative;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            max-width: 242px;
-            max-height: 242px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            max-width: 280px;
+            max-height: 280px;
             flex-shrink: 0;
           }
 
@@ -237,19 +238,42 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
           }
 
           .portfolio-title {
-            font-size: min(4vmin, 24px);
-            line-height: 1.2;
-            margin-bottom: min(2vmin, 15px);
+            font-size: min(5.5vmin, 32px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: min(3vmin, 20px);
             text-align: center;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
           }
 
           .portfolio-description {
-            font-size: min(2.5vmin, 16px);
-            line-height: 1.4;
-            color: rgba(255, 255, 255, 0.6);
+            font-size: min(3vmin, 18px);
+            font-weight: 400;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.85);
             text-align: center;
-            max-width: 100%;
-            margin: 0 auto;
+            max-width: 85%;
+            margin: 0 auto min(2vmin, 15px) auto;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+          }
+
+          .project-tag {
+            position: absolute;
+            bottom: min(4vmin, 25px);
+            left: min(4vmin, 25px);
+            font-size: min(2.2vmin, 13px);
+            font-weight: 700;
+            padding: min(1.8vmin, 10px) min(3vmin, 16px);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-radius: min(5vmin, 25px);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
           }
 
           .swipe-indicator {
@@ -287,25 +311,30 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             }
             
             .portfolio-title {
-              font-size: max(20px, 5vw);
-              margin-bottom: min(3vmin, 20px);
+              font-size: max(24px, 5.5vw);
+              font-weight: 700;
+              margin-bottom: min(3vmin, 18px);
               text-align: center;
+              letter-spacing: -0.02em;
             }
             
             .portfolio-description {
-              font-size: max(14px, 3.5vw);
+              font-size: max(16px, 4vw);
+              font-weight: 400;
               line-height: 1.5;
               text-align: center;
-              margin: 0 auto;
+              margin: 0 auto min(2vmin, 12px) auto;
+              max-width: 90%;
+              color: rgba(255, 255, 255, 0.85);
             }
 
             .project-image-container {
-              width: min(50.6vmin, 262px);
-              height: min(50.6vmin, 262px);
-              border-radius: min(8px, 2vmin);
-              margin: min(2vmin, 12px) auto;
-              max-width: 262px;
-              max-height: 262px;
+              width: min(55vmin, 300px);
+              height: min(55vmin, 300px);
+              border-radius: min(2.5vmin, 15px);
+              margin: min(1vmin, 6px) auto min(2.5vmin, 15px) auto;
+              max-width: 300px;
+              max-height: 300px;
               flex-shrink: 0;
             }
 
@@ -325,6 +354,15 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
               padding: min(3vmin, 20px);
               text-align: center;
               align-items: center;
+            }
+
+            .project-tag {
+              bottom: min(3vmin, 18px);
+              left: min(3vmin, 18px);
+              font-size: max(11px, 2.8vw);
+              font-weight: 700;
+              padding: min(1.2vmin, 8px) min(2.2vmin, 12px);
+              letter-spacing: 0.3px;
             }
 
             .background {
@@ -358,23 +396,29 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             }
             
             .portfolio-title {
-              font-size: max(18px, 6vw);
-              margin-bottom: min(2vmin, 15px);
+              font-size: max(22px, 6.5vw);
+              font-weight: 700;
+              margin-bottom: min(2.5vmin, 16px);
               text-align: center;
+              letter-spacing: -0.02em;
             }
             
             .portfolio-description {
-              font-size: max(13px, 4vw);
+              font-size: max(15px, 4.2vw);
+              font-weight: 400;
+              line-height: 1.5;
               text-align: center;
-              margin: 0 auto;
+              margin: 0 auto min(1.5vmin, 10px) auto;
+              max-width: 92%;
+              color: rgba(255, 255, 255, 0.85);
             }
 
             .project-image-container {
-              width: min(44vmin, 219px);
-              height: min(44vmin, 219px);
-              margin: min(1.5vmin, 10px) auto;
-              max-width: 219px;
-              max-height: 219px;
+              width: min(48vmin, 250px);
+              height: min(48vmin, 250px);
+              margin: min(1vmin, 6px) auto min(2vmin, 12px) auto;
+              max-width: 250px;
+              max-height: 250px;
               flex-shrink: 0;
             }
 
@@ -394,6 +438,15 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
               padding: min(2vmin, 15px);
               text-align: center;
               align-items: center;
+            }
+
+            .project-tag {
+              bottom: min(2vmin, 15px);
+              left: min(2vmin, 15px);
+              font-size: max(10px, 2.5vw);
+              font-weight: 700;
+              padding: min(1vmin, 6px) min(1.8vmin, 10px);
+              letter-spacing: 0.2px;
             }
 
             .background {
@@ -454,7 +507,9 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
                 )}
                 
                 <p className="portfolio-description">{project.description}</p>
-                <span className="text-xs font-semibold px-3 py-1 bg-white/20 text-white rounded-full mr-2 mt-4 self-start">
+                
+                {/* Proje kategorisi - sol alt köşede sabit */}
+                <span className="project-tag">
                   {project.category}
                 </span>
               </article>

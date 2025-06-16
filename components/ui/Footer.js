@@ -18,22 +18,7 @@ export default function Footer() {
             </p>
             <div className="mt-6 flex space-x-4">
               <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary transition-colors duration-300 transform hover:scale-110"
-              >
-                <span className="sr-only">Facebook</span>
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    fillRule="evenodd"
-                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/metropolreklam2020/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-primary transition-colors duration-300 transform hover:scale-110"
@@ -134,8 +119,8 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <span className="text-gray-300 leading-relaxed">
-                  Kuşadası/Aydın<br />
-                  Türkiye
+                  Davutlar, Köroğlu Sk. No:2/B, <br/>
+                  09140 Kuşadası/Aydın, Türkiye
                 </span>
               </li>
               <li className="flex items-center">
@@ -150,8 +135,8 @@ export default function Footer() {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <a href="mailto:info@metropolreklam.com" className="text-gray-300 hover:text-primary transition-colors">
-                  info@metropolreklam.com
+                <a href="mailto:metropolreklam@hotmail.com" className="text-gray-300 hover:text-primary transition-colors">
+                  metropolreklam@hotmail.com
                 </a>
               </li>
             </ul>

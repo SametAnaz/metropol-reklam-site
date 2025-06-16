@@ -91,101 +91,449 @@
 .navTrigger {
   display: none;
   cursor: pointer;
-  width: 30px;
-  height: 20px;
+  width: 19px;
+  height: 14px;
   margin: auto;
   position: absolute;
-  right: 30px;
+  right: 10px;
   top: 0;
   bottom: 0;
+  z-index: 1001;
+  padding: 3px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+.navTrigger:hover {
+  transform: scale(1.1);
+  background-color: rgba(238, 141, 85, 0.15);
+  box-shadow: 0 2px 8px rgba(238, 141, 85, 0.3);
+}
+
+.navTrigger:active {
+  transform: scale(0.95);
 }
 
 .navTrigger i {
   background-color: #fff;
-  border-radius: 3px;
+  border-radius: 1px;
   content: '';
   display: block;
   width: 100%;
   height: 2px;
-  transition: all 0.3s ease;
-  margin: 4px 0;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin: 0;
+  position: absolute;
+  left: 3px;
+  transform-origin: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navTrigger i:nth-child(1) {
+  top: 3px;
 }
 
 .navTrigger i:nth-child(2) {
-  margin: 5px 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.navTrigger i:nth-child(3) {
+  bottom: 3px;
+}
+
+.navTrigger.active {
+  background-color: rgba(238, 141, 85, 0.2);
+  box-shadow: 0 2px 12px rgba(238, 141, 85, 0.4);
 }
 
 .navTrigger.active i:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  background-color: #ee8d55;
+  box-shadow: 0 1px 3px rgba(238, 141, 85, 0.5);
 }
 
 .navTrigger.active i:nth-child(2) {
   opacity: 0;
+  transform: translateY(-50%) scale(0) rotate(180deg);
 }
 
 .navTrigger.active i:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+  background-color: #ee8d55;
+  box-shadow: 0 1px 3px rgba(238, 141, 85, 0.5);
 }
 
 @media screen and (max-width: 768px) {
   .navTrigger {
     display: block;
+    z-index: 1001;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  /* Hide hamburger when menu is open */
+  body.mobile-menu-open .navTrigger {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+  }
+
+  .nav .container {
+    padding: 0 1.5rem;
+    height: 100%;
+  }
+
+  .nav .logo a {
+    font-size: 1.5rem;
   }
 
   .nav .main_list {
-    width: 100%;
-    height: 0;
-    overflow: hidden;
     position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
-    transition: height 0.4s ease-in-out;
-    background-color: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
+    top: 0;
+    right: -100%;
+    width: 320px;
+    max-width: 85vw;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.98) 0%, rgba(25, 25, 25, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
   }
 
   .nav .show_list {
-    height: calc(100vh - 80px);
-    display: block;
+    right: 0;
+    opacity: 1;
+    visibility: visible;
   }
 
   .nav {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
+    height: 80px;
+  }
+
+  .nav.affix {
+    height: 70px;
   }
 
   .main_list ul {
     flex-direction: column;
     width: 100%;
-    height: auto;
-    padding: 2rem 0;
+    height: 100%;
+    padding: 100px 0 2rem 0;
     gap: 0;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .nav .main_list ul li {
     width: 100%;
-    text-align: center;
+    text-align: left;
     padding: 0;
+    height: auto;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slideInFromRight 0.5s ease-out forwards;
+  }
+
+  .nav .main_list ul li:nth-child(1) { animation-delay: 0.1s; }
+  .nav .main_list ul li:nth-child(2) { animation-delay: 0.15s; }
+  .nav .main_list ul li:nth-child(3) { animation-delay: 0.2s; }
+  .nav .main_list ul li:nth-child(4) { animation-delay: 0.25s; }
+  .nav .main_list ul li:nth-child(5) { animation-delay: 0.3s; }
+  .nav .main_list ul li:nth-child(6) { animation-delay: 0.35s; }
+  .nav .main_list ul li:nth-child(7) { animation-delay: 0.4s; }
+
+  .nav .main_list ul li a {
+    text-align: left;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .nav .main_list ul li a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: linear-gradient(to bottom, #ee8d55, #ff9500);
+    transform: scaleY(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: bottom;
+  }
+
+  .nav .main_list ul li a:hover {
+    background: rgba(238, 141, 85, 0.1);
+    color: #ee8d55;
+    padding-left: 2.5rem;
+    transform: none;
+  }
+
+  .nav .main_list ul li a:hover::before {
+    transform: scaleY(1);
+  }
+
+  .nav .main_list ul li a.active {
+    background: rgba(238, 141, 85, 0.15);
+    color: #ee8d55;
+    border-left: 4px solid #ee8d55;
+  }
+
+  .nav .main_list ul li a.active::before {
+    transform: scaleY(1);
+  }
+
+  /* User dropdown mobile styles */
+  .nav .main_list ul li .relative {
+    width: 100%;
+  }
+
+  .nav .main_list ul li button {
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav .main_list ul li button:hover {
+    background: rgba(238, 141, 85, 0.1);
+    color: #ee8d55;
+    padding-left: 2.5rem;
+  }
+
+  /* Mobile dropdown positioning */
+  .nav .main_list ul li .relative .absolute {
+    position: static !important;
+    width: 100% !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav .main_list ul li .relative .absolute a,
+  .nav .main_list ul li .relative .absolute button {
+    padding-left: 3rem !important;
+    font-size: 0.9rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Extra small mobile devices */
+@media screen and (max-width: 480px) {
+  .nav .container {
+    padding: 0 1rem;
+  }
+
+  .nav .logo a {
+    font-size: 1.3rem;
+  }
+
+  .navTrigger {
+    right: 8px;
+    width: 17px;
+    height: 13px;
+  }
+
+  .nav .main_list {
+    width: 280px;
+    max-width: 90vw;
   }
 
   .nav .main_list ul li a {
-    text-align: center;
-    width: 100%;
-    font-size: 1.25rem;
-    padding: 1rem;
-    display: inline-block;
+    font-size: 0.95rem;
+    padding: 1rem 1.5rem;
   }
 
-  .nav {
-    position: fixed;
+  .main_list ul {
+    padding: 80px 0 1.5rem 0;
   }
 
-  .nav.affix .main_list {
-    top: 70px;
+  .nav .main_list ul li {
+    min-height: 52px;
   }
 
-  .main_list ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+  .nav .main_list ul li a:hover {
+    padding-left: 2rem;
+  }
+
+  .nav .main_list ul li button:hover {
+    padding-left: 2rem;
+  }
+}
+
+/* Very small devices (landscape phones) */
+@media screen and (max-width: 375px) {
+  .nav .logo a {
+    font-size: 1.2rem;
+  }
+
+  .navTrigger {
+    right: 6px;
+    width: 16px;
+    height: 12px;
+  }
+
+  .nav .main_list {
+    width: 260px;
+    max-width: 88vw;
+  }
+
+  .nav .main_list ul li a {
+    font-size: 0.9rem;
+    padding: 0.9rem 1.2rem;
+  }
+
+  .nav .main_list ul li button {
+    padding: 0.9rem 1.2rem;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+  .nav .main_list ul li a {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .navTrigger {
+    min-width: 40px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .nav .main_list ul li a:hover {
+    background: rgba(238, 141, 85, 0.1);
+  }
+}
+
+/* Prevent text selection on mobile menu items */
+.nav .main_list ul li a {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling improvement */
+.main_list ul {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area support for notched devices */
+@supports (padding: max(0px)) {
+  @media screen and (max-width: 768px) {
+    .nav .container {
+      padding-left: max(1.5rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
+
+    .navTrigger {
+      right: max(10px, env(safe-area-inset-right, 10px));
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .nav .container {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
+
+    .navTrigger {
+      right: max(8px, env(safe-area-inset-right, 8px));
+    }
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Tablet responsive */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .nav .container {
+    padding: 0 1.5rem;
+  }
+
+  .main_list ul {
+    gap: 1.5rem;
+  }
+
+  .main_list ul li a {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
   }
 }

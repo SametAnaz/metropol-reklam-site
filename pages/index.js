@@ -728,8 +728,8 @@ export default function Home() {
                     <EnvelopeIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
                     <div>
                       <h4 className="font-semibold text-gray-800">E-posta</h4>
-                      <a href="mailto:info@metropolreklam.com" className="text-gray-600 mt-1 hover:text-orange-500 transition-colors">
-                        info@metropolreklam.com
+                      <a href="mailto:metropolreklam@hotmail.com" className="text-gray-600 mt-1 hover:text-orange-500 transition-colors">
+                        metropolreklam@hotmail.com
                       </a>
                     </div>
                   </div>
@@ -738,7 +738,7 @@ export default function Home() {
                     <ClockIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
                     <div>
                       <h4 className="font-semibold text-gray-800">Çalışma Saatleri</h4>
-                      <p className="text-gray-600 mt-1">Pazartesi - Cumartesi: 09:00 - 18:00</p>
+                      <p className="text-gray-600 mt-1">Pazartesi - Cumartesi: 08.30 - 18:00</p>
                       <p className="text-gray-600">Pazar: Kapalı</p>
                     </div>
                   </div>

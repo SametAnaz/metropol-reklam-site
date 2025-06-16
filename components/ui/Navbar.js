@@ -38,6 +38,25 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = window.innerWidth - document.body.clientWidth + 'px';
+      document.body.classList.add('mobile-menu-open');
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.body.classList.remove('mobile-menu-open');
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.body.classList.remove('mobile-menu-open');
+    };
+  }, [isMenuOpen]);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -52,6 +71,34 @@ export default function Navbar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Close menu on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isMenuOpen]);
+
+  // Close menu on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && isMenuOpen) {
+        closeMenu();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMenuOpen]);
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: '/' });
@@ -68,120 +115,158 @@ export default function Navbar() {
           behavior: 'smooth',
           block: 'start'
         });
-        setIsMenuOpen(false); // Close mobile menu
+        closeMenu(); // Close mobile menu
       }
     }
     // If we're not on homepage, navigate to the fallback page
     else if (item.isScroll && item.fallbackHref) {
       // Let the default Link behavior handle this
-      setIsMenuOpen(false);
+      closeMenu();
+    } else {
+      // For any other navigation, close the menu
+      closeMenu();
     }
   };
 
   return (
-    <nav className={`${styles.nav} ${scrolled ? styles.affix : ''}`}>
-      <div className={styles.container}>
-        <div className={styles.logo}>
-          <Link href="/">
-            <span className="font-bold">METROPOL</span>
-            <span className="font-light ml-2">REKLAM</span>
-          </Link>
-        </div>
+    <>
+      {/* Mobile menu overlay */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-60 z-50 md:hidden backdrop-blur-sm"
+          onClick={closeMenu}
+          style={{ 
+            animation: 'fadeIn 0.3s ease-out'
+          }}
+        />
+      )}
+      
+      <nav className={`${styles.nav} ${scrolled ? styles.affix : ''}`}>
+        <div className={styles.container}>
+          <div className={styles.logo}>
+            <Link href="/">
+              <span className="font-bold">METROPOL</span>
+              <span className="font-light ml-2">REKLAM</span>
+            </Link>
+          </div>
 
-        <div className={`${styles.main_list} ${isMenuOpen ? styles.show_list : ''}`} id="mainListDiv">
-          <ul className="flex items-center">
-            {navigation.map((item) => {
-              const isActive = router.pathname === '/' && item.sectionId 
-                ? activeSection === item.sectionId 
-                : router.pathname === (item.fallbackHref || item.href);
+          <div className={`${styles.main_list} ${isMenuOpen ? styles.show_list : ''}`} id="mainListDiv">
+            {/* Close button for mobile sidebar */}
+            <div className="absolute top-4 right-4 md:hidden">
+              <button
+                onClick={closeMenu}
+                className="w-10 h-10 flex items-center justify-center text-white hover:text-orange-400 transition-all duration-300 bg-white/5 rounded-lg hover:bg-orange-400/10 hover:scale-110 border border-white/10 hover:border-orange-400/30"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <ul className="flex items-center">
+              {navigation.map((item) => {
+                const isActive = router.pathname === '/' && item.sectionId 
+                  ? activeSection === item.sectionId 
+                  : router.pathname === (item.fallbackHref || item.href);
+                
+                return (
+                  <li key={item.name}>
+                    <Link 
+                      href={router.pathname === '/' && item.isScroll ? item.href : item.fallbackHref || item.href}
+                      className={`${isActive ? styles.active : ''}`}
+                      onClick={(e) => handleNavClick(item, e)}
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                );
+              })}
               
-              return (
-                <li key={item.name}>
-                  <Link 
-                    href={router.pathname === '/' && item.isScroll ? item.href : item.fallbackHref || item.href}
-                    className={`${isActive ? styles.active : ''}`}
-                    onClick={(e) => handleNavClick(item, e)}
+              {status === 'loading' ? (
+                <li className="animate-pulse bg-white/20 w-20 h-8 rounded-full" />
+              ) : session ? (
+                <li className="relative" ref={dropdownRef}>
+                  <button 
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="flex items-center text-white hover:text-orange-400 transition-colors"
                   >
-                    {item.name}
+                    <span className="mr-2">{session.user.name || session.user.email}</span>
+                    <svg className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-xl py-1 z-50">
+                      {session.user.role && (
+                        <Link
+                          href={session.user.role === 'admin' ? '/admin/dashboard' : '/customer/dashboard'}
+                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
+                          onClick={() => {
+                            setDropdownOpen(false);
+                            closeMenu();
+                          }}
+                        >
+                          {session.user.role === 'admin' ? 'Admin Panel' : 'Müşteri Paneli'}
+                        </Link>
+                      )}
+                      {session.user.role === 'user' && (
+                        <>
+                          <Link
+                            href="/settings"
+                            className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
+                            onClick={() => {
+                              setDropdownOpen(false);
+                              closeMenu();
+                            }}
+                          >
+                            Ayarlar
+                          </Link>
+                          <Link
+                            href="/settings/change-password"
+                            className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
+                            onClick={() => {
+                              setDropdownOpen(false);
+                              closeMenu();
+                            }}
+                          >
+                            Şifre Değiştir
+                          </Link>
+                        </>
+                      )}
+                      <button
+                        onClick={handleSignOut}
+                        className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300"
+                      >
+                        Çıkış Yap
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ) : (
+                <li>
+                  <Link 
+                    href="/auth/signin"
+                    className="text-white hover:text-orange-400 transition-colors"
+                    onClick={closeMenu}
+                  >
+                    Giriş Yap
                   </Link>
                 </li>
-              );
-            })}
-            
-            {status === 'loading' ? (
-              <li className="animate-pulse bg-white/20 w-20 h-8 rounded-full" />
-            ) : session ? (
-              <li className="relative" ref={dropdownRef}>
-                <button 
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center text-white hover:text-orange-400 transition-colors"
-                >
-                  <span className="mr-2">{session.user.name || session.user.email}</span>
-                  <svg className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
+              )}
+            </ul>
+          </div>
 
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-xl py-1 z-50">
-                    {session.user.role && (
-                      <Link
-                        href={session.user.role === 'admin' ? '/admin/dashboard' : '/customer/dashboard'}
-                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        {session.user.role === 'admin' ? 'Admin Panel' : 'Müşteri Paneli'}
-                      </Link>
-                    )}
-                    {session.user.role === 'user' && (
-                      <>
-                        <Link
-                          href="/settings"
-                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          Ayarlar
-                        </Link>
-                        <Link
-                          href="/settings/change-password"
-                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          Şifre Değiştir
-                        </Link>
-                      </>
-                    )}
-                    <button
-                      onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300"
-                    >
-                      Çıkış Yap
-                    </button>
-                  </div>
-                )}
-              </li>
-            ) : (
-              <li>
-                <Link 
-                  href="/auth/signin"
-                  className="text-white hover:text-orange-400 transition-colors"
-                >
-                  Giriş Yap
-                </Link>
-              </li>
-            )}
-          </ul>
+          <div 
+            className={`${styles.navTrigger} ${isMenuOpen ? 'active' : ''}`} 
+            onClick={toggleMenu}
+          >
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
         </div>
-
-        <div 
-          className={`${styles.navTrigger} ${isMenuOpen ? 'active' : ''}`} 
-          onClick={toggleMenu}
-        >
-          <i></i>
-          <i></i>
-          <i></i>
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

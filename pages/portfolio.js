@@ -4,40 +4,127 @@ import Hero from '../components/ui/Hero';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import InteractivePortfolio from '../components/ui/InteractivePortfolio';
 
-// Sample portfolio projects
+// Portfolio projeleri - Buradan içerikleri düzenleyebilirsiniz
 const projects = [
+  // TABELA KATEGORİSİ (2 adet)
   {
     id: 1,
-    title: 'Mega AVM Tabela Projesi',
+    title: 'Pegasus Otel Tabela Projesi',
     category: 'Tabela',
     description: 'Modern ve göz alıcı kutu harf ışıklı tabela uygulaması.',
     primaryColor: '#c776a3',
-    secondaryColor: '#ee8877'
+    secondaryColor: '#ee8877',
+    image: '/portfolio/otel_tabela.jpg'
   },
   {
     id: 2,
-    title: 'Lüks Restoran Yönlendirme',
-    category: 'Yönlendirme', 
-    description: 'Şık iç mekan yönlendirme ve kapı isimlikleri tasarım ve uygulaması.',
+    title: 'Neon Yazı Tabela',
+    category: 'Tabela',
+    description: 'Spor salonlarına enerji ve motivasyon katan güçlü ve dikkat çekici bir tasarım.',
     primaryColor: '#7d54c1',
-    secondaryColor: '#c776a3'
+    secondaryColor: '#c776a3',
+    image: '/portfolio/neon_tabela.jpg'
   },
+
+  // DİJİTAL BASKI KATEGORİSİ (2 adet)
   {
     id: 3,
-    title: 'Özel Tasarım Araç Giydirme',
-    category: 'Araç Giydirme',
-    description: 'Kurumsal filo için özel tasarım tam araç giydirme çalışması.',
-    primaryColor: '#37c4b1',
-    secondaryColor: '#25aad8'
+    title: 'Dış Cephe Giydirme',
+    category: 'Dijital Baskı',
+    description: 'Yüksek binalarda etkili tanıtım sağlayan büyük ebatlı reklam uygulaması.',
+    primaryColor: '#4092e3',
+    secondaryColor: '#7d54c1',
+    image: '/portfolio/cephe_giydirme.jpg'
   },
   {
     id: 4,
-    title: 'Büyük Format Dijital Baskı',
+    title: 'Büyük Format Banner Baskı',
     category: 'Dijital Baskı',
-    description: 'Fuar için büyük format dijital baskı ve uygulama.',
-    primaryColor: '#4092e3',
-    secondaryColor: '#7d54c1'
+    description: 'Fuar ve etkinlikler için yüksek kaliteli büyük format dijital baskı çözümleri.',
+    primaryColor: '#25aad8',
+    secondaryColor: '#4092e3'
+    // image: '/portfolio/banner_baski.jpg' // Görsel ekleyebilirsiniz
   },
+
+  // ARAÇ GİYDİRME KATEGORİSİ (2 adet)  
+  {
+    id: 5,
+    title: 'Kurumsal Araç Giydirme',
+    category: 'Araç Giydirme',
+    description: 'Kurumsal / Şahsi / Filo için özel tasarım tam araç giydirme çalışması.',
+    primaryColor: '#37c4b1',
+    secondaryColor: '#25aad8',
+    image: '/portfolio/arac_giydirme.jpg'
+  },
+  {
+    id: 6,
+    title: 'Ticari Araç Reklam Giydirme',
+    category: 'Araç Giydirme',
+    description: 'Ticari araçlar için etkili reklam ve tanıtım amaçlı araç giydirme hizmeti.',
+    primaryColor: '#2dd4bf',
+    secondaryColor: '#37c4b1'
+    // image: '/portfolio/ticari_arac.jpg' // Görsel ekleyebilirsiniz
+  },
+
+  // YÖNLENDİRME KATEGORİSİ (2 adet)
+  {
+    id: 7,
+    title: 'İç Mekan Yönlendirme Sistemi',
+    category: 'Yönlendirme',
+    description: 'Ofis ve iş merkezleri için profesyonel iç mekan yönlendirme ve bilgilendirme sistemleri.',
+    primaryColor: '#8b5cf6',
+    secondaryColor: '#a855f7'
+    // image: '/portfolio/ic_yonlendirme.jpg' // Görsel ekleyebilirsiniz
+  },
+  {
+    id: 8,
+    title: 'Hastane Yönlendirme Tabelaları',
+    category: 'Yönlendirme',
+    description: 'Hastane ve sağlık kuruluşları için kapsamlı yönlendirme ve bilgilendirme çözümleri.',
+    primaryColor: '#ec4899',
+    secondaryColor: '#8b5cf6'
+    // image: '/portfolio/hastane_yonlendirme.jpg' // Görsel ekleyebilirsiniz
+  },
+
+  // KONSEPT TASARIM KATEGORİSİ (2 adet)
+  {
+    id: 9,
+    title: 'Mağaza Konsept Tasarımı',
+    category: 'Konsept Tasarım',
+    description: 'Zincir mağazalar için kurumsal kimlik ve konsept tasarım uygulaması.',
+    primaryColor: '#f59e0b',
+    secondaryColor: '#ef4444'
+    // image: '/portfolio/magaza_konsept.jpg' // Görsel ekleyebilirsiniz
+  },
+  {
+    id: 10,
+    title: 'Restoran Dekorasyon Tasarımı',
+    category: 'Konsept Tasarım',
+    description: 'Restoranlar için atmosfer oluşturan özel dekorasyon ve tasarım çözümleri.',
+    primaryColor: '#ef4444',
+    secondaryColor: '#dc2626'
+    // image: '/portfolio/restoran_dekor.jpg' // Görsel ekleyebilirsiniz
+  },
+
+  // PROMOSYON KATEGORİSİ (2 adet)
+  {
+    id: 11,
+    title: 'Kurumsal Promosyon Ürünleri',
+    category: 'Promosyon',
+    description: 'Şirketler için özel tasarım kurumsal promosyon ürünleri ve hediyeler.',
+    primaryColor: '#10b981',
+    secondaryColor: '#059669'
+    // image: '/portfolio/promosyon_urun.jpg' // Görsel ekleyebilirsiniz
+  },
+  {
+    id: 12,
+    title: 'Festival Etkinlik Ürünleri',
+    category: 'Promosyon',
+    description: 'Festival ve etkinlikler için özel tasarım promosyon ürünleri ve tanıtım malzemeleri.',
+    primaryColor: '#f97316',
+    secondaryColor: '#ea580c'
+    // image: '/portfolio/festival_urun.jpg' // Görsel ekleyebilirsiniz
+  }
 ];
 
 // Categories for filter

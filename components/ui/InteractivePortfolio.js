@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories = [] }) => {
   const [selectedCategory, setSelectedCategory] = useState('Tümü');
-  const [activeProject, setActiveProject] = useState(1);
+  const [activeProject, setActiveProject] = useState(projects[0]?.id || 1); // İlk projenin ID'sini kullan
 
   const filteredProjects = showCategoryFilter && selectedCategory !== 'Tümü' 
     ? projects.filter(project => project.category === selectedCategory)
@@ -10,9 +11,15 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
 
   useEffect(() => {
     if (filteredProjects.length > 0) {
-      setActiveProject(filteredProjects[1]?.id || filteredProjects[0]?.id);
+      // Mevcut aktif proje filtrelenmiş projeler arasında var mı kontrol et
+      const currentProjectExists = filteredProjects.some(project => project.id === activeProject);
+      
+      // Eğer mevcut aktif proje filtrelenmiş projeler arasında yoksa, ilk projeyi aktif yap
+      if (!currentProjectExists) {
+        setActiveProject(filteredProjects[0]?.id);
+      }
     }
-  }, [filteredProjects]);
+  }, [filteredProjects, activeProject]);
 
   const handleProjectClick = (projectId) => {
     setActiveProject(projectId);
@@ -126,6 +133,30 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             transform: translateX(-90%) translateZ(-25vmin) rotateY(40deg);
             opacity: 0;
             cursor: pointer;
+            overflow: hidden;
+          }
+
+          .project-image-container {
+            width: 300px;
+            height: 300px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 2vmin 0;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          }
+
+          .project-image {
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+          }
+
+          .project-image:hover {
+            transform: scale(1.05);
           }
 
           .background[data-active],
@@ -177,6 +208,12 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             .portfolio-description {
               font-size: 3.5vw;
             }
+
+            .project-image-container {
+              width: 80px;
+              height: 80px;
+              border-radius: 8px;
+            }
           }
         `}</style>
 
@@ -213,6 +250,19 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
                 <header>
                   <h1 className="portfolio-title">{project.title}</h1>
                 </header>
+                
+                {/* Proje görseli - title altında kare border içinde */}
+                {project.image && (
+                  <div className="project-image-container">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="project-image"
+                    />
+                  </div>
+                )}
+                
                 <p className="portfolio-description">{project.description}</p>
                 <span className="text-xs font-semibold px-3 py-1 bg-white/20 text-white rounded-full mr-2 mt-4 self-start">
                   {project.category}

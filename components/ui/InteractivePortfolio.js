@@ -57,13 +57,14 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             display: grid;
             grid-template-columns: 1fr;
             grid-template-rows: 1fr;
-            height: 90vmin;
-            width: 55vmin;
+            height: min(90vmin, 600px);
+            width: min(55vmin, 400px);
             margin: 0 auto;
+            max-width: 90vw;
           }
 
           .portfolio-app > section {
-            margin: 5vmin 8vmin;
+            margin: min(5vmin, 30px) min(8vmin, 40px);
             grid-area: 1 / 1; 
           }
 
@@ -88,7 +89,7 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
 
           .background {
             will-change: transform;
-            border-radius: 2vmin;
+            border-radius: min(2vmin, 15px);
             background-image: linear-gradient(
               to bottom,
               var(--primary-color, #c776a3),
@@ -96,7 +97,7 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             );
             transition: transform 0.7s cubic-bezier(0.6, 0, 0.2, 1);
             transition-property: transform, transform-origin, z-index;
-            padding: 5vmin;
+            padding: min(5vmin, 30px);
             color: white;
             transform-origin: right center;
             transform: translateX(-90%) translateZ(-25vmin) rotateY(40deg);
@@ -127,7 +128,7 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
             will-change: transform;
             transition: transform 0.7s cubic-bezier(0.6, 0, 0.2, 1);
             transition-property: transform, transform-origin, opacity, z-index;
-            padding: 5vmin;
+            padding: min(5vmin, 30px);
             color: white;
             transform-origin: right center;
             transform: translateX(-90%) translateZ(-25vmin) rotateY(40deg);
@@ -137,16 +138,18 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
           }
 
           .project-image-container {
-            width: 300px;
-            height: 300px;
+            width: min(53vmin, 368px);
+            height: min(53vmin, 368px);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
+            border-radius: min(12px, 3vmin);
             overflow: hidden;
-            margin: 2vmin 0;
+            margin: min(2vmin, 15px) 0;
             position: relative;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 368px;
+            max-height: 368px;
           }
 
           .project-image {
@@ -184,35 +187,100 @@ const InteractivePortfolio = ({ projects, showCategoryFilter = false, categories
           }
 
           .portfolio-title {
-            font-size: 4vmin;
+            font-size: min(4vmin, 24px);
             line-height: 1.2;
-            margin-bottom: 2vmin;
+            margin-bottom: min(2vmin, 15px);
           }
 
           .portfolio-description {
-            font-size: 2.5vmin;
+            font-size: min(2.5vmin, 16px);
             line-height: 1.4;
             color: rgba(255, 255, 255, 0.6);
           }
 
           @media (max-width: 768px) {
             .portfolio-app {
-              height: 70vh;
-              width: 80vw;
+              height: min(70vh, 450px);
+              width: min(85vw, 350px);
+              max-width: 95vw;
+            }
+
+            .portfolio-app > section {
+              margin: min(3vmin, 20px) min(4vmin, 25px);
             }
             
             .portfolio-title {
-              font-size: 5vw;
+              font-size: max(20px, 5vw);
+              margin-bottom: min(3vmin, 20px);
             }
             
             .portfolio-description {
-              font-size: 3.5vw;
+              font-size: max(14px, 3.5vw);
+              line-height: 1.5;
             }
 
             .project-image-container {
-              width: 80px;
-              height: 80px;
-              border-radius: 8px;
+              width: min(46vmin, 238px);
+              height: min(46vmin, 238px);
+              border-radius: min(8px, 2vmin);
+              margin: min(2vmin, 12px) auto;
+              max-width: 238px;
+              max-height: 238px;
+            }
+
+            .portfolio-article {
+              padding: min(3vmin, 20px);
+              text-align: center;
+            }
+
+            .background {
+              padding: min(3vmin, 20px);
+            }
+
+            .background[data-active] ~ .background,
+            .portfolio-article[data-active] ~ .portfolio-article {
+              transform: translateX(100%) translateZ(-15vmin) rotateY(-25deg);
+            }
+
+            .background[data-active] + .background,
+            .portfolio-article[data-active] + .portfolio-article {
+              transform: translateX(70%) translateZ(-15vmin) rotateY(-25deg);
+            }
+          }
+
+          @media (max-width: 480px) {
+            .portfolio-app {
+              height: min(60vh, 400px);
+              width: min(90vw, 300px);
+            }
+
+            .portfolio-app > section {
+              margin: min(2vmin, 15px) min(3vmin, 20px);
+            }
+            
+            .portfolio-title {
+              font-size: max(18px, 6vw);
+              margin-bottom: min(2vmin, 15px);
+            }
+            
+            .portfolio-description {
+              font-size: max(13px, 4vw);
+            }
+
+            .project-image-container {
+              width: min(40vmin, 199px);
+              height: min(40vmin, 199px);
+              margin: min(1.5vmin, 10px) auto;
+              max-width: 199px;
+              max-height: 199px;
+            }
+
+            .portfolio-article {
+              padding: min(2vmin, 15px);
+            }
+
+            .background {
+              padding: min(2vmin, 15px);
             }
           }
         `}</style>

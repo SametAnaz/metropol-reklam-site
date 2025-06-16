@@ -163,11 +163,15 @@ export default function PortfolioPage() {
       />
 
       {/* Portfolio Interactive Cards */}
-      <InteractivePortfolio 
-        projects={projects}
-        showCategoryFilter={true}
-        categories={categories}
-      />
+      <section className="py-8 md:py-16 min-h-screen flex flex-col justify-center">
+        <div className="container mx-auto px-2 md:px-4">
+          <InteractivePortfolio 
+            projects={projects}
+            showCategoryFilter={true}
+            categories={categories}
+          />
+        </div>
+      </section>
 
       {/* Testimonials Section */}
       <section className="py-16 bg-gray-50">

@@ -11,9 +11,9 @@ const SEO = {
     description: 'Kuşadası ve çevresinde profesyonel tabela, reklam, dijital baskı ve fuar standı hizmetleri. Kaliteli ve etkili çözümler için Metropol Reklam. Instagram: https://www.instagram.com/metropolreklam2020/',
     images: [
       {
-        url: 'https://metropolreklam.net/images/og-image.jpg', // Ensure this path is correct
-        width: 1200,
-        height: 630,
+        url: 'https://metropolreklam.net/metropol_logo_500x500.png',
+        width: 500,
+        height: 500,
         alt: 'Metropol Reklam Kuşadası Tabela ve Reklam Hizmetleri',
       },
     ],
@@ -24,12 +24,12 @@ const SEO = {
   additionalLinkTags: [
     {
       rel: 'icon',
-      href: '/favicon.ico',
+      href: '/metropol_logo_250x250px.png',
     },
     {
       rel: 'apple-touch-icon',
-      href: '/apple-touch-icon.png',
-      sizes: '180x180',
+      href: '/metropol_logo_250x250px.png',
+      sizes: '250x250',
     },
     {
       rel: 'manifest',

@@ -1,108 +1,261 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .nav {
-  width: 100%;
-  height: 80px;
   position: fixed;
-  text-align: center;
-  transition: all 0.4s ease;
-  z-index: 1000;
-  background-color: transparent;
-  backdrop-filter: blur(4px);
+  width: 100%;
+  height: 60px;
+  display: flex;
+  z-index: 100;
+  background-image: linear-gradient(to right, #000000 0%, #2b2b2b 100%);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
 }
 
 .affix {
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  height: 70px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(43, 43, 43, 0.9) 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.nav .container {
-  margin: 0 auto;
-  padding: 0 2rem;
-  max-width: 1280px;
+.container {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
+  position: relative;
 }
 
-.nav .logo {
-  float: left;
-  width: auto;
-  height: auto;
+/* Logoyu daha güçlü bir şekilde konumlandır */
+.logo {
+  margin: auto;
+  width: fit-content;
+  height: 60px;
+  margin-left: 20px;
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 101;
+  flex-shrink: 0; /* Logo sıkıştırılmasın */
+  overflow: visible; /* Logoyu container sınırlarının dışına çıkarmak için */
 }
 
-.nav .logo a {
+.logo a {
   text-decoration: none;
-  color: #fff;
-  font-size: 1.75rem;
-  font-weight: bold;
-  transition: color 0.3s ease;
-  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Logoyu sola hizala */
+  height: 100%;
+  position: relative;
+  overflow: visible; /* Logoyu a etiketi sınırlarının dışına çıkarmak için */
 }
 
-.nav .logo a:hover {
-  color: #ee8d55;
+.logo a img {
+  height: auto;
+  width: auto;
+  max-height: 90px; /* Logo boyutunu artır */
+  object-fit: contain;
+  transform: scale(2.5); /* Scale faktörünü artır */
+  transform-origin: left center;
+  position: relative;
+  top: 0; /* Logoyu ortalama */
+  margin-top: -20px; /* Logoyu yukarı kaydır */
+  margin-bottom: -20px; /* Alt taşmayı dengele */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); /* Logo için hafif gölge ekle */
+  z-index: 102; /* Logo her zaman önde gösterilsin */
+  opacity: 0.98; /* Hafif geçişli efekt için başlangıç opaklığı */
+  visibility: visible;
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s ease;
+}
+
+.logo a:hover img {
+  filter: drop-shadow(0 4px 8px rgba(255, 123, 0, 0.4));
+  transform: scale(2.6); /* Hover durumunda daha büyük olsun */
+}
+
+/* Navbar affix durumunda logo boyutu */
+.affix .logo a img {
+  max-height: 80px;
+  margin-top: -15px;
 }
 
 .main_list {
-  height: 65px;
+  width: 70%;
+  height: 100%;
   float: right;
+  display: flex;
+  align-items: center;
 }
 
 .main_list ul {
   width: 100%;
-  height: 65px;
+  height: 100%;
+  margin: auto;
+  margin-left: 0;
   display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
   align-items: center;
-  gap: 2rem;
+  justify-content: flex-end;
+  list-style: none;
+  padding: 0;
 }
 
 .main_list ul li {
-  width: auto;
-  height: 65px;
-  padding: 0;
+  margin: auto;
+  margin-left: 10px;
+  list-style: none;
+  font-weight: 400;
+  position: relative;
+}
+
+.rect {
+  margin: auto;
+  margin-left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: rgb(255, 255, 255);
+  transition: width 0.5s;
+}
+
+.main_list ul li:hover .rect {
+  width: 100%;
+  transition: all 0.5s;
+}
+
+.main_list ul li a {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  padding: 0.5rem 0.8rem;
+}
+
+.main_list ul li a:hover {
+  color: #ff7b00;
+}
+
+.navTrigger {
+  margin: auto;
+  width: 50px;
+  height: 40%;
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.5s;
+  margin-right: 20px;
+}
+
+.navTrigger i {
+  margin: auto;
+  width: 20px;
+  height: 1px;
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 4px;
+  transition: all 0.3s;
+}
+
+.navTrigger.active i:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navTrigger.active i:nth-child(2) {
+  opacity: 0;
+}
+
+.navTrigger.active i:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  display: none;
+  flex-direction: column;
+  z-index: 99;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.overlay .brand {
+  margin: auto;
+  height: 60px;
+  margin-left: 20px;
+  margin-top: 30px;
   display: flex;
   align-items: center;
 }
 
-.main_list ul li a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+.overlay .brand img {
+  max-height: 60px;
+  width: auto;
+  object-fit: contain;
+  transform: scale(1.8);
+  transform-origin: left center;
+  margin-top: -10px;
+  margin-bottom: -10px;
 }
 
-.main_list ul li a:hover {
-  color: #ee8d55;
+.overlay ul {
+  width: 100%;
+  height: 60%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-inline-start: 0;
+  margin-top: -50px;
+}
+
+.overlay ul li {
+  display: flex;
+  list-style-type: none;
+  margin: 15px 0;
+  text-align: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.overlay ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.overlay ul li a:hover {
+  color: #ff7b00;
+}
+
+@media only screen and (max-width: 1000px) {
+  .main_list {
+    display: none;
+  }
+  
+  .navTrigger {
+    display: flex;
+  }
 }
 
 .main_list ul li a.active {
-  color: #ee8d55;
+  color: #ff7b00;
+  position: relative;
 }
 
-.navTrigger {
-  display: none;
-  cursor: pointer;
-  width: 19px;
-  height: 14px;
-  margin: auto;
-  position: absolute;
-  right: 10px;
-  top: 0;
-  bottom: 0;
-  z-index: 1001;
-  padding: 3px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 6px;
-  background-color: transparent;
+.main_list ul li a.active + .rect {
+  width: 100%;
+  background-color: #ff7b00;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .navTrigger:hover {
@@ -187,8 +340,12 @@
     height: 100%;
   }
 
-  .nav .logo a {
-    font-size: 1.5rem;
+  .nav .logo a img {
+    max-height: 70px;
+    width: auto;
+    transform: scale(2.0);
+    margin-top: -15px;
+    margin-bottom: -15px;
   }
 
   .nav .main_list {
@@ -356,8 +513,12 @@
     padding: 0 1rem;
   }
 
-  .nav .logo a {
-    font-size: 1.3rem;
+  .nav .logo a img {
+    max-height: 60px;
+    width: auto;
+    transform: scale(1.8);
+    margin-top: -10px;
+    margin-bottom: -10px;
   }
 
   .navTrigger {
@@ -397,6 +558,13 @@
 @media screen and (max-width: 375px) {
   .nav .logo a {
     font-size: 1.2rem;
+  }
+
+  .nav .logo a img {
+    max-height: 55px;
+    transform: scale(1.6);
+    margin-top: -8px;
+    margin-bottom: -8px;
   }
 
   .navTrigger {
@@ -526,6 +694,13 @@
 @media screen and (max-width: 1024px) and (min-width: 769px) {
   .nav .container {
     padding: 0 1.5rem;
+  }
+  
+  .nav .logo a img {
+    max-height: 85px;
+    transform: scale(2.2);
+    margin-top: -15px;
+    margin-bottom: -15px;
   }
 
   .main_list ul {

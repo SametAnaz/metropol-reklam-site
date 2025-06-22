@@ -75,13 +75,14 @@ export default function AdminLogin() {
         <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-xl p-8">
           <div className="text-center">
             <Link href="/" className="inline-block">
-              <div className="flex items-center justify-center gap-2 mb-6">
-                <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  METROPOL
-                </span>
-                <span className="text-2xl font-light text-gray-900">
-                  REKLAM
-                </span>
+              <div className="flex items-center justify-center mb-6">
+                <img 
+                  src="/metropol_logo2_500x500.png" 
+                  alt="Metropol Reklam Logo" 
+                  width={250} 
+                  height={250}
+                  className="object-contain"
+                />
               </div>
             </Link>
             <div className="mb-6">

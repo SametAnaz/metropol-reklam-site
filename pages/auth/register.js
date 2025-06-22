@@ -82,11 +82,15 @@ export default function Register() {
       <div className="absolute inset-0 flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">
-              <span className="text-[#FF5714]">METRO</span>
-              <span className="text-[#333]">POL</span>
-              <span className="text-[#333] ml-2">REKLAM</span>
-            </h1>
+            <div className="flex items-center justify-center mb-6">
+              <img 
+                src="/metropol_logo2_500x500.png" 
+                alt="Metropol Reklam Logo" 
+                width={250} 
+                height={250}
+                className="object-contain"
+              />
+            </div>
             <h2 className="text-2xl font-bold text-[#333] mt-6 mb-2">Hesap Oluştur</h2>
             <p className="text-gray-600">Yeni bir hesap oluşturun</p>
           </div>

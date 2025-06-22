@@ -37,6 +37,23 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
+  
+  // Logo optimizasyonu için
+  useEffect(() => {
+    // Logoyu önceden yükleyelim
+    const img = new Image();
+    img.src = "/metropol_logo2_500x500.png";
+    // Sayfa yüklendikten sonra logo animasyonunu etkinleştir
+    const timer = setTimeout(() => {
+      const logoEl = document.querySelector(`.${styles.logo} img`);
+      if (logoEl) {
+        logoEl.style.opacity = "1";
+        logoEl.style.visibility = "visible";
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -91,13 +108,28 @@ export default function Navbar() {
   // Close menu on window resize
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768 && isMenuOpen) {
+      if (window.innerWidth > 1000 && isMenuOpen) {
         closeMenu();
       }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, [isMenuOpen]);
+  
+  // Toggle visibility of sections when mobile menu is open
+  useEffect(() => {
+    const sections = document.querySelectorAll('section');
+    
+    if (isMenuOpen) {
+      sections.forEach(section => {
+        section.style.display = 'none';
+      });
+    } else {
+      sections.forEach(section => {
+        section.style.display = '';
+      });
+    }
   }, [isMenuOpen]);
 
   const handleSignOut = async () => {
@@ -133,37 +165,73 @@ export default function Navbar() {
       {/* Mobile menu overlay */}
       {isMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-60 z-50 md:hidden backdrop-blur-sm"
+          className={styles.overlay}
           onClick={closeMenu}
-          style={{ 
-            animation: 'fadeIn 0.3s ease-out'
-          }}
-        />
+          id="overlay"
+        >
+          <div className={styles.brand}>
+            <Link href="/">
+              <img 
+                src="/metropol_logo2_500x500.png" 
+                alt="Metropol Reklam Logo" 
+                width="auto"
+                height="auto"
+                priority="true" 
+                loading="eager"
+              />
+            </Link>
+          </div>
+          <ul>
+            {navigation.map((item) => {
+              const isActive = router.pathname === '/' && item.sectionId 
+                ? activeSection === item.sectionId 
+                : router.pathname === (item.fallbackHref || item.href);
+              
+              return (
+                <li key={item.name}>
+                  <Link 
+                    href={router.pathname === '/' && item.isScroll ? item.href : item.fallbackHref || item.href}
+                    className={`${isActive ? styles.active : ''}`}
+                    onClick={(e) => handleNavClick(item, e)}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              );
+            })}
+            
+            {status !== 'loading' && !session && (
+              <li>
+                <Link 
+                  href="/auth/signin"
+                  className="text-white"
+                  onClick={closeMenu}
+                >
+                  Giriş Yap
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
       )}
       
       <nav className={`${styles.nav} ${scrolled ? styles.affix : ''}`}>
         <div className={styles.container}>
           <div className={styles.logo}>
             <Link href="/">
-              <span className="font-bold">METROPOL</span>
-              <span className="font-light ml-2">REKLAM</span>
+              <img 
+                src="/metropol_logo2_500x500.png" 
+                alt="Metropol Reklam Logo" 
+                width="auto"
+                height="auto"
+                priority="true" 
+                loading="eager"
+              />
             </Link>
           </div>
 
-          <div className={`${styles.main_list} ${isMenuOpen ? styles.show_list : ''}`} id="mainListDiv">
-            {/* Close button for mobile sidebar */}
-            <div className="absolute top-4 right-4 md:hidden">
-              <button
-                onClick={closeMenu}
-                className="w-10 h-10 flex items-center justify-center text-white hover:text-orange-400 transition-all duration-300 bg-white/5 rounded-lg hover:bg-orange-400/10 hover:scale-110 border border-white/10 hover:border-orange-400/30"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            
-            <ul className="flex items-center">
+          <div className={styles.main_list} id="mainListDiv">
+            <ul>
               {navigation.map((item) => {
                 const isActive = router.pathname === '/' && item.sectionId 
                   ? activeSection === item.sectionId 
@@ -178,6 +246,7 @@ export default function Navbar() {
                     >
                       {item.name}
                     </Link>
+                    <div className={styles.rect}></div>
                   </li>
                 );
               })}
@@ -188,13 +257,14 @@ export default function Navbar() {
                 <li className="relative" ref={dropdownRef}>
                   <button 
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center text-white hover:text-orange-400 transition-colors"
+                    className="flex items-center text-white hover:text-[#ff7b00] transition-colors"
                   >
                     <span className="mr-2">{session.user.name || session.user.email}</span>
                     <svg className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                     </svg>
                   </button>
+                  <div className={styles.rect}></div>
 
                   {dropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-xl py-1 z-50">
@@ -247,19 +317,21 @@ export default function Navbar() {
                 <li>
                   <Link 
                     href="/auth/signin"
-                    className="text-white hover:text-orange-400 transition-colors"
+                    className="text-white hover:text-[#ff7b00] transition-colors"
                     onClick={closeMenu}
                   >
                     Giriş Yap
                   </Link>
+                  <div className={styles.rect}></div>
                 </li>
               )}
             </ul>
           </div>
 
           <div 
-            className={`${styles.navTrigger} ${isMenuOpen ? 'active' : ''}`} 
+            className={`${styles.navTrigger} ${isMenuOpen ? styles.active : ''}`} 
             onClick={toggleMenu}
+            id="toggler"
           >
             <i></i>
             <i></i>

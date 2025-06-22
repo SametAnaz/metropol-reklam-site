@@ -419,9 +419,10 @@
   .nav .logo a img {
     max-height: 70px;
     width: auto;
-    transform: scale(2.0);
-    margin-top: -15px;
-    margin-bottom: -15px;
+    transform: scale(3.0); /* Daha büyük ölçeklendirme yapıyoruz */
+    margin-top: -20px;
+    margin-left: -10px; /* Sola doğru kaydıralım, logo daha belirgin gözüksün */
+    margin-bottom: -20px;
   }
 
   .nav .main_list {
@@ -590,11 +591,12 @@
   }
 
   .nav .logo a img {
-    max-height: 60px;
+    max-height: 200px;
     width: auto;
-    transform: scale(1.8);
-    margin-top: -10px;
-    margin-bottom: -10px;
+    transform: scale(2.2);
+    margin-top: -15px;
+    margin-bottom: -15px;
+    margin-left: -70px;
   }
 
   .navTrigger {

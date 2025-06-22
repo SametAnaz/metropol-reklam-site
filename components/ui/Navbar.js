@@ -183,8 +183,9 @@ export default function Navbar() {
           </div>
           <ul>
             {navigation.map((item) => {
-              const isActive = router.pathname === '/' && item.sectionId 
-                ? activeSection === item.sectionId 
+              // Aktif sekmenin doğru tespit edilmesi (mobil menü için)
+              const isActive = router.pathname === '/' 
+                ? item.isScroll ? activeSection === item.sectionId : router.pathname === item.href
                 : router.pathname === (item.fallbackHref || item.href);
               
               return (
@@ -233,8 +234,9 @@ export default function Navbar() {
           <div className={styles.main_list} id="mainListDiv">
             <ul>
               {navigation.map((item) => {
-                const isActive = router.pathname === '/' && item.sectionId 
-                  ? activeSection === item.sectionId 
+                // Aktif sekmenin doğru tespit edilmesi
+                const isActive = router.pathname === '/' 
+                  ? item.isScroll ? activeSection === item.sectionId : router.pathname === item.href
                   : router.pathname === (item.fallbackHref || item.href);
                 
                 return (

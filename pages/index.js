@@ -357,8 +357,15 @@ export default function Home() {
               </div>
             </AnimatedSection>
             <AnimatedSection animation="fade-left">
-              <div className="bg-gray-200 h-80 rounded-lg flex justify-center items-center">
-                <p className="text-gray-500">Şirket Görseli</p>
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 h-80 rounded-lg flex justify-center items-center overflow-hidden shadow-lg">
+                <Image 
+                  src="/metropol_logo_1080x1080.png" 
+                  alt="Metropol Reklam Logosu" 
+                  width={300}
+                  height={300}
+                  className="object-contain hover:scale-105 transition-transform duration-300"
+                  priority
+                />
               </div>
             </AnimatedSection>
           </div>

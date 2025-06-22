@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import styles from '@/styles/Navbar.module.css';
+import { HomeIcon, UserGroupIcon, WrenchScrewdriverIcon, PhotoIcon, ShoppingCartIcon, EnvelopeIcon, UserIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
-  { name: 'Ana Sayfa', href: '/', isScroll: false },
-  { name: 'Hakkımızda', href: '#about', fallbackHref: '/about', isScroll: true, sectionId: 'about' },
-  { name: 'Hizmetlerimiz', href: '#services', fallbackHref: '/services', isScroll: true, sectionId: 'services' },
-  { name: 'Portföy', href: '#portfolio', fallbackHref: '/portfolio', isScroll: true, sectionId: 'portfolio' },
-  { name: 'Ürünler', href: '#products', fallbackHref: '/products', isScroll: true, sectionId: 'products' },
-  { name: 'İletişim', href: '#contact', fallbackHref: '/contact', isScroll: true, sectionId: 'contact' },
+  { name: 'Ana Sayfa', href: '/', isScroll: false, icon: HomeIcon },
+  { name: 'Hakkımızda', href: '#about', fallbackHref: '/about', isScroll: true, sectionId: 'about', icon: UserGroupIcon },
+  { name: 'Hizmetlerimiz', href: '#services', fallbackHref: '/services', isScroll: true, sectionId: 'services', icon: WrenchScrewdriverIcon },
+  { name: 'Portföy', href: '#portfolio', fallbackHref: '/portfolio', isScroll: true, sectionId: 'portfolio', icon: PhotoIcon },
+  { name: 'Ürünler', href: '#products', fallbackHref: '/products', isScroll: true, sectionId: 'products', icon: ShoppingCartIcon },
+  { name: 'İletişim', href: '#contact', fallbackHref: '/contact', isScroll: true, sectionId: 'contact', icon: EnvelopeIcon },
 ];
 
 export default function Navbar() {
@@ -87,10 +88,24 @@ export default function Navbar() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    
+    // Açılırken kaydırma çubuğunu gizle, kapanırken geri getir
+    if (!isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
   };
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+    
+    // Menü kapanınca kaydırma çubuğunu geri getir
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    document.body.classList.remove('mobile-menu-open');
   };
 
   // Close menu on escape key
@@ -162,13 +177,12 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Mobile menu overlay */}
-      {isMenuOpen && (
-        <div 
-          className={styles.overlay}
-          onClick={closeMenu}
-          id="overlay"
-        >
+      {/* Mobile menu overlay - her zaman DOM'da kalır ama isMenuOpen durumuna göre görünür/gizli olur */}
+      <div 
+        className={`${styles.overlay} ${isMenuOpen ? styles.overlayOpen : ''}`}
+        onClick={(e) => e.target === e.currentTarget && closeMenu()}
+        id="overlay"
+      >
           <div className={styles.brand}>
             <Link href="/">
               <img 
@@ -180,6 +194,14 @@ export default function Navbar() {
                 loading="eager"
               />
             </Link>
+            <button 
+              className={styles.closeButton}
+              onClick={closeMenu}
+              aria-label="Menüyü kapat"
+            >
+              <span></span>
+              <span></span>
+            </button>
           </div>
           <ul>
             {navigation.map((item) => {
@@ -195,6 +217,7 @@ export default function Navbar() {
                     className={`${isActive ? styles.active : ''}`}
                     onClick={(e) => handleNavClick(item, e)}
                   >
+                    {item.icon && <item.icon className={styles.navIcon} />}
                     {item.name}
                   </Link>
                 </li>
@@ -208,13 +231,13 @@ export default function Navbar() {
                   className="text-white"
                   onClick={closeMenu}
                 >
+                  <UserIcon className={styles.navIcon} />
                   Giriş Yap
                 </Link>
               </li>
             )}
           </ul>
         </div>
-      )}
       
       <nav className={`${styles.nav} ${scrolled ? styles.affix : ''}`}>
         <div className={styles.container}>
@@ -334,6 +357,9 @@ export default function Navbar() {
             className={`${styles.navTrigger} ${isMenuOpen ? styles.active : ''}`} 
             onClick={toggleMenu}
             id="toggler"
+            aria-label="Mobil menüyü aç"
+            role="button"
+            tabIndex={0}
           >
             <i></i>
             <i></i>

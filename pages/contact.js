@@ -108,8 +108,8 @@ export default function ContactPage() {
                   <PhoneIcon className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Telefon</h3>
-                    <a href="tel:+905551234567" className="text-gray-600 mt-1 hover:text-primary transition-colors">
-                      +90 (555) 123 45 67
+                    <a href="tel:+905435293814" className="text-gray-600 mt-1 hover:text-primary transition-colors">
+                      +90 (543) 529 38 14
                     </a>
                   </div>
                 </div>

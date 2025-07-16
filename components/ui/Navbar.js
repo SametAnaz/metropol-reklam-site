@@ -4,12 +4,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import styles from '@/styles/Navbar.module.css';
-import { HomeIcon, UserGroupIcon, WrenchScrewdriverIcon, PhotoIcon, ShoppingCartIcon, EnvelopeIcon, UserIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, UserGroupIcon, PhotoIcon, ShoppingCartIcon, EnvelopeIcon, UserIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Ana Sayfa', href: '/', isScroll: false, icon: HomeIcon },
   { name: 'Hakkımızda', href: '#about', fallbackHref: '/about', isScroll: true, sectionId: 'about', icon: UserGroupIcon },
-  { name: 'Hizmetlerimiz', href: '#services', fallbackHref: '/services', isScroll: true, sectionId: 'services', icon: WrenchScrewdriverIcon },
   { name: 'Portföy', href: '#portfolio', fallbackHref: '/portfolio', isScroll: true, sectionId: 'portfolio', icon: PhotoIcon },
   { name: 'Ürünler', href: '#products', fallbackHref: '/products', isScroll: true, sectionId: 'products', icon: ShoppingCartIcon },
   { name: 'İletişim', href: '#contact', fallbackHref: '/contact', isScroll: true, sectionId: 'contact', icon: EnvelopeIcon },
@@ -24,7 +23,7 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
   
   // Use active section hook only on homepage
-  const sectionIds = ['about', 'services', 'portfolio', 'products', 'contact'];
+  const sectionIds = ['about', 'portfolio', 'products', 'contact'];
   const activeSection = useActiveSection(router.pathname === '/' ? sectionIds : []);
 
   useEffect(() => {

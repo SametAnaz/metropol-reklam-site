@@ -138,7 +138,7 @@ export default function CustomerDashboard() {
                 <span className="font-medium">İletişime Geç</span>
               </Link>
               <Link
-                href="/services"
+                href="/#services"
                 className="flex items-center justify-center bg-gray-100 text-gray-700 p-4 rounded-lg hover:bg-gray-200 transition-colors duration-300"
               >
                 <span className="font-medium">Hizmetlerimiz</span>

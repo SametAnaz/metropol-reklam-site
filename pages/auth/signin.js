@@ -36,7 +36,7 @@ export default function SignIn() {
       } else {
         // Get session to check user role
         const session = await fetch('/api/auth/session').then(res => res.json());
-        let callbackUrl = '/services';  // Default redirect to services page
+        let callbackUrl = '/';  // Default redirect to homepage
         
         // Only redirect admins to admin dashboard
         if (session?.user?.role === 'admin') {

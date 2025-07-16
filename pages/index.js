@@ -738,13 +738,12 @@ export default function Home() {
                   </div>
 
                   <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
-                    <PhoneIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-800">Telefon</h4>
-                      <a href="tel:+905551234567" className="text-gray-600 mt-1 hover:text-orange-500 transition-colors">
-                        +90 (555) 123 45 67
-                      </a>
-                    </div>
+                    <PhoneIcon className="h-6 w-6 text-orange-500 flex-shrink-0 mt-1" />                  <div>
+                    <h4 className="font-semibold text-gray-800">Telefon</h4>
+                    <a href="tel:+905435293814" className="text-gray-600 mt-1 hover:text-orange-500 transition-colors">
+                      +90 (543) 529 38 14
+                    </a>
+                  </div>
                   </div>
 
                   <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
@@ -911,8 +910,8 @@ export default function Home() {
             <Link href="#contact" className="bg-white text-orange-500 px-8 py-3 rounded-md text-lg font-medium hover:bg-gray-100 transition-colors">
               Hemen İletişime Geçin
             </Link>
-            <Link href="/services" className="border-2 border-white text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-white hover:text-orange-500 transition-colors">
-              Tüm Hizmetlerimiz
+            <Link href="/portfolio" className="border-2 border-white text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-white hover:text-orange-500 transition-colors">
+              Projelerimizi Görün
             </Link>
           </div>
         </div>

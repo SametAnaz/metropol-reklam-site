@@ -50,11 +50,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
-                  Hizmetlerimiz
-                </Link>
-              </li>
-              <li>
                 <Link href="/portfolio" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Portföy
                 </Link>
@@ -72,37 +67,37 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Hizmet Kategorileri */}
           <div className="col-span-1">
-            <h3 className="text-xl font-bold mb-6 text-white border-b-2 border-primary pb-2 inline-block">Hizmetlerimiz</h3>
+            <h3 className="text-xl font-bold mb-6 text-white border-b-2 border-primary pb-2 inline-block">Hizmet Kategorileri</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/services#tabela" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
+                <Link href="/#services" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Tabela
                 </Link>
               </li>
               <li>
-                <Link href="/services#dijital-baski" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
+                <Link href="/#services" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Dijital Baskı
                 </Link>
               </li>
               <li>
-                <Link href="/services#arac-giydirme" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
+                <Link href="/#services" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Araç Giydirme
                 </Link>
               </li>
               <li>
-                <Link href="/services#kutu-harf" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
+                <Link href="/#services" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Kutu Harf
                 </Link>
               </li>
               <li>
-                <Link href="/services#yonlendirme" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
+                <Link href="/#services" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Yönlendirme Sistemleri
                 </Link>
               </li>
               <li>
-                <Link href="/services#promosyon" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
+                <Link href="/#services" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Promosyon Ürünleri
                 </Link>
               </li>
@@ -127,8 +122,8 @@ export default function Footer() {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <a href="tel:+905551234567" className="text-gray-300 hover:text-primary transition-colors">
-                  +90 (555) 123 45 67
+                <a href="tel:+905435293814" className="text-gray-300 hover:text-primary transition-colors">
+                  +90 (543) 529 38 14
                 </a>
               </li>
               <li className="flex items-center">

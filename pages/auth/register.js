@@ -67,7 +67,7 @@ export default function Register() {
       }
 
       // Redirect to services page after successful registration and login
-      router.push('/services');
+      router.push('/');
     } catch (error) {
       console.error('Registration error:', error);
       setError(error.message);

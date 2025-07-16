@@ -341,6 +341,194 @@ export default function Home() {
         <div className={styles.orb}></div>
       </section>
 
+      {/* Products Section - Ürünler İçeriği */}
+      <section className="py-20 bg-gray-50" id="products">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">Ürünlerimiz</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
+              <p className="text-lg max-w-2xl mx-auto text-gray-600">
+                Reklam ve tabela ihtiyaçlarınız için kaliteli ve profesyonel ürün yelpazemiz
+              </p>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {productCategories.map((category, index) => (
+              <AnimatedSection key={category.id} animation="fade-up" delay={index * 100}>
+                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                  <div className="h-56 bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-500">Ürün Görseli</p>
+                  </div>
+                  
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-3 text-gray-800">{category.title}</h3>
+                    <p className="text-gray-600 mb-4">{category.description}</p>
+                    
+                    <h4 className="font-semibold text-gray-700 mb-2">Ürün Çeşitleri:</h4>
+                    <ul className="mb-5 space-y-1">
+                      {category.features.map((feature, index) => (
+                        <li key={index} className="flex items-center text-gray-600 text-sm">
+                          <svg className="h-4 w-4 text-orange-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <div className="flex gap-2">
+                      <Link href={`/contact?product=${category.id}`} className="bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-4 py-2 rounded text-sm font-medium transition-opacity duration-200">
+                        Teklif Alın
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          {/* Custom Products */}
+          <AnimatedSection animation="fade-up">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="bg-gray-200 h-full flex items-center justify-center p-12">
+                  <p className="text-gray-500">Özel Üretim Görseli</p>
+                </div>
+                <div className="p-8 md:p-12">
+                  <h3 className="text-2xl font-bold mb-4 text-gray-800">Özel Üretim Çözümler</h3>
+                  <p className="text-gray-600 mb-6">
+                    Katalogda yer almayan, size özel tasarım ve üretim gerektiren projeleriniz için uzman ekibimizle çözüm sunuyoruz.
+                  </p>
+                  
+                  <ul className="mb-8 space-y-3">
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-800">Ücretsiz Keşif ve Danışmanlık</span>
+                        <p className="text-gray-600 text-sm">Projeleriniz için yerinde inceleme ve profesyonel tavsiyeler</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-800">Özel Tasarım</span>
+                        <p className="text-gray-600 text-sm">Kurumsal kimliğinize uygun yaratıcı ve özgün tasarımlar</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-800">Anahtar Teslim Hizmet</span>
+                        <p className="text-gray-600 text-sm">Tasarımdan üretime, montajdan bakıma tam kapsamlı hizmet</p>
+                      </div>
+                    </li>
+                  </ul>
+                  
+                  <Link href="/contact?service=custom" className="bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-6 py-3 rounded-md font-medium transition-opacity duration-200 inline-block">
+                    Özel Teklif Alın
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Portfolio Section - Portföy İçeriği */}
+      <section className="py-20 bg-white" id="portfolio">
+        <div className="container mx-auto px-4">
+          <AnimatedSection animation="fade-up">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold mb-6 text-gray-800">Portföyümüz</h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
+              <p className="text-lg max-w-2xl mx-auto text-gray-600">
+                Yılların tecrübesiyle tamamladığımız projeleri inceleyin
+              </p>
+            </div>
+          </AnimatedSection>
+
+          <InteractivePortfolio 
+            projects={portfolioProjects}
+            showCategoryFilter={true}
+            categories={categories}
+          />
+
+          <div className="text-center mt-12">
+            <Link href="/portfolio" className="bg-gradient-to-r from-orange-500 to-blue-500 text-white font-bold px-8 py-3 rounded-md hover:from-orange-600 hover:to-blue-600 transition-all duration-200">
+              Tüm Projelerimizi Görün
+            </Link>
+          </div>
+
+          {/* Testimonials */}
+          <AnimatedSection animation="fade-up">
+            <div className="bg-gray-50 rounded-2xl p-12 mb-12 mt-16">
+              <h3 className="text-3xl font-bold mb-12 text-center text-gray-800">Müşterilerimizin Yorumları</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <AnimatedSection animation="fade-right" delay={100}>
+                  <div className="bg-white p-6 rounded-lg shadow">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-orange-100 rounded-full mr-4 flex items-center justify-center">
+                        <span className="text-orange-500 font-bold">AY</span>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-800">Ali Yılmaz</h3>
+                        <p className="text-gray-500 text-sm">XYZ Şirketi CEO'su</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 italic">
+                      "Metropol Reklam ile çalışmak gerçekten profesyonel bir deneyimdi. Mağazalarımız için tasarladıkları tabelalar beklentilerimizin ötesinde oldu."
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                <AnimatedSection animation="fade-up" delay={200}>
+                  <div className="bg-white p-6 rounded-lg shadow">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full mr-4 flex items-center justify-center">
+                        <span className="text-blue-500 font-bold">SD</span>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-800">Selin Demir</h3>
+                        <p className="text-gray-500 text-sm">ABC Restaurant Sahibi</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 italic">
+                      "Restoranımız için yaptıkları özel tasarım yönlendirme tabelaları müşterilerimizden çok olumlu geri dönüşler aldı."
+                    </p>
+                  </div>
+                </AnimatedSection>
+                
+                <AnimatedSection animation="fade-left" delay={300}>
+                  <div className="bg-white p-6 rounded-lg shadow">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-green-100 rounded-full mr-4 flex items-center justify-center">
+                        <span className="text-green-500 font-bold">MK</span>
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-800">Mehmet Kaya</h3>
+                        <p className="text-gray-500 text-sm">123 Nakliyat Genel Müdürü</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 italic">
+                      "Araç filomuz için yaptıkları giydirme çalışması olağanüstüydü. Araçlarımız artık şehrin her yerinde dikkat çekiyor."
+                    </p>
+                  </div>
+                </AnimatedSection>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       {/* About Section - Hakkımızda İçeriği */}
       <section className="py-20 bg-white relative" id="about">
         {/* Decorative background elements */}
@@ -465,244 +653,6 @@ export default function Home() {
                 <p className="text-gray-600">
                   Projelerimizi planlandığı şekilde zamanında teslim etmeyi taahhüt eder, müşterilerimizi asla bekletmeyiz.
                 </p>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Services Section - Hizmetlerimiz İçeriği */}
-      <section className="py-20 bg-gray-50 relative" id="services">
-        {/* Decorative background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}></div>
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <AnimatedSection animation="fade-up">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-6 text-gray-800">Hizmetlerimiz</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
-              <p className="text-lg max-w-2xl mx-auto text-gray-600">
-                Markanızı öne çıkarmak için profesyonel reklam çözümlerimizi keşfedin
-              </p>
-            </div>
-          </AnimatedSection>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {services.map((service, index) => (
-              <AnimatedSection key={service.id} animation="fade-up" delay={index * 100}>
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300">
-                  <div className="h-3 bg-gradient-to-r from-orange-400 to-blue-500"></div>
-                  <div className="p-6">
-                    <h2 className="text-2xl font-bold mb-4 text-gray-800">{service.title}</h2>
-                    <p className="text-gray-600 mb-6">{service.description}</p>
-                    <h3 className="text-lg font-semibold mb-3 text-gray-700">Özellikler:</h3>
-                    <ul className="space-y-2 mb-6">
-                      {service.features.map((feature, index) => (
-                        <li key={index} className="flex items-center text-gray-600">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link href={`/contact?service=${service.id}`} className="inline-block bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white font-medium px-6 py-2 rounded-md transition-opacity duration-200">
-                      Teklif Alın
-                    </Link>
-                  </div>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Portfolio Section - Portföy İçeriği */}
-      <section className="py-20 bg-white" id="portfolio">
-        <div className="container mx-auto px-4">
-          <AnimatedSection animation="fade-up">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-6 text-gray-800">Portföyümüz</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
-              <p className="text-lg max-w-2xl mx-auto text-gray-600">
-                Yılların tecrübesiyle tamamladığımız projeleri inceleyin
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <InteractivePortfolio 
-            projects={portfolioProjects}
-            showCategoryFilter={true}
-            categories={categories}
-          />
-
-          <div className="text-center mt-12">
-            <Link href="/portfolio" className="bg-gradient-to-r from-orange-500 to-blue-500 text-white font-bold px-8 py-3 rounded-md hover:from-orange-600 hover:to-blue-600 transition-all duration-200">
-              Tüm Projelerimizi Görün
-            </Link>
-          </div>
-
-          {/* Testimonials */}
-          <AnimatedSection animation="fade-up">
-            <div className="bg-gray-50 rounded-2xl p-12 mb-12 mt-16">
-              <h3 className="text-3xl font-bold mb-12 text-center text-gray-800">Müşterilerimizin Yorumları</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <AnimatedSection animation="fade-right" delay={100}>
-                  <div className="bg-white p-6 rounded-lg shadow">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-orange-100 rounded-full mr-4 flex items-center justify-center">
-                        <span className="text-orange-500 font-bold">AY</span>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">Ali Yılmaz</h3>
-                        <p className="text-gray-500 text-sm">XYZ Şirketi CEO'su</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic">
-                      "Metropol Reklam ile çalışmak gerçekten profesyonel bir deneyimdi. Mağazalarımız için tasarladıkları tabelalar beklentilerimizin ötesinde oldu."
-                    </p>
-                  </div>
-                </AnimatedSection>
-                
-                <AnimatedSection animation="fade-up" delay={200}>
-                  <div className="bg-white p-6 rounded-lg shadow">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-blue-100 rounded-full mr-4 flex items-center justify-center">
-                        <span className="text-blue-500 font-bold">SD</span>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">Selin Demir</h3>
-                        <p className="text-gray-500 text-sm">ABC Restaurant Sahibi</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic">
-                      "Restoranımız için yaptıkları özel tasarım yönlendirme tabelaları müşterilerimizden çok olumlu geri dönüşler aldı."
-                    </p>
-                  </div>
-                </AnimatedSection>
-                
-                <AnimatedSection animation="fade-left" delay={300}>
-                  <div className="bg-white p-6 rounded-lg shadow">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-full mr-4 flex items-center justify-center">
-                        <span className="text-green-500 font-bold">MK</span>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">Mehmet Kaya</h3>
-                        <p className="text-gray-500 text-sm">123 Nakliyat Genel Müdürü</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic">
-                      "Araç filomuz için yaptıkları giydirme çalışması olağanüstüydü. Araçlarımız artık şehrin her yerinde dikkat çekiyor."
-                    </p>
-                  </div>
-                </AnimatedSection>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Products Section - Ürünler İçeriği */}
-      <section className="py-20 bg-gray-50" id="products">
-        <div className="container mx-auto px-4">
-          <AnimatedSection animation="fade-up">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-6 text-gray-800">Ürünlerimiz</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-8"></div>
-              <p className="text-lg max-w-2xl mx-auto text-gray-600">
-                Reklam ve tabela ihtiyaçlarınız için kaliteli ve profesyonel ürün yelpazemiz
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {productCategories.map((category, index) => (
-              <AnimatedSection key={category.id} animation="fade-up" delay={index * 100}>
-                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                  <div className="h-56 bg-gray-200 flex items-center justify-center">
-                    <p className="text-gray-500">Ürün Görseli</p>
-                  </div>
-                  
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-3 text-gray-800">{category.title}</h3>
-                    <p className="text-gray-600 mb-4">{category.description}</p>
-                    
-                    <h4 className="font-semibold text-gray-700 mb-2">Ürün Çeşitleri:</h4>
-                    <ul className="mb-5 space-y-1">
-                      {category.features.map((feature, index) => (
-                        <li key={index} className="flex items-center text-gray-600 text-sm">
-                          <svg className="h-4 w-4 text-orange-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <div className="flex gap-2">
-                      <Link href={`/contact?product=${category.id}`} className="bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-4 py-2 rounded text-sm font-medium transition-opacity duration-200">
-                        Teklif Alın
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          {/* Custom Products */}
-          <AnimatedSection animation="fade-up">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="bg-gray-200 h-full flex items-center justify-center p-12">
-                  <p className="text-gray-500">Özel Üretim Görseli</p>
-                </div>
-                <div className="p-8 md:p-12">
-                  <h3 className="text-2xl font-bold mb-4 text-gray-800">Özel Üretim Çözümler</h3>
-                  <p className="text-gray-600 mb-6">
-                    Katalogda yer almayan, size özel tasarım ve üretim gerektiren projeleriniz için uzman ekibimizle çözüm sunuyoruz.
-                  </p>
-                  
-                  <ul className="mb-8 space-y-3">
-                    <li className="flex items-start">
-                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <div>
-                        <span className="font-medium text-gray-800">Ücretsiz Keşif ve Danışmanlık</span>
-                        <p className="text-gray-600 text-sm">Projeleriniz için yerinde inceleme ve profesyonel tavsiyeler</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <div>
-                        <span className="font-medium text-gray-800">Özel Tasarım</span>
-                        <p className="text-gray-600 text-sm">Kurumsal kimliğinize uygun yaratıcı ve özgün tasarımlar</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start">
-                      <svg className="h-5 w-5 text-orange-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <div>
-                        <span className="font-medium text-gray-800">Anahtar Teslim Hizmet</span>
-                        <p className="text-gray-600 text-sm">Tasarımdan üretime, montajdan bakıma tam kapsamlı hizmet</p>
-                      </div>
-                    </li>
-                  </ul>
-                  
-                  <Link href="/contact?service=custom" className="bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-6 py-3 rounded-md font-medium transition-opacity duration-200 inline-block">
-                    Özel Teklif Alın
-                  </Link>
-                </div>
               </div>
             </div>
           </AnimatedSection>

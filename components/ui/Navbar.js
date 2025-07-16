@@ -8,9 +8,9 @@ import { HomeIcon, UserGroupIcon, PhotoIcon, ShoppingCartIcon, EnvelopeIcon, Use
 
 const navigation = [
   { name: 'Ana Sayfa', href: '/', isScroll: false, icon: HomeIcon },
-  { name: 'Hakkımızda', href: '#about', fallbackHref: '/about', isScroll: true, sectionId: 'about', icon: UserGroupIcon },
-  { name: 'Portföy', href: '#portfolio', fallbackHref: '/portfolio', isScroll: true, sectionId: 'portfolio', icon: PhotoIcon },
   { name: 'Ürünler', href: '#products', fallbackHref: '/products', isScroll: true, sectionId: 'products', icon: ShoppingCartIcon },
+  { name: 'Portföy', href: '#portfolio', fallbackHref: '/portfolio', isScroll: true, sectionId: 'portfolio', icon: PhotoIcon },
+  { name: 'Hakkımızda', href: '#about', fallbackHref: '/about', isScroll: true, sectionId: 'about', icon: UserGroupIcon },
   { name: 'İletişim', href: '#contact', fallbackHref: '/contact', isScroll: true, sectionId: 'contact', icon: EnvelopeIcon },
 ];
 
@@ -23,7 +23,7 @@ export default function Navbar() {
   const dropdownRef = useRef(null);
   
   // Use active section hook only on homepage
-  const sectionIds = ['about', 'portfolio', 'products', 'contact'];
+  const sectionIds = ['products', 'portfolio', 'about', 'contact'];
   const activeSection = useActiveSection(router.pathname === '/' ? sectionIds : []);
 
   useEffect(() => {

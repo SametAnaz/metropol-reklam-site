@@ -10,6 +10,7 @@ const navigation = [
   { name: 'Ana Sayfa', href: '/', isScroll: false, icon: HomeIcon },
   { name: 'Ürünler', href: '#products', fallbackHref: '/products', isScroll: true, sectionId: 'products', icon: ShoppingCartIcon },
   { name: 'Portföy', href: '#portfolio', fallbackHref: '/portfolio', isScroll: true, sectionId: 'portfolio', icon: PhotoIcon },
+  { name: 'Galeri', href: '/gallery', isScroll: false, icon: PhotoIcon },
   { name: 'Hakkımızda', href: '#about', fallbackHref: '/about', isScroll: true, sectionId: 'about', icon: UserGroupIcon },
   { name: 'İletişim', href: '#contact', fallbackHref: '/contact', isScroll: true, sectionId: 'contact', icon: EnvelopeIcon },
 ];

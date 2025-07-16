@@ -55,6 +55,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/gallery" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
+                  Galeri
+                </Link>
+              </li>
+              <li>
                 <Link href="/products" className="text-gray-300 hover:text-primary transition-colors duration-300 hover:pl-2 block">
                   Ürünler
                 </Link>

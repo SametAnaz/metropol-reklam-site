@@ -221,28 +221,92 @@ const categories = [
 // Product categories
 const productCategories = [
   {
+    id: 'tabela',
+    title: 'Tabela',
+    description: 'Işıklı ve ışıksız tabela çözümleriyle markanızı en iyi şekilde yansıtın.',
+    subcategories: [
+      {
+        title: 'Işıklı',
+        features: [
+          'Vinil germe ışıklı',
+          'Oyma ışıklı',
+          'Kabartma ışıklı',
+          'Neon ışıklı',
+          'LED animasyon ışıklı',
+          'Işıklı totem',
+          'LED ekran ve kayan yazı',
+          'Işıklı makam ve kapı tabelaları'
+        ]
+      },
+      {
+        title: 'Işıksız',
+        features: [
+          'Vinil germe',
+          'Mesh germe',
+          'Yol kenarı tabelaları',
+          'Totem tabela',
+          'Billboard tabela',
+          'Işıksız makam ve kapı tabelaları'
+        ]
+      }
+    ]
+  },
+  {
     id: 'totem-tabela',
-    title: 'Totem Tabelalar',
-    description: 'İşletmenizi uzaktan fark edilir kılan ve dikkat çeken sağlam yapıdaki totem tabelar.',
-    features: ['Işıklı Totemler', 'Işıksız Totemler', 'Dijital Ekranlı Totemler', 'Yön Gösterici Totemler']
+    title: 'Totem Tabela',
+    description: 'Çeşitli totem tabela seçenekleriyle işletmenizi öne çıkarın.',
+    features: [
+      '360 derece totem tabelaları',
+      'Boru ayaklı totem tabela',
+      'Giydirme ayaklı totem tabela',
+      'İnşaat bilgilendirme panoları',
+      'Çatı tabelaları'
+    ]
   },
   {
-    id: 'isikli-tabela',
-    title: 'Işıklı Tabelalar',
-    description: 'Gece ve gündüz dikkat çeken, markanızı öne çıkaran modern ışıklı tabela sistemleri.',
-    features: ['LED Tabelalar', 'Neon Tabelalar', 'Lightbox Tabelalar', 'Çift Taraflı Tabelalar']
+    id: 'yonlendirme',
+    title: 'Yönlendirme Tabelaları (İç ve Dış Mekan)',
+    description: 'İç ve dış mekan yönlendirme sistemleri ile ziyaretçilerinizi yönlendirin.',
+    features: [
+      'Fiyat panoları',
+      'Kapı tabelaları',
+      'İş güvenliği tabelaları',
+      'Trafik levhaları',
+      'Hastane / okul yönlendirme tabelaları',
+      'İkaz ve uyarı tabelaları',
+      'Masa, yaka isimlikleri',
+      'Lazer markalama etiketler'
+    ]
   },
   {
-    id: 'isiksiz-tabela',
-    title: 'Işıksız Tabelalar',
-    description: 'Klasik ve dayanıklı, her bütçeye uygun kurumsal ışıksız tabela sistemleri.',
-    features: ['Vinil Tabelalar', 'Branda Tabelalar', 'Metal Tabelar', 'Ahşap Tabelar']
+    id: 'yapistirma-reklamlar',
+    title: 'Yapıştırma Reklamlar',
+    description: 'Cam ve yüzey uygulamaları ile etkili reklam çözümleri.',
+    features: [
+      'Cam yazıları',
+      'Cam resim kaplama',
+      'Cam dekor folyoları',
+      'One vision (delikli folyo)'
+    ]
   },
   {
-    id: 'kutu-harf',
-    title: 'Kutu Harfler',
-    description: 'Şık ve profesyonel görünüm sağlayan 3 boyutlu kutu harf çözümleri.',
-    features: ['Pleksi Kutu Harf', 'Alüminyum Kutu Harf', 'Paslanmaz Kutu Harf', 'LED Kutu Harf']
+    id: 'afisler',
+    title: 'Afişler',
+    description: 'Dayanıklı ve etkili afiş çözümleri ile mesajınızı ulaştırın.',
+    features: [
+      'Branda afiş',
+      'Bez afiş',
+      'Delikli mesh afiş'
+    ]
+  },
+  {
+    id: 'arac-reklamlari',
+    title: 'Araç Reklamları',
+    description: 'Araçlarınızı reklam aracına dönüştürün.',
+    features: [
+      'Araç yazıları',
+      'Araç giydirme'
+    ]
   }
 ];
 
@@ -363,22 +427,46 @@ export default function Home() {
                   </div>
                   
                   <div className="p-6">
-                    <h3 className="text-xl font-bold mb-3 text-gray-800">{category.title}</h3>
+                    <h2 className="text-xl font-bold mb-3 text-gray-800">{category.title}</h2>
                     <p className="text-gray-600 mb-4">{category.description}</p>
                     
-                    <h4 className="font-semibold text-gray-700 mb-2">Ürün Çeşitleri:</h4>
-                    <ul className="mb-5 space-y-1">
-                      {category.features.map((feature, index) => (
-                        <li key={index} className="flex items-center text-gray-600 text-sm">
-                          <svg className="h-4 w-4 text-orange-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+                    {/* Tabela kategorisi için özel yapı */}
+                    {category.subcategories ? (
+                      <div className="space-y-4">
+                        {category.subcategories.map((subcategory, subIndex) => (
+                          <div key={subIndex}>
+                            <h3 className="font-semibold text-gray-700 mb-2 underline">{subcategory.title}:</h3>
+                            <ul className="mb-3 space-y-1">
+                              {subcategory.features.map((feature, featureIndex) => (
+                                <li key={featureIndex} className="flex items-center text-gray-600 text-sm">
+                                  <svg className="h-4 w-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                  </svg>
+                                  {feature}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      /* Diğer kategoriler için normal yapı */
+                      <div>
+                        <h3 className="font-semibold text-gray-700 mb-2">Ürün Çeşitleri:</h3>
+                        <ul className="mb-5 space-y-1">
+                          {category.features.map((feature, featureIndex) => (
+                            <li key={featureIndex} className="flex items-center text-gray-600 text-sm">
+                              <svg className="h-4 w-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                     
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mt-4">
                       <Link href={`/contact?product=${category.id}`} className="bg-gradient-to-r from-orange-500 to-blue-500 hover:opacity-90 text-white px-4 py-2 rounded text-sm font-medium transition-opacity duration-200">
                         Teklif Alın
                       </Link>

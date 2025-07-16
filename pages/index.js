@@ -49,6 +49,15 @@ const services = [
   }
 ];
 
+// Galeri önizleme fotoğrafları - ana sayfa için
+const galleryPreviewImages = [
+  { id: 1, src: '/gallery/isikli-kutu-harf1.jpeg', title: 'Modern ışıklı kutu harf' },
+  { id: 2, src: '/gallery/arac-giydirme1.jpeg', title: 'Profesyonel araç giydirme' },
+  { id: 3, src: '/gallery/cephe-giydirme1.jpeg', title: 'Büyük ölçekli cephe giydirme' },
+  { id: 4, src: '/gallery/dijital-baski1.jpeg', title: 'Yüksek kaliteli dijital baskı' },
+  { id: 5, src: '/gallery/totem1.jpeg', title: 'Modern totem tabela' }
+];
+
 // Portfolio projects - Güncel proje listesi
 const portfolioProjects = [
   // TABELA KATEGORİSİ (2 adet)
@@ -567,11 +576,11 @@ export default function Home() {
               
               {/* Galeri İlk 5 Fotoğraf */}
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                {portfolioProjects.slice(0, 5).map((project, index) => (
-                  <div key={project.id} className="group relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+                {galleryPreviewImages.map((image, index) => (
+                  <div key={image.id} className="group relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
                     <Image
-                      src={project.image || '/portfolio/kutuharf.jpg'}
-                      alt={project.title}
+                      src={image.src}
+                      alt={image.title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
                       sizes="(max-width: 768px) 50vw, 20vw"

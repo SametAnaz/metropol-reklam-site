@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
 import MainLayout from '../components/layouts/MainLayout';
@@ -179,10 +179,20 @@ const galleryImages = [
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const imagesPerPage = 8;
+  const totalPages = Math.ceil(galleryImages.length / imagesPerPage);
+  
+  // Mevcut sayfadaki fotoğrafları hesapla
+  const startIndex = (currentPage - 1) * imagesPerPage;
+  const currentImages = galleryImages.slice(startIndex, startIndex + imagesPerPage);
 
   const openLightbox = (image, index) => {
+    // Global index'i hesapla (mevcut sayfa + item index)
+    const globalIndex = startIndex + index;
     setSelectedImage(image);
-    setCurrentIndex(index);
+    setCurrentIndex(globalIndex);
   };
 
   const closeLightbox = () => {
@@ -199,6 +209,29 @@ export default function Gallery() {
     const prevIndex = currentIndex === 0 ? galleryImages.length - 1 : currentIndex - 1;
     setSelectedImage(galleryImages[prevIndex]);
     setCurrentIndex(prevIndex);
+  };
+
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Sayfa değiştiğinde scroll yap
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentPage]);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      goToPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      goToPage(currentPage - 1);
+    }
   };
 
   return (
@@ -253,8 +286,8 @@ export default function Gallery() {
 
           {/* Masonry Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {galleryImages.map((image, index) => (
-              <AnimatedSection key={image.id} animation="fade-up" delay={index * 50}>
+            {currentImages.map((image, index) => (
+              <AnimatedSection key={`${currentPage}-${image.id}`} animation="fade-up" delay={index * 100}>
                 <div 
                   className="group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2"
                   onClick={() => openLightbox(image, index)}
@@ -281,6 +314,98 @@ export default function Gallery() {
                 </div>
               </AnimatedSection>
             ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="mt-12 flex flex-col items-center space-y-4">
+            {/* Sayfa Bilgisi */}
+            <div className="text-gray-600 text-sm">
+              <span className="font-medium">{startIndex + 1}-{Math.min(startIndex + imagesPerPage, galleryImages.length)}</span> / {galleryImages.length} fotoğraf
+              <span className="ml-4">Sayfa <span className="font-medium">{currentPage}</span> / {totalPages}</span>
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex items-center space-x-2">
+              {/* Önceki Sayfa */}
+              <button
+                onClick={prevPage}
+                disabled={currentPage === 1}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                ← Önceki
+              </button>
+
+              {/* Sayfa Numaraları */}
+              <div className="flex space-x-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                  // Sadece mevcut sayfa etrafındaki sayfaları göster
+                  if (
+                    page === 1 ||
+                    page === totalPages ||
+                    (page >= currentPage - 2 && page <= currentPage + 2)
+                  ) {
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => goToPage(page)}
+                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                          page === currentPage
+                            ? 'bg-gradient-to-r from-orange-500 to-blue-500 text-white'
+                            : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    );
+                  } else if (
+                    page === currentPage - 3 ||
+                    page === currentPage + 3
+                  ) {
+                    return (
+                      <span key={page} className="px-2 py-2 text-gray-400">
+                        ...
+                      </span>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+
+              {/* Sonraki Sayfa */}
+              <button
+                onClick={nextPage}
+                disabled={currentPage === totalPages}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  currentPage === totalPages
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                Sonraki →
+              </button>
+            </div>
+
+            {/* Hızlı Sayfa Atlama */}
+            {totalPages > 5 && (
+              <div className="flex items-center space-x-2 text-sm">
+                <span className="text-gray-600">Sayfaya git:</span>
+                <select
+                  value={currentPage}
+                  onChange={(e) => goToPage(Number(e.target.value))}
+                  className="border border-gray-300 rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                >
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <option key={page} value={page}>
+                      Sayfa {page}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
       </section>

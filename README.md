@@ -164,6 +164,36 @@ npx prisma migrate dev
 npm run dev
 ```
 
+## 🔧 Environment Variables
+
+Create a `.env.local` file in the root directory and add the following variables:
+
+```env
+# reCAPTCHA Keys (Get from: https://www.google.com/recaptcha/admin)
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_site_key_here
+RECAPTCHA_SECRET_KEY=your_secret_key_here
+
+# Email Settings
+RESEND_API_KEY=your_resend_api_key
+EMAIL_TO=your_email@example.com
+
+# Database URL
+DATABASE_URL="mysql://username:password@localhost:3306/database_name"
+
+# NextAuth
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret_here
+```
+
+### Setting up reCAPTCHA
+
+1. Go to [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin)
+2. Click "Create" to add a new site
+3. Choose reCAPTCHA v2 ("I'm not a robot" Checkbox)
+4. Add your domains (localhost for development, your actual domain for production)
+5. Copy the Site Key to `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`
+6. Copy the Secret Key to `RECAPTCHA_SECRET_KEY`
+
 ## 🌐 API Endpoints
 
 ### Authentication

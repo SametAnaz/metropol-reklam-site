@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import ReCAPTCHA from "react-google-recaptcha";
 import MainLayout from '../components/layouts/MainLayout';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import InteractivePortfolio from '../components/ui/InteractivePortfolio';
@@ -255,18 +256,30 @@ export default function Home() {
 
   const [serverMessage, setServerMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  const recaptchaRef = useRef();
 
   const onSubmit = async (data) => {
     try {
       setServerMessage("");
       setMessageType("");
       
+      // reCAPTCHA doğrulaması
+      const recaptchaValue = recaptchaRef.current.getValue();
+      if (!recaptchaValue) {
+        setMessageType("error");
+        setServerMessage("Lütfen robot olmadığınızı doğrulayın.");
+        return;
+      }
+      
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          recaptchaToken: recaptchaValue
+        }),
       });
 
       const result = await response.json();
@@ -275,14 +288,17 @@ export default function Home() {
         setMessageType("success");
         setServerMessage("Mesajınız başarıyla gönderildi! Teşekkürler.");
         reset();
+        recaptchaRef.current.reset();
       } else {
         setMessageType("error");
         setServerMessage(result.message || "Bir hata oluştu.");
+        recaptchaRef.current.reset();
       }
     } catch (err) {
       console.error(err);
       setMessageType("error");
       setServerMessage("Gönderim sırasında bir hata oluştu.");
+      recaptchaRef.current.reset();
     }
   };
 
@@ -816,6 +832,15 @@ export default function Home() {
                   {errors.message && (
                     <p className="text-red-600 text-sm mt-1">{errors.message.message}</p>
                   )}
+                </div>
+
+                {/* reCAPTCHA */}
+                <div>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                    className="mb-4"
+                  />
                 </div>
 
                 <div>

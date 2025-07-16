@@ -1,8 +1,24 @@
-// pages/contact.js
+// pages/api/contact.js
 
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// reCAPTCHA doğrulama fonksiyonu
+async function verifyRecaptcha(token) {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  
+  const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `secret=${secretKey}&response=${token}`,
+  });
+
+  const data = await response.json();
+  return data.success;
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -10,11 +26,21 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message, recaptchaToken } = req.body;
 
     // Form validation
     if (!name || !email || !message) {
       return res.status(400).json({ message: 'Tüm alanları doldurun' });
+    }
+
+    // reCAPTCHA doğrulaması
+    if (!recaptchaToken) {
+      return res.status(400).json({ message: 'reCAPTCHA doğrulaması gerekli' });
+    }
+
+    const isRecaptchaValid = await verifyRecaptcha(recaptchaToken);
+    if (!isRecaptchaValid) {
+      return res.status(400).json({ message: 'reCAPTCHA doğrulaması başarısız' });
     }
 
     // Email content

@@ -105,9 +105,6 @@ export default function Gallery() {
         <div className="container mx-auto px-4 text-center">
           <AnimatedSection animation="fade-up">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Galeri</h1>
-            <p className="text-xl max-w-2xl mx-auto">
-              115+ proje ile yılların tecrübesiyle gerçekleştirdiğimiz çalışmalarımızı keşfedin
-            </p>
           </AnimatedSection>
         </div>
       </section>
@@ -120,7 +117,7 @@ export default function Gallery() {
               <h2 className="text-3xl font-bold mb-4 text-gray-800">Çalışmalarımız</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-6"></div>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Metropol Reklam olarak gerçekleştirdiğimiz 115+ projeyi ve başarılı çalışmalarımızı sizlerle paylaşıyoruz
+                Metropol Reklam olarak gerçekleştirdiğimiz 115+ projeyi sizlerle paylaşıyoruz
               </p>
               
               {/* Kategori Filtreleme */}

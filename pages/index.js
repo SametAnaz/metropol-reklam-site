@@ -431,8 +431,21 @@ export default function Home() {
             {productCategories.map((category, index) => (
               <AnimatedSection key={category.id} animation="fade-up" delay={index * 100}>
                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                  <div className="h-56 bg-gray-200 flex items-center justify-center">
-                    <p className="text-gray-500">Ürün Görseli</p>
+                  <div className="h-56 bg-gray-200 relative overflow-hidden">
+                    <Image 
+                      src={
+                        category.id === 'tabela' ? '/gallery/isikli-kutu-harf3.jpeg' :
+                        category.id === 'totem-tabela' ? '/gallery/totem1.jpeg' :
+                        category.id === 'yonlendirme' ? '/gallery/yonlendirme1.jpeg' :
+                        category.id === 'yapistirma-reklamlar' ? '/gallery/vinil-kabartma1.jpeg' :
+                        category.id === 'afisler' ? '/gallery/dijital-baski3.jpeg' :
+                        category.id === 'arac-reklamlari' ? '/gallery/arac-giydirme1.jpeg' :
+                        '/gallery/random1.jpeg'
+                      } 
+                      alt={`${category.title} - Metropol Reklam`}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
                   
                   <div className="p-6">
@@ -490,8 +503,13 @@ export default function Home() {
           <AnimatedSection animation="fade-up">
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="bg-gray-200 h-full flex items-center justify-center p-12">
-                  <p className="text-gray-500">Özel Üretim Görseli</p>
+                <div className="bg-gray-200 h-full relative">
+                  <Image 
+                    src="/gallery/ataturk-kosesi8.jpeg" 
+                    alt="Özel Üretim Çözümler - Metropol Reklam"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
                 <div className="p-8 md:p-12">
                   <h3 className="text-2xl font-bold mb-4 text-gray-800">Özel Üretim Çözümler</h3>

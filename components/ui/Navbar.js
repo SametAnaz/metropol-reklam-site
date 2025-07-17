@@ -224,18 +224,7 @@ export default function Navbar() {
               );
             })}
             
-            {status !== 'loading' && !session && (
-              <li>
-                <Link 
-                  href="/auth/signin"
-                  className="text-white"
-                  onClick={closeMenu}
-                >
-                  <UserIcon className={styles.navIcon} />
-                  Giriş Yap
-                </Link>
-              </li>
-            )}
+            {/* Giriş yap seçeneği kaldırıldı - kullanıcıların /admin/login sayfasını manuel olarak ziyaret etmesi bekleniyor */}
           </ul>
         </div>
       
@@ -333,16 +322,8 @@ export default function Navbar() {
                   )}
                 </li>
               ) : (
-                <li>
-                  <Link 
-                    href="/admin/login"
-                    className="text-white hover:text-[#ff7b00] transition-colors"
-                    onClick={closeMenu}
-                  >
-                    Giriş Yap
-                  </Link>
-                  <div className={styles.rect}></div>
-                </li>
+                /* Giriş yap seçeneği kaldırıldı - kullanıcıların /admin/login sayfasını manuel olarak ziyaret etmesi bekleniyor */
+                null
               )}
             </ul>
           </div>

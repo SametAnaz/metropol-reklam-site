@@ -80,21 +80,21 @@ const projects = [
   // YÖNLENDİRME KATEGORİSİ (2 adet)
   {
     id: 8,
-    title: 'İç Mekan Yönlendirme Sistemi',
+    title: 'Dış Mekan Yönlendirme Sistemi',
     category: 'Yönlendirme',
-    description: 'Ofis ve iş merkezleri için profesyonel iç mekan yönlendirme ve bilgilendirme sistemleri.',
+    description: 'İş yeriniz için profesyonel iç mekan yönlendirme ve bilgilendirme sistemleri. Ziyaretçilerin kolayca yön bulmasını sağlayan tasarımlar.',
     primaryColor: '#8b5cf6',
-    secondaryColor: '#a855f7'
-    // image: '/portfolio/ic_yonlendirme.jpg' // Görsel ekleyebilirsiniz
+    secondaryColor: '#a855f7',
+    image: '/gallery/yonlendirme1.jpeg'
   },
   {
     id: 9,
-    title: 'Hastane Yönlendirme Tabelaları',
+    title: 'Restoran - Cafe Yönlendirme Tabelaları',
     category: 'Yönlendirme',
-    description: 'Hastane ve sağlık kuruluşları için kapsamlı yönlendirme ve bilgilendirme çözümleri.',
+    description: 'Restoran ve cafeler için yönlendirme ve bilgilendirme çözümleri.',
     primaryColor: '#ec4899',
-    secondaryColor: '#8b5cf6'
-    // image: '/portfolio/hastane_yonlendirme.jpg' // Görsel ekleyebilirsiniz
+    secondaryColor: '#8b5cf6',
+    image: '/gallery/menu1.jpeg'
   },
 
   // KONSEPT TASARIM KATEGORİSİ (2 adet)
@@ -122,19 +122,19 @@ const projects = [
     id: 12,
     title: 'Kurumsal Promosyon Ürünleri',
     category: 'Promosyon',
-    description: 'Şirketler için özel tasarım kurumsal promosyon ürünleri ve hediyeler.',
+    description: 'Şirketler için özel tasarım kurumsal promosyon ürünleri ve hediyeler. Markanızı müşterilerinizin günlük hayatına taşıyacak kalem, defter, çanta gibi kaliteli ve kullanışlı promosyon ürünleriyle fark yaratın.',
     primaryColor: '#10b981',
-    secondaryColor: '#059669'
-    // image: '/portfolio/promosyon_urun.jpg' // Görsel ekleyebilirsiniz
+    secondaryColor: '#059669',
+    image: '/gallery/promosyon5.jpeg'
   },
   {
     id: 13,
     title: 'Festival Etkinlik Ürünleri',
     category: 'Promosyon',
-    description: 'Festival ve etkinlikler için özel tasarım promosyon ürünleri ve tanıtım malzemeleri.',
+    description: 'Festival ve etkinlikler için özel tasarım promosyon ürünleri ve tanıtım malzemeleri. Katılımcıların etkinliğinizi hatırlamalarını sağlayacak, markanızı güçlendirecek özel tasarlanmış promosyon ürünleri.',
     primaryColor: '#f97316',
-    secondaryColor: '#ea580c'
-    // image: '/portfolio/festival_urun.jpg' // Görsel ekleyebilirsiniz
+    secondaryColor: '#ea580c',
+    image: '/gallery/promosyon1.jpeg'
   },
 
   // OKUL TABELALARİ KATEGORİSİ (2 adet)

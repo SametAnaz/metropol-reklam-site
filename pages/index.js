@@ -132,19 +132,21 @@ const portfolioProjects = [
   // YÖNLENDİRME KATEGORİSİ (2 adet)
   {
     id: 8,
-    title: 'İç Mekan Yönlendirme Sistemi',
+    title: 'Dış Mekan Yönlendirme Sistemi',
     category: 'Yönlendirme',
-    description: 'Ofis ve iş merkezleri için profesyonel iç mekan yönlendirme ve bilgilendirme sistemleri.',
+    description: 'İş yeriniz için profesyonel iç mekan yönlendirme ve bilgilendirme sistemleri. Ziyaretçilerin kolayca yön bulmasını sağlayan tasarımlar.',
     primaryColor: '#8b5cf6',
-    secondaryColor: '#a855f7'
+    secondaryColor: '#a855f7',
+    image: '/gallery/yonlendirme1.jpeg'
   },
   {
     id: 9,
-    title: 'Hastane Yönlendirme Tabelaları',
+    title: 'Restoran - Cafe Yönlendirme Tabelaları',
     category: 'Yönlendirme',
-    description: 'Hastane ve sağlık kuruluşları için kapsamlı yönlendirme ve bilgilendirme çözümleri.',
+    description: 'Restoran ve cafeler için yönlendirme ve bilgilendirme çözümleri.',
     primaryColor: '#ec4899',
-    secondaryColor: '#8b5cf6'
+    secondaryColor: '#8b5cf6',
+    image: '/gallery/menu1.jpeg'
   },
 
   // KONSEPT TASARIM KATEGORİSİ (2 adet)
@@ -172,17 +174,20 @@ const portfolioProjects = [
     id: 12,
     title: 'Kurumsal Promosyon Ürünleri',
     category: 'Promosyon',
-    description: 'Şirketler için özel tasarım kurumsal promosyon ürünleri ve hediyeler.',
+    description: 'Şirketler için özel tasarım kurumsal promosyon ürünleri ve hediyeler. Markanızı müşterilerinizin günlük hayatına taşıyacak kalem, defter, çanta gibi kaliteli ve kullanışlı promosyon ürünleriyle fark yaratın.',
     primaryColor: '#10b981',
-    secondaryColor: '#059669'
+    secondaryColor: '#059669',
+    image: '/gallery/promosyon5.jpeg'
   },
   {
     id: 13,
     title: 'Festival Etkinlik Ürünleri',
     category: 'Promosyon',
-    description: 'Festival ve etkinlikler için özel tasarım promosyon ürünleri ve tanıtım malzemeleri.',
+    description: 'Festival ve etkinlikler için özel tasarım promosyon ürünleri ve tanıtım malzemeleri. Katılımcıların etkinliğinizi hatırlamalarını sağlayacak, markanızı güçlendirecek özel tasarlanmış promosyon ürünleri.',
     primaryColor: '#f97316',
-    secondaryColor: '#ea580c'
+    secondaryColor: '#ea580c',
+    image: '/gallery/promosyon1.jpeg'
+
   },
 
   // OKUL TABELALARİ KATEGORİSİ (3 adet)
@@ -206,7 +211,7 @@ const portfolioProjects = [
   },
   {
     id: 16,
-    title: 'Okul İç Mekan Yönlendirme',
+    title: 'Okul İç Mekan Tasarımları',
     category: 'Okul Tabelaları',
     description: 'Tarihi anlatıları ve görselleri bir araya getiren bu duvar tasarımı, okullarda hem bilgilendirici hem de ilham verici bir ortam sunar.',
     primaryColor: '#0ea5e9',
@@ -435,9 +440,9 @@ export default function Home() {
                     <Image 
                       src={
                         category.id === 'tabela' ? '/gallery/isikli-kutu-harf3.jpeg' :
-                        category.id === 'totem-tabela' ? '/gallery/totem1.jpeg' :
+                        category.id === 'totem-tabela' ? '/gallery/totem8.jpeg' :
                         category.id === 'yonlendirme' ? '/gallery/yonlendirme1.jpeg' :
-                        category.id === 'yapistirma-reklamlar' ? '/gallery/vinil-kabartma1.jpeg' :
+                        category.id === 'yapistirma-reklamlar' ? '/gallery/cephe-giydirme5.jpeg' :
                         category.id === 'afisler' ? '/gallery/dijital-baski3.jpeg' :
                         category.id === 'arac-reklamlari' ? '/gallery/arac-giydirme1.jpeg' :
                         '/gallery/random1.jpeg'

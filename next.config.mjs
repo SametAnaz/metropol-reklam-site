@@ -5,6 +5,20 @@ const nextConfig = {
   
   // Vercel Analytics and Speed Insights are automatically enabled when deployed to Vercel
   // We don't need any explicit configuration here
+  
+  // İzin verilen görüntü kaynaklarını yapılandırın
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vercel-storage.com',
+      },
+    ],
+  },
 
   // Define security headers
   async headers() {

@@ -177,7 +177,13 @@ export default function GalleryManagement() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold text-gray-800">Galeri Yönetimi</h2>
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+            setShowForm(true);
+            setFormData(prev => ({
+              ...prev,
+              order: images.length + 1 // Otomatik sıra numarası ayarla
+            }));
+          }}
           className="bg-gradient-to-r from-orange-500 to-blue-500 text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
         >
           Yeni Resim Ekle
@@ -281,30 +287,48 @@ export default function GalleryManagement() {
               </select>
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Sıra Numarası
-              </label>
-              <input
-                type="number"
-                placeholder="0"
-                value={formData.order}
-                onChange={(e) => setFormData({...formData, order: parseInt(e.target.value) || 0})}
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              />
-            </div>
-            
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="isActive"
-                checked={formData.isActive}
-                onChange={(e) => setFormData({...formData, isActive: e.target.checked})}
-                className="mr-2"
-              />
-              <label htmlFor="isActive" className="text-sm font-medium text-gray-700">
-                Aktif
-              </label>
+            <div className="flex space-x-4">
+              <div className="w-32">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Sıra Numarası
+                </label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  value={formData.order}
+                  onChange={(e) => setFormData({...formData, order: parseInt(e.target.value) || 0})}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+                  min="0"
+                />
+              </div>
+              
+              <div className="flex-grow">
+                <label htmlFor="isActive" className="block text-sm font-medium text-gray-700 mb-1">
+                  Durum
+                </label>
+                <div className="relative inline-block w-full">
+                  <div 
+                    className="block w-14 h-8 bg-gray-300 rounded-full shadow-inner cursor-pointer"
+                    onClick={() => setFormData({...formData, isActive: !formData.isActive})}
+                  >
+                    <div 
+                      className={`absolute w-6 h-6 rounded-full transition-transform duration-300 ease-in-out top-1 ${
+                        formData.isActive 
+                          ? 'bg-green-500 transform translate-x-7' 
+                          : 'bg-red-500 transform translate-x-1'
+                      }`}
+                    />
+                  </div>
+                  <input 
+                    type="checkbox"
+                    id="isActive"
+                    checked={formData.isActive}
+                    onChange={(e) => setFormData({...formData, isActive: e.target.checked})}
+                    className="sr-only"
+                  />
+                  <span className="ml-16 text-sm text-gray-700">{formData.isActive ? 'Aktif' : 'Pasif'}</span>
+                </div>
+              </div>
             </div>
             
             {isUploading && (
@@ -387,7 +411,13 @@ export default function GalleryManagement() {
         <div className="text-center py-12">
           <p className="text-gray-500">Henüz galeri resmi eklenmemiş.</p>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => {
+              setShowForm(true);
+              setFormData(prev => ({
+                ...prev,
+                order: 1 // İlk resim için sıra numarası 1 olarak ayarla
+              }));
+            }}
             className="mt-4 bg-gradient-to-r from-orange-500 to-blue-500 text-white px-6 py-2 rounded hover:opacity-90 transition-opacity"
           >
             İlk Resmi Ekle

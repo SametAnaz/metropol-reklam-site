@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { ALL_CATEGORIES, getCategoryNameById, getCategoryIdByName } from '../../lib/categories';
 
 export default function GalleryManagement() {
   const [images, setImages] = useState([]);
@@ -269,15 +270,14 @@ export default function GalleryManagement() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="">Kategori Seçin</option>
-                <option value="Tabela">Tabela</option>
-                <option value="Dijital Baskı">Dijital Baskı</option>
-                <option value="Araç Giydirme">Araç Giydirme</option>
-                <option value="Kutu Harf">Kutu Harf</option>
-                <option value="Yönlendirme">Yönlendirme</option>
-                <option value="Promosyon">Promosyon</option>
-                <option value="Okul">Okul</option>
-                <option value="Totem">Totem</option>
-                <option value="Diğer">Diğer</option>
+                {ALL_CATEGORIES
+                  .filter(cat => cat.id !== 'all') // "Tümü" kategorisini hariç tut
+                  .map(category => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))
+                }
               </select>
             </div>
             
@@ -359,7 +359,7 @@ export default function GalleryManagement() {
             <h3 className="font-semibold text-gray-800 mb-1">{image.title}</h3>
             <p className="text-sm text-gray-600 mb-2 line-clamp-2">{image.description}</p>
             <div className="text-xs text-gray-500 space-y-1">
-              <p>Kategori: {image.category || 'Belirtilmemiş'}</p>
+              <p>Kategori: {image.category ? getCategoryNameById(image.category) : 'Belirtilmemiş'}</p>
               <p>Sıra: {image.order}</p>
               <p className={`font-medium ${image.isActive ? 'text-green-600' : 'text-red-600'}`}>
                 {image.isActive ? 'Aktif' : 'Pasif'}

@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../lib/generated/prisma";
+import { getCategoryNameById } from "../../lib/categories";
 
 // Prevent multiple instances of Prisma Client in development
 const globalForPrisma = global;

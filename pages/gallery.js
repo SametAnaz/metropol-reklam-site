@@ -5,40 +5,13 @@ import MainLayout from '../components/layouts/MainLayout';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import useSWR from 'swr';
 import axios from 'axios';
+import { ALL_CATEGORIES } from '../lib/categories';
 
 // API fetcher fonksiyonu
 const fetcher = url => axios.get(url).then(res => res.data);
 
-// Kategori filtresi seçenekleri
-const categories = [
-  { id: 'all', name: 'Tümü' },
-  { id: 'arac-giydirme', name: 'Araç Giydirme' },
-  { id: 'ataturk-kosesi', name: 'Atatürk Köşesi' },
-  { id: 'baski', name: 'Baskı' },
-  { id: 'cephe-giydirme', name: 'Cephe Giydirme' },
-  { id: 'dijital-baski', name: 'Dijital Baskı' },
-  { id: 'isikli-krom', name: 'Işıklı Krom' },
-  { id: 'isikli-kutu-harf', name: 'Işıklı Kutu Harf' },
-  { id: 'isikli-tabela', name: 'Işıklı Tabela' },
-  { id: 'isikli-vinil', name: 'Işıklı Vinil' },
-  { id: 'isikli-yonlendirme', name: 'Işıklı Yönlendirme' },
-  { id: 'isiksiz-krom', name: 'Işıksız Krom' },
-  { id: 'isiksiz-kutu-harf', name: 'Işıksız Kutu Harf' },
-  { id: 'isiksiz-vinil', name: 'Işıksız Vinil' },
-  { id: 'isimlik', name: 'İsimlik' },
-  { id: 'kurumsal', name: 'Kurumsal' },
-  { id: 'kutu-harf', name: 'Kutu Harf' },
-  { id: 'led-tabela', name: 'LED Tabela' },
-  { id: 'menu', name: 'Menü' },
-  { id: 'neon', name: 'Neon' },
-  { id: 'okul', name: 'Okul' },
-  { id: 'promosyon', name: 'Promosyon' },
-  { id: 'tisort-baski', name: 'Tişört Baskı' },
-  { id: 'totem', name: 'Totem' },
-  { id: 'vinil-kabartma', name: 'Vinil Kabartma' },
-  { id: 'yonlendirme', name: 'Yönlendirme' },
-  { id: 'yurtdisi-tabela', name: 'Yurtdışı Tabela' }
-];
+// Kategori filtresi seçenekleri - merkezi kategori listesini kullan
+const categories = ALL_CATEGORIES;
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null);

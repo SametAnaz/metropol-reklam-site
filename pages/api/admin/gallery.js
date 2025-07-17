@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { PrismaClient } from "../../../lib/generated/prisma";
+import { getCategoryNameById } from "../../../lib/categories";
 
 const prisma = new PrismaClient();
 

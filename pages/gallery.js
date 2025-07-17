@@ -79,7 +79,7 @@ export default function Gallery() {
     <MainLayout>
       <NextSeo
         title="Galeri | Metropol Reklam Kuşadası - Çalışmalarımız"
-        description="Metropol Reklam'ın gerçekleştirdiği 115+ tabela, dijital baskı, araç giydirme ve reklam projelerini galerimizde inceleyin. Kuşadası'nın en kapsamlı reklam galerisi."
+        description="Metropol Reklam'ın gerçekleştirdiği yüzden fazla tabela, dijital baskı, araç giydirme ve reklam projelerini galerimizde inceleyin. Kuşadası'nın en kapsamlı reklam galerisi."
         canonical="https://metropolreklam.net/gallery"
         openGraph={{
           url: 'https://metropolreklam.net/gallery',
@@ -113,37 +113,82 @@ export default function Gallery() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="fade-up">
-            <div className="text-center mb-16">
+            <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4 text-gray-800">Çalışmalarımız</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-blue-500 mx-auto mb-6"></div>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Metropol Reklam olarak gerçekleştirdiğimiz 115+ projeyi sizlerle paylaşıyoruz
+                Metropol Reklam olarak gerçekleştirdiğimiz yüzden fazla projeyi sizlerle paylaşıyoruz
               </p>
-              
-              {/* Kategori Filtreleme */}
-              <div className="mt-8">
-                <label htmlFor="category-filter" className="text-gray-600 font-medium block mb-2">
-                  Kategori Seçin:
-                </label>
-                <select 
-                  id="category-filter"
-                  value={selectedCategory}
-                  onChange={(e) => {
-                    setSelectedCategory(e.target.value);
-                    setCurrentPage(1); // Kategori değişince ilk sayfadan başlat
-                  }}
-                  className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                >
-                  {categories.map(category => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+            </div>
+          </AnimatedSection>
+          
+          {/* Kategori Filtreleme - Desktop ve Mobil için farklı tasarım */}
+          <AnimatedSection animation="fade-up" delay={200}>
+            {/* Desktop Kategori Butonları - Tema ile uyumlu tasarım */}
+            <div className="hidden md:block bg-gradient-to-r from-orange-500 to-blue-500 rounded-lg p-5 mb-10 shadow-lg">
+              <div className="flex flex-wrap justify-center items-center gap-2">
+                {categories.map(category => (
+                  <button
+                    key={category.id}
+                    onClick={() => {
+                      setSelectedCategory(category.id);
+                      setCurrentPage(1); // Kategori değişince ilk sayfadan başlat
+                    }}
+                    className={`px-4 py-2 rounded-md transition-all duration-300 text-sm md:text-base whitespace-nowrap ${
+                      selectedCategory === category.id
+                        ? 'bg-white text-orange-600 font-bold shadow-md border-2 border-white'
+                        : 'bg-transparent border border-white text-white hover:bg-white hover:bg-opacity-20'
+                    }`}
+                  >
+                    {category.name}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-3 text-sm text-white text-center">
+                <span className="font-medium">
+                  {categories.find(cat => cat.id === selectedCategory)?.name || 'Tüm'} kategorisinde {data ? data.pagination?.totalCount : 0} çalışma
+                </span>
+              </div>
+            </div>
+            
+            {/* Mobil Kategori Filtresi - Mevcut tasarım korundu */}
+            <div className="md:hidden bg-white rounded-xl shadow-lg p-6 mb-8 mx-auto relative z-10">
+              <div className="flex flex-col items-center">
+                <h3 className="text-gray-800 font-medium mb-4 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
+                  </svg>
+                  Kategori Filtrele
+                </h3>
+                <div className="w-full overflow-x-auto py-2 custom-scrollbar">
+                  <div className="flex flex-wrap justify-center items-center gap-3 min-w-max mx-auto px-2">
+                    {categories.map(category => (
+                      <button
+                        key={category.id}
+                        onClick={() => {
+                          setSelectedCategory(category.id);
+                          setCurrentPage(1);
+                        }}
+                        className={`px-4 py-2 rounded-full transition-all duration-300 text-sm whitespace-nowrap ${
+                          selectedCategory === category.id
+                            ? 'bg-gradient-to-r from-orange-500 to-blue-500 text-white font-medium shadow-md transform scale-105'
+                            : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-orange-300 hover:shadow-sm'
+                        }`}
+                      >
+                        {category.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-4 text-sm text-gray-500">
+                  {categories.find(cat => cat.id === selectedCategory)?.name || 'Tüm'} kategorisinde gösterilen: 
+                  <span className="font-medium ml-1 text-orange-500">
+                    {data ? data.pagination?.totalCount : 0} çalışma
+                  </span>
+                </div>
               </div>
             </div>
           </AnimatedSection>
-
           {/* Masonry Grid */}
           {isLoading ? (
             <div className="flex justify-center items-center py-20">

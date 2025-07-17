@@ -4,8 +4,8 @@ export default function Document() {
   return (
     <Html lang="tr">
       <Head>
-        <link rel="icon" href="/metropol_logo_250x250px.png" />
-        <link rel="apple-touch-icon" href="/metropol_logo_250x250px.png" />
+        <link rel="icon" href="/metropol_circle_logo.png" />
+        <link rel="apple-touch-icon" href="/metropol_circle_logo.png" />
         <meta name="theme-color" content="#FF5714" />
         
         {/* JSON-LD for Google Search */}
@@ -17,8 +17,8 @@ export default function Document() {
               "@type": "Organization",
               "name": "Metropol Reklam",
               "url": "https://metropolreklam.net",
-              "logo": "https://metropolreklam.net/metropol_logo_500x500.png",
-              "image": "https://metropolreklam.net/metropol_logo_500x500.png",
+              "logo": "https://metropolreklam.net/metropol_circle_logo.png",
+              "image": "https://metropolreklam.net/metropol_circle_logo.png",
               "description": "Kuşadası Metropol Reklam: Profesyonel tabela, reklam çözümleri, dijital baskı, araç giydirme ve fuar standları.",
               "address": {
                 "@type": "PostalAddress",

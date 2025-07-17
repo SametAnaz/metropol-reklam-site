@@ -53,14 +53,14 @@
 .logo a img {
   height: auto;
   width: auto;
-  max-height: 90px; /* Logo boyutunu artır */
+  max-height: 45px; /* Logo boyutunu %30 küçülttük (65px'in %70'i) */
   object-fit: contain;
-  transform: scale(2.5); /* Scale faktörünü artır */
+  transform: scale(0.9); /* Scale faktörünü %30 küçülttük */
   transform-origin: left center;
   position: relative;
   top: 0; /* Logoyu ortalama */
-  margin-top: -20px; /* Logoyu yukarı kaydır */
-  margin-bottom: -20px; /* Alt taşmayı dengele */
+  margin-top: -3px; /* Küçültmeye oranla margin'leri de küçülttük */
+  margin-bottom: -3px; /* Alt taşmayı dengele */
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); /* Logo için hafif gölge ekle */
   z-index: 102; /* Logo her zaman önde gösterilsin */
   opacity: 0.98; /* Hafif geçişli efekt için başlangıç opaklığı */
@@ -71,13 +71,13 @@
 
 .logo a:hover img {
   filter: drop-shadow(0 4px 8px rgba(255, 123, 0, 0.4));
-  transform: scale(2.6); /* Hover durumunda daha büyük olsun */
+  transform: scale(0.95); /* Hover durumunda biraz daha büyük olsun */
 }
 
 /* Navbar affix durumunda logo boyutu */
 .affix .logo a img {
-  max-height: 80px;
-  margin-top: -15px;
+  max-height: 42px; /* Affix durumunda da %30 küçülttük */
+  margin-top: -2px;
 }
 
 .main_list {
@@ -207,13 +207,13 @@
 }
 
 .overlay .brand img {
-  max-height: 55px;
+  max-height: 35px; /* Overlay'de de %30 küçülttük */
   width: auto;
   object-fit: contain;
-  transform: scale(1.6);
+  transform: scale(0.85); /* Scale faktörünü %30 küçülttük */
   transform-origin: left center;
-  margin-top: -5px;
-  margin-bottom: -5px;
+  margin-top: -2px;
+  margin-bottom: -2px;
   filter: drop-shadow(0 2px 4px rgba(255, 255, 255, 0.1));
 }
 
@@ -417,12 +417,12 @@
   }
 
   .nav .logo a img {
-    max-height: 70px;
+    max-height: 40px; /* Mobil görünümde logoyu küçülttük */
     width: auto;
-    transform: scale(3.0); /* Daha büyük ölçeklendirme yapıyoruz */
-    margin-top: -20px;
-    margin-left: -10px; /* Sola doğru kaydıralım, logo daha belirgin gözüksün */
-    margin-bottom: -20px;
+    transform: scale(1.2); /* Scale değerini önemli ölçüde düşürdük */
+    margin-top: -5px;
+    margin-left: -5px; /* Sola doğru kaydırma miktarını azalttık */
+    margin-bottom: -5px;
   }
 
   .nav .main_list {
@@ -591,12 +591,12 @@
   }
 
   .nav .logo a img {
-    max-height: 200px;
+    max-height: 35px; /* Küçük ekranlarda logo boyutunu azalttık */
     width: auto;
-    transform: scale(2.2);
-    margin-top: -15px;
-    margin-bottom: -15px;
-    margin-left: -70px;
+    transform: scale(1.0); /* Scale değerini normal boyuta getirdik */
+    margin-top: -5px;
+    margin-bottom: -5px;
+    margin-left: -15px; /* Sol kenardan uzaklığı azalttık */
   }
 
   .navTrigger {
@@ -639,10 +639,11 @@
   }
 
   .nav .logo a img {
-    max-height: 55px;
-    transform: scale(1.6);
-    margin-top: -8px;
-    margin-bottom: -8px;
+    max-height: 30px;
+    transform: scale(0.9);
+    margin-top: -4px;
+    margin-bottom: -4px;
+    margin-left: -5px;
   }
 
   .navTrigger {
@@ -775,10 +776,10 @@
   }
   
   .nav .logo a img {
-    max-height: 85px;
-    transform: scale(2.2);
-    margin-top: -15px;
-    margin-bottom: -15px;
+    max-height: 40px;
+    transform: scale(1.1);
+    margin-top: -5px;
+    margin-bottom: -5px;
   }
 
   .main_list ul {

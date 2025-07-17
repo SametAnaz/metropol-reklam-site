@@ -11,18 +11,22 @@ export default function AdminLayout({ children, title }) {
   useEffect(() => {
     if (status === 'loading') return;
 
-    if (!session || !session.user) {
+    if (status === 'unauthenticated') {
+      console.log("AdminLayout: Unauthenticated user");
       router.replace('/admin/login');
       return;
     }
 
-    if (session.user.role !== 'admin') {
-      // Admin olmayan kullanıcıları uygun sayfaya yönlendir
-      if (session.user.role === 'user') {
-        router.replace('/customer/dashboard');
-      } else {
-        router.replace('/');
-      }
+    if (!session || !session.user) {
+      console.log("AdminLayout: No session or user");
+      router.replace('/admin/login');
+      return;
+    }
+
+    if (!session.user.isActive) {
+      console.log("AdminLayout: User not active");
+      // Aktif olmayan kullanıcıları giriş sayfasına yönlendir
+      router.replace('/admin/login');
     }
   }, [status, session, router]);
 
@@ -34,7 +38,7 @@ export default function AdminLayout({ children, title }) {
     );
   }
 
-  if (status === 'unauthenticated' || (session && session.user.role !== 'admin')) {
+  if (status === 'unauthenticated' || (session && !session.user.isActive)) {
     return null;
   }
 

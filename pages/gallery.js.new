@@ -208,7 +208,7 @@ export default function Gallery() {
                   >
                     <div className="aspect-square relative overflow-hidden">
                       <Image
-                        src={image.blobUrl || image.imagePath}
+                        src={image.imageUrl}
                         alt={image.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
@@ -362,7 +362,7 @@ export default function Gallery() {
             {/* Image */}
             <div className="relative">
               <Image
-                src={selectedImage.blobUrl || selectedImage.imagePath}
+                src={selectedImage.imageUrl}
                 alt={selectedImage.title}
                 width={800}
                 height={600}

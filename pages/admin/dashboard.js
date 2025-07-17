@@ -2,26 +2,61 @@ import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import UserManagement from '../../components/admin/UserManagement';
+import GalleryManagement from '../../components/admin/GalleryManagement';
 import AdminBackground from '../../components/ui/AdminBackground';
 import Script from 'next/script';
 
-export default function AdminDashboard() {
+// Server-side auth kontrolü ekleyelim
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  
+  if (!session || !session.user || !session.user.isActive) {
+    return {
+      redirect: {
+        destination: '/admin/login',
+        permanent: false,
+      },
+    };
+  }
+  
+  return {
+    props: { session }
+  };
+}
+
+export default function AdminDashboard({ session: serverSession }) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
+    console.log("Dashboard status:", status);
+    console.log("Dashboard session:", session);
+    
     if (status === 'loading') return; // Still loading
 
-    if (!session) {
-      router.push('/admin/login');
+    if (status === 'unauthenticated') {
+      console.log("Unauthenticated, redirecting to login");
+      router.replace('/admin/login');
       return;
     }
 
-    if (session.user.role !== 'admin') {
-      router.push('/admin/login');
+    if (!session || !session.user) {
+      console.log("No session found, redirecting to login");
+      router.replace('/admin/login');
       return;
     }
+
+    console.log("Session user:", session.user);
+    console.log("isActive status:", session.user.isActive);
+
+    if (!session.user.isActive) {
+      console.log("User not active, redirecting to login");
+      router.replace('/admin/login');
+      return;
+    }
+    
+    console.log("User is active, staying on dashboard");
   }, [session, status, router]);
 
   if (status === 'loading') {
@@ -32,7 +67,7 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!session || session.user.role !== 'admin') {
+  if (!session || !session.user.isActive) {
     return null;
   }
 
@@ -86,6 +121,16 @@ export default function AdminDashboard() {
               >
                 Kullanıcı Yönetimi (0)
               </button>
+              <button
+                onClick={() => setActiveTab('gallery')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === 'gallery'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Galeri Yönetimi
+              </button>
             </nav>
           </div>
         </div>
@@ -125,6 +170,28 @@ export default function AdminDashboard() {
                     <div className="flex items-center justify-center">
                       <span className="text-gray-500">
                         Kullanıcıları görüntülemek için tıklayın
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div 
+                    className="bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-primary"
+                    onClick={() => setActiveTab('gallery')}
+                  >
+                    <div className="flex items-center justify-center h-10 w-10 bg-green-500 bg-opacity-10 rounded-lg mx-auto mb-4">
+                      <svg className="h-6 w-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      Galeri Yönetimi
+                    </h3>
+                    <p className="text-gray-600 mb-3">
+                      Galeri fotoğraflarını ekle, düzenle ve yönet
+                    </p>
+                    <div className="flex items-center justify-center">
+                      <span className="text-gray-500">
+                        Galeriyi yönetmek için tıklayın
                       </span>
                     </div>
                   </div>
@@ -171,27 +238,12 @@ export default function AdminDashboard() {
           {activeTab === 'users' && (
             <UserManagement />
           )}
+
+          {activeTab === 'gallery' && (
+            <GalleryManagement />
+          )}
         </div>
       </div>
     </div>
   );
 }
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session || session.user.role !== 'admin') {
-    return {
-      redirect: {
-        destination: '/admin/login',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      session,
-    },
-  };
-} 

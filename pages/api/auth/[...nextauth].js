@@ -13,7 +13,8 @@ export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      id: "admin-credentials",
+      name: 'Admin Credentials',
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" }
@@ -39,12 +40,17 @@ export const authOptions = {
           throw new Error('Invalid password');
         }
 
+        // If user is not active, prevent login
+        if (!user.isActive) {
+          throw new Error('Your account is not active. Please contact the administrator.');
+        }
+        
         return {
           id: user.id.toString(),
           email: user.email,
           name: user.name,
-          role: user.role,
-          image: user.image
+          image: user.image,
+          isActive: user.isActive
         };
       }
     })
@@ -56,22 +62,42 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
         token.id = user.id;
+        token.isActive = user.isActive;
+        // isActive kullanıcıları admin olarak işaretleyin
+        token.isAdmin = user.isActive;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user.role = token.role;
         session.user.id = token.id;
+        session.user.isActive = token.isActive;
+        session.user.isAdmin = token.isAdmin;
       }
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // URL kontrolü yaparak güvenli bir şekilde döndür
+      try {
+        // Tam URL mi yoksa göreceli yol mu kontrol et
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+          const urlObj = new URL(url);
+          return url;
+        } else if (url.startsWith('/')) {
+          // Göreceli yol ise baseUrl ile birleştir
+          return `${baseUrl}${url}`;
+        }
+        return baseUrl;
+      } catch (e) {
+        console.error("Redirect error:", e);
+        return baseUrl;
+      }
     }
   },
   pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
+    signIn: '/admin/login',
+    error: '/admin/login',
   },
   events: {
     async signOut({ session, token }) {

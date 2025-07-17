@@ -38,8 +38,8 @@ export default async function handler(req, res) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Only allow users to access their own data
-    if (user.id !== session.user.id && session.user.role !== 'admin') {
+    // Only allow active users to access data
+    if (user.id !== session.user.id && !session.user.isActive) {
       return res.status(403).json({ message: 'Access denied' });
     }
 

@@ -55,19 +55,15 @@ export default function Register() {
         throw new Error(data.error || 'Kayıt işlemi başarısız');
       }
 
-      // If registration successful, sign in automatically
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        throw new Error(result.error);
-      }
-
-      // Redirect to services page after successful registration and login
-      router.push('/');
+      // Registration successful, show success message and redirect to admin login
+      setError('');
+      setLoading(false);
+      
+      // Show success message with toast or alert
+      alert('Kayıt işlemi başarılı! Hesabınızın aktifleştirilmesi için yönetici onayı beklenecektir.');
+      
+      // Redirect to admin login page
+      router.push('/admin/login');
     } catch (error) {
       console.error('Registration error:', error);
       setError(error.message);

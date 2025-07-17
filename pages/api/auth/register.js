@@ -38,12 +38,13 @@ export default async function handler(req, res) {
     // Get user agent info
     const userAgent = req.headers["user-agent"];
 
-    // Create user
+    // Create user - inactive by default
     const user = await prisma.user.create({
       data: {
         email,
-        name, // Now required
+        name,
         password: hashedPassword,
+        isActive: false, // Inactive by default until manually approved
         ipAddress: ip,
         userAgent: userAgent,
         // We'll get more detailed device info from userAgent
@@ -51,7 +52,6 @@ export default async function handler(req, res) {
           browser: userAgent?.split('(')[0] || 'Unknown',
           os: userAgent?.split('(')[1]?.split(')')[0] || 'Unknown'
         }),
-        role: 'USER', // Default role - must match the enum in schema.prisma
       },
     });
 

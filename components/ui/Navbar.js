@@ -293,42 +293,36 @@ export default function Navbar() {
 
                   {dropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-xl py-1 z-50">
-                      {session.user.role && (
-                        <Link
-                          href={session.user.role === 'admin' ? '/admin/dashboard' : '/customer/dashboard'}
-                          className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
-                          onClick={() => {
-                            setDropdownOpen(false);
-                            closeMenu();
-                          }}
-                        >
-                          {session.user.role === 'admin' ? 'Admin Panel' : 'Müşteri Paneli'}
-                        </Link>
-                      )}
-                      {session.user.role === 'user' && (
-                        <>
-                          <Link
-                            href="/settings"
-                            className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
-                            onClick={() => {
-                              setDropdownOpen(false);
-                              closeMenu();
-                            }}
-                          >
-                            Ayarlar
-                          </Link>
-                          <Link
-                            href="/settings/change-password"
-                            className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
-                            onClick={() => {
-                              setDropdownOpen(false);
-                              closeMenu();
-                            }}
-                          >
-                            Şifre Değiştir
-                          </Link>
-                        </>
-                      )}
+                      <Link
+                        href="/admin/dashboard"
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          closeMenu();
+                        }}
+                      >
+                        Yönetim Paneli
+                      </Link>
+                      <Link
+                        href="/settings"
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          closeMenu();
+                        }}
+                      >
+                        Ayarlar
+                      </Link>
+                      <Link
+                        href="/settings/change-password"
+                        className="block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700"
+                        onClick={() => {
+                          setDropdownOpen(false);
+                          closeMenu();
+                        }}
+                      >
+                        Şifre Değiştir
+                      </Link>
                       <button
                         onClick={handleSignOut}
                         className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300"
@@ -341,7 +335,7 @@ export default function Navbar() {
               ) : (
                 <li>
                   <Link 
-                    href="/auth/signin"
+                    href="/admin/login"
                     className="text-white hover:text-[#ff7b00] transition-colors"
                     onClick={closeMenu}
                   >

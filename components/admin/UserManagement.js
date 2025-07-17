@@ -5,6 +5,7 @@ export default function UserManagement() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [actionLoading, setActionLoading] = useState(false);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -30,43 +31,47 @@ export default function UserManagement() {
     }
   };
 
-  const getStatusBadge = (status) => {
-    const colors = {
-      active: 'bg-green-100 text-green-800',
-      suspended: 'bg-yellow-100 text-yellow-800',
-      banned: 'bg-red-100 text-red-800'
-    };
-    
-    const labels = {
-      active: 'Aktif',
-      suspended: 'Askıda',
-      banned: 'Yasaklı'
-    };
+  const toggleUserActive = async (userId, currentActiveStatus) => {
+    try {
+      setActionLoading(true);
+      const response = await fetch('/api/admin/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          updates: {
+            isActive: !currentActiveStatus
+          }
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Refresh the user list
+      await fetchUsers();
+    } catch (error) {
+      console.error('Error updating user:', error);
+      setError('Kullanıcı güncellenirken hata oluştu: ' + error.message);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const getStatusBadge = (isActive) => {
     return (
-      <span className={`px-2 py-1 text-xs font-medium rounded-full ${colors[status] || 'bg-gray-100 text-gray-800'}`}>
-        {labels[status] || status || 'Bilinmiyor'}
+      <span className={`px-2 py-1 text-xs font-medium rounded-full ${isActive 
+        ? 'bg-green-100 text-green-800' 
+        : 'bg-red-100 text-red-800'}`}>
+        {isActive ? 'Aktif' : 'Pasif'}
       </span>
     );
   };
 
-  const getRoleBadge = (role) => {
-    const colors = {
-      admin: 'bg-purple-100 text-purple-800',
-      user: 'bg-blue-100 text-blue-800'
-    };
-    
-    const labels = {
-      admin: 'Admin',
-      user: 'Kullanıcı'
-    };
-
-    return (
-      <span className={`px-2 py-1 text-xs font-medium rounded-full ${colors[role] || 'bg-gray-100 text-gray-800'}`}>
-        {labels[role] || role || 'Bilinmiyor'}
-      </span>
-    );
-  };
+  // All users are now ADMIN, no need for role badge
 
   const formatDate = (date) => {
     if (!date) return 'Bilinmiyor';
@@ -128,16 +133,16 @@ export default function UserManagement() {
                 Kullanıcı
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Rol
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Durum
+                Aktivasyon
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Kayıt Tarihi
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Son Giriş
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                İşlemler
               </th>
             </tr>
           </thead>
@@ -155,16 +160,26 @@ export default function UserManagement() {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {getRoleBadge(user.role)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {getStatusBadge(user.accountStatus)}
+                  {getStatusBadge(user.isActive)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {formatDate(user.createdAt)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {formatDate(user.lastLoginAt)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button
+                    onClick={() => toggleUserActive(user.id, user.isActive)}
+                    disabled={actionLoading}
+                    className={`px-3 py-1 rounded text-white ${
+                      user.isActive
+                        ? 'bg-red-600 hover:bg-red-700'
+                        : 'bg-green-600 hover:bg-green-700'
+                    } transition-colors ${actionLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {user.isActive ? 'Deaktif Et' : 'Aktif Et'}
+                  </button>
                 </td>
               </tr>
             ))}
@@ -185,4 +200,4 @@ export default function UserManagement() {
       </div>
     </div>
   );
-} 
+}

@@ -34,12 +34,12 @@ export default function SignIn() {
           setError(result.error);
         }
       } else {
-        // Get session to check user role
+        // Get session to check user active status
         const session = await fetch('/api/auth/session').then(res => res.json());
         let callbackUrl = '/';  // Default redirect to homepage
         
-        // Only redirect admins to admin dashboard
-        if (session?.user?.role === 'admin') {
+        // Only redirect active users to admin dashboard
+        if (session?.user?.isActive) {
           callbackUrl = '/admin/dashboard';
         }
         
@@ -68,7 +68,7 @@ export default function SignIn() {
                 className="object-contain"
               />
             </div>
-            <h2 className="text-2xl font-bold text-[#333] mt-6 mb-2">Müşteri Girişi</h2>
+            <h2 className="text-2xl font-bold text-[#333] mt-6 mb-2">Giriş</h2>
             <p className="text-gray-600">Hesabınıza giriş yapın</p>
           </div>
 

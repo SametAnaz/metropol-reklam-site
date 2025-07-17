@@ -15,10 +15,10 @@ export default async function handler(req, res) {
       return res.status(401).json({ message: 'Giriş gerekli' });
     }
     
-    // Admin yetkisi kontrolü
-    if (session.user.role !== 'admin') {
-      console.log('User role:', session.user.role);
-      return res.status(401).json({ message: 'Admin yetkisi gerekli' });
+    // Aktif kullanıcı kontrolü
+    if (!session.user.isActive) {
+      console.log('User active status:', session.user.isActive);
+      return res.status(401).json({ message: 'Aktif hesap yetkisi gerekli' });
     }
 
     const { method } = req;
@@ -92,34 +92,28 @@ async function handlePut(req, res, session) {
       return res.status(400).json({ message: 'Kendi hesabınızı güncelleyemezsiniz' });
     }
 
-    // Admin kullanıcıları güncellenemez
-    if (user.role === 'admin') {
-      return res.status(403).json({ message: 'Admin kullanıcıları güncellenemez' });
+    // Sadece hesap aktifliği güncellenebilir
+    if (updates.isActive === undefined) {
+      return res.status(400).json({ message: 'Aktiflik durumu belirtilmeli' });
     }
 
-    // Sadece hesap durumu güncellenebilir
-    if (!updates.accountStatus) {
-      return res.status(400).json({ message: 'Geçerli bir hesap durumu belirtilmeli' });
-    }
-
-    // Geçerli hesap durumları
-    const validStatuses = ['active', 'suspended', 'banned'];
-    if (!validStatuses.includes(updates.accountStatus)) {
-      return res.status(400).json({ message: 'Geçersiz hesap durumu' });
+    // Boolean değer kontrolü
+    if (typeof updates.isActive !== 'boolean') {
+      return res.status(400).json({ message: 'Aktiflik durumu boolean olmalı' });
     }
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        accountStatus: updates.accountStatus,
+        isActive: updates.isActive,
         updatedAt: new Date()
       }
     });
 
     return res.status(200).json({ 
-      message: 'Kullanıcı hesap durumu başarıyla güncellendi',
+      message: 'Kullanıcı aktivasyon durumu başarıyla güncellendi',
       updatedFields: {
-        accountStatus: updatedUser.accountStatus,
+        isActive: updatedUser.isActive,
         updatedAt: updatedUser.updatedAt
       }
     });
@@ -151,9 +145,9 @@ async function handleDelete(req, res, session) {
       return res.status(400).json({ message: 'Kendi hesabınızı silemezsiniz' });
     }
 
-    // Admin kullanıcıları silinemez
-    if (user.role === 'admin') {
-      return res.status(403).json({ message: 'Admin kullanıcıları silinemez' });
+    // Aktif kullanıcılar silinemez, sadece deaktif yapılabilir
+    if (user.isActive) {
+      return res.status(403).json({ message: 'Aktif kullanıcılar silinemez. Önce deaktif yapınız.' });
     }
 
     await prisma.user.delete({

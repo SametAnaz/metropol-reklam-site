@@ -144,9 +144,18 @@ export default function GalleryManagement() {
       description: image.description || '',
       imagePath: image.imagePath,
       category: image.category || '',
-      order: image.order
+      order: image.order,
+      isActive: image.isActive
     });
     setShowForm(true);
+    
+    // Sayfa en üste otomatik kaydırma
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Yumuşak kaydırma animasyonu
+      });
+    }, 100); // Formun açılması için kısa bir gecikme
   };
 
   const handleFileChange = (e) => {

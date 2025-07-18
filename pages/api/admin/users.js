@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
-import { PrismaClient } from '@prisma/client';
+import prisma from "../../../lib/db";
 
 export default async function handler(req, res) {
   console.log('API called with method:', req.method);
@@ -40,8 +40,6 @@ export default async function handler(req, res) {
   }
 }
 
-const prisma = new PrismaClient();
-
 // Kullanıcıları listeleme
 async function handleGet(req, res) {
   try {
@@ -53,11 +51,15 @@ async function handleGet(req, res) {
         id: true,
         name: true,
         email: true,
-        role: true,
+        isActive: true,
         image: true,
         emailVerified: true,
         createdAt: true,
-        accountStatus: true
+        updatedAt: true,
+        ipAddress: true,
+        userAgent: true,
+        deviceInfo: true,
+        location: true
       }
     });
     

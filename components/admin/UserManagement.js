@@ -34,13 +34,14 @@ export default function UserManagement() {
   const toggleUserActive = async (userId, currentActiveStatus) => {
     try {
       setActionLoading(true);
+      console.log("Toggling user active status:", userId, currentActiveStatus);
       const response = await fetch('/api/admin/users', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId,
+          userId: parseInt(userId),
           updates: {
             isActive: !currentActiveStatus
           }
@@ -48,7 +49,8 @@ export default function UserManagement() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
       }
 
       // Refresh the user list
@@ -136,7 +138,10 @@ export default function UserManagement() {
                 Durum
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Son Giriş
+                Kayıt Tarihi
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Cihaz Bilgisi
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 İşlemler
@@ -150,12 +155,27 @@ export default function UserManagement() {
                   <div className="text-sm font-medium text-gray-900">
                     {user.email}
                   </div>
+                  {user.name && (
+                    <div className="text-sm text-gray-500">
+                      {user.name}
+                    </div>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {getStatusBadge(user.isActive)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {formatDate(user.lastLoginAt)}
+                  {formatDate(user.createdAt)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <div className="max-w-xs truncate" title={user.deviceInfo || 'Bilgi yok'}>
+                    {user.deviceInfo ? user.deviceInfo.substring(0, 30) + (user.deviceInfo.length > 30 ? '...' : '') : 'Bilgi yok'}
+                  </div>
+                  {user.ipAddress && (
+                    <div className="text-xs text-gray-400 mt-1">
+                      IP: {user.ipAddress}
+                    </div>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button

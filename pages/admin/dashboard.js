@@ -1,10 +1,12 @@
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import UserManagement from '../../components/admin/UserManagement';
 import GalleryManagement from '../../components/admin/GalleryManagement';
 import AdminBackground from '../../components/ui/AdminBackground';
 import Script from 'next/script';
+import Image from 'next/image';
+import Link from 'next/link';
 
 // Server-side auth kontrolü ekleyelim
 export async function getServerSideProps(context) {
@@ -28,6 +30,8 @@ export default function AdminDashboard({ session: serverSession }) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     console.log("Dashboard status:", status);
@@ -59,6 +63,26 @@ export default function AdminDashboard({ session: serverSession }) {
     console.log("User is active, staying on dashboard");
   }, [session, status, router]);
 
+  useEffect(() => {
+    // Handle clicking outside the dropdown to close it
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleDropdown = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+  };
+
   if (status === 'loading') {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -73,24 +97,58 @@ export default function AdminDashboard({ session: serverSession }) {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="bg-white shadow">
+      {/* Navbar */}
+      <div className="bg-white shadow sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-900">
-                Admin Panel
-              </h1>
+              <Link href="/" className="flex-shrink-0 flex items-center">
+                <Image 
+                  src="/metropol_logo2_500x500.png" 
+                  alt="Metropol Reklam Logo" 
+                  width={160} 
+                  height={160} 
+                  className="mr-3 rounded-full"
+                />
+                <h1 className="text-xl font-semibold text-gray-900">
+                  Admin Panel
+                </h1>
+              </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-700">
+              <span className="text-gray-700 hidden sm:inline">
                 Hoş geldiniz, {session.user.email}
               </span>
-              <button
-                onClick={() => router.push('/api/auth/signout')}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Çıkış Yap
-              </button>
+              
+              {/* User dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  <span>{session.user.email.split('@')[0]}</span>
+                  <svg className={`w-4 h-4 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {dropdownOpen && (
+                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
+                    <Link
+                      href="/settings/change-password"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Şifre Değiştir
+                    </Link>
+                    <button
+                      onClick={() => router.push('/api/auth/signout')}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Çıkış Yap
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -151,7 +209,7 @@ export default function AdminDashboard({ session: serverSession }) {
                   Metropol Reklam admin paneline hoş geldiniz. Buradan sitenizi ve kullanıcılarınızı yönetebilirsiniz.
                 </p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
                   <div 
                     className="bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-primary"
                     onClick={() => setActiveTab('users')}
@@ -193,41 +251,6 @@ export default function AdminDashboard({ session: serverSession }) {
                       <span className="text-gray-500">
                         Galeriyi yönetmek için tıklayın
                       </span>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-                    <div className="flex items-center justify-center h-10 w-10 bg-secondary bg-opacity-10 rounded-lg mx-auto mb-4">
-                      <svg className="h-6 w-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      İçerik Yönetimi
-                    </h3>
-                    <p className="text-gray-600">
-                      Site içeriklerini düzenle ve portfolyo yönet
-                    </p>
-                    <div className="mt-3 text-sm text-gray-500">
-                      Yakında aktif olacak
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-                    <div className="flex items-center justify-center h-10 w-10 bg-gray-100 rounded-lg mx-auto mb-4">
-                      <svg className="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Site Ayarları
-                    </h3>
-                    <p className="text-gray-600">
-                      Genel site ayarlarını yapılandır
-                    </p>
-                    <div className="mt-3 text-sm text-gray-500">
-                      Yakında aktif olacak
                     </div>
                   </div>
                 </div>

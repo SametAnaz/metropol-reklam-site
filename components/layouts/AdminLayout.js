@@ -64,6 +64,9 @@ export default function AdminLayout({ children, title }) {
                 <Link href="/admin/products" className="hover:text-blue-400 transition-colors">
                   Ürünler
                 </Link>
+                <Link href="/admin/dashboard" className="hover:text-blue-400 transition-colors">
+                  Dashboard
+                </Link>
                 <span className="text-sm text-gray-300">
                   {session.user.name || session.user.email}
                 </span>

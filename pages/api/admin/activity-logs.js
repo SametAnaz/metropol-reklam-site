@@ -12,15 +12,17 @@ export default async function handler(req, res) {
   // GET request to fetch logs
   if (req.method === 'GET') {
     try {
-      const { userId } = req.query;
+      const { userId, page = 1, limit = 10 } = req.query;
+      const pageNumber = parseInt(page);
+      const pageSize = parseInt(limit);
       
       try {
-        // Geçici olarak örnek veriler döndürelim ve hatayı tespit edelim
-        console.log("Örnek veriler döndürülüyor ve migrasyon durumu kontrol ediliyor");
+        console.log(`Aktivite günlükleri alınıyor: Sayfa ${pageNumber}, Limit ${pageSize}`);
         
         // Gerçek veritabanı sorgusu yapmadan önce, migrasyon durumunu kontrol et
         let logs = [];
         let formattedLogs = [];
+        let totalCount = 0;
         
         try {
           // Tabloları kontrol et
@@ -37,7 +39,18 @@ export default async function handler(req, res) {
           if (hasActivityTable) {
             console.log("ActivityLog tablosu mevcut, sorgu yapılıyor");
             
-            // Construct the query
+            // Construct the where condition
+            const whereCondition = {};
+            if (userId && userId !== 'all' && parseInt(userId)) {
+              whereCondition.userId = parseInt(userId);
+            }
+            
+            // Get total count of logs for pagination
+            totalCount = await prisma.activityLog.count({
+              where: whereCondition
+            });
+            
+            // Construct the query with pagination
             const query = {
               include: {
                 user: {
@@ -48,20 +61,17 @@ export default async function handler(req, res) {
                   }
                 }
               },
+              where: whereCondition,
               orderBy: {
                 createdAt: 'desc'
               },
-              take: 100 // Limit the number of logs returned
+              take: pageSize,
+              skip: (pageNumber - 1) * pageSize
             };
             
-            // If a userId is provided, filter logs for that user
-            if (userId && userId !== 'all' && parseInt(userId)) {
-              query.where = { userId: parseInt(userId) };
-            }
-            
-            // Fetch activity logs
+            // Fetch activity logs with pagination
             logs = await prisma.activityLog.findMany(query);
-            console.log("Bulunan log sayısı:", logs.length);
+            console.log(`Bulunan log sayısı: ${logs.length}, Toplam: ${totalCount}`);
             
             // Format the logs to match the expected frontend format
             formattedLogs = logs.map(log => ({
@@ -103,6 +113,9 @@ export default async function handler(req, res) {
                 deviceInfo: 'Chrome / Windows 10'
               }
             ];
+            
+            // Set total count for demo data
+            totalCount = 2;
           }
         } catch (dbQueryError) {
           console.error("Tablo sorgulama hatası:", dbQueryError);
@@ -123,7 +136,16 @@ export default async function handler(req, res) {
           ];
         }
         
-        return res.status(200).json(formattedLogs);
+        // Return logs with pagination information
+        return res.status(200).json({
+          data: formattedLogs,
+          pagination: {
+            total: totalCount || formattedLogs.length,
+            page: pageNumber,
+            limit: pageSize,
+            totalPages: totalCount ? Math.ceil(totalCount / pageSize) : 1
+          }
+        });
       } catch (queryError) {
         console.error("Sorgu hatası:", queryError);
         return res.status(500).json({ message: 'Veri sorgulama hatası', error: queryError.message });
@@ -149,7 +171,16 @@ export default async function handler(req, res) {
         }
       ];
       
-      return res.status(200).json(demoLogs);
+      // Return demo data with pagination info
+      return res.status(200).json({
+        data: demoLogs,
+        pagination: {
+          total: 1,
+          page: 1,
+          limit: 10,
+          totalPages: 1
+        }
+      });
     }
   }
   // POST request to create a new log

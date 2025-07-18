@@ -32,6 +32,12 @@ export default function ActivityLog() {
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState('all');
   const [loadingUsers, setLoadingUsers] = useState(true);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0
+  });
   
 
 
@@ -53,26 +59,44 @@ export default function ActivityLog() {
     }
   };
 
-  // Fetch activity logs
-  const fetchActivities = async (userId = 'all') => {
+  // Fetch activity logs with pagination
+  const fetchActivities = async (userId = 'all', page = 1, limit = 10) => {
     setIsLoading(true);
     setError('');
     try {
-      const response = await fetch(`/api/admin/activity-logs?userId=${userId}`);
+      const response = await fetch(`/api/admin/activity-logs?userId=${userId}&page=${page}&limit=${limit}`);
       
       // Even if there's an error status, try to parse the response
-      const data = await response.json();
+      const result = await response.json();
       
       // Log response information for debugging
-      console.log(`API yanıtı (${response.status}):`, data);
+      console.log(`API yanıtı (${response.status}):`, result);
       
-      if (!response.ok && !data.length) {
-        // If we have an error status and no valid data
-        setError(`Aktivite günlükleri alınamadı (${response.status}): ${data.message || 'Bilinmeyen hata'}`);
+      if (!response.ok) {
+        // If we have an error status
+        setError(`Aktivite günlükleri alınamadı (${response.status}): ${result.message || 'Bilinmeyen hata'}`);
         setActivities([]);
       } else {
-        // If we have data (even with an error status) or success status
-        setActivities(data || []);
+        // Handle both new pagination format and old format for backward compatibility
+        if (result.data && result.pagination) {
+          // New format with pagination
+          setActivities(result.data || []);
+          setPagination({
+            page: result.pagination.page,
+            limit: result.pagination.limit,
+            total: result.pagination.total,
+            totalPages: result.pagination.totalPages
+          });
+        } else {
+          // Old format (array of activities)
+          setActivities(result || []);
+          setPagination({
+            page: 1,
+            limit: 10,
+            total: result.length,
+            totalPages: Math.ceil(result.length / 10)
+          });
+        }
         
         // Artık aktivite günlüğü görüntüleme işlemi için log tutmuyoruz
         // Bu şekilde gereksiz log kayıtları oluşmasını önlemiş oluyoruz
@@ -93,7 +117,7 @@ export default function ActivityLog() {
 
     if (status === 'authenticated') {
       fetchUsers();
-      fetchActivities('all'); // Start with all users
+      fetchActivities('all', 1, pagination.limit); // Start with all users, first page
     }
   }, [status, router]);
 
@@ -101,7 +125,22 @@ export default function ActivityLog() {
   const handleUserChange = (e) => {
     const userId = e.target.value;
     setSelectedUserId(userId);
-    fetchActivities(userId);
+    // Reset to first page when changing user
+    setPagination(prev => ({...prev, page: 1}));
+    fetchActivities(userId, 1, pagination.limit);
+  };
+  
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    setPagination(prev => ({...prev, page: newPage}));
+    fetchActivities(selectedUserId, newPage, pagination.limit);
+  };
+  
+  // Handle page size change
+  const handlePageSizeChange = (e) => {
+    const newLimit = parseInt(e.target.value);
+    setPagination(prev => ({...prev, page: 1, limit: newLimit}));
+    fetchActivities(selectedUserId, 1, newLimit);
   };
 
   // Function to format timestamp
@@ -353,6 +392,95 @@ export default function ActivityLog() {
                         </li>
                       ))}
                     </ul>
+                    
+                    {/* Pagination Component */}
+                    {pagination.total > 0 && (
+                      <div className="mt-6">
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center space-x-4">
+                            <div className="text-sm text-gray-700">
+                              Gösterilen: <span className="font-medium">{(pagination.page - 1) * pagination.limit + 1}</span> - <span className="font-medium">{Math.min(pagination.page * pagination.limit, pagination.total)}</span> / <span className="font-medium">{pagination.total}</span> kayıt
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <label htmlFor="pageSize" className="text-sm text-gray-700">
+                                Sayfa başına:
+                              </label>
+                              <select
+                                id="pageSize"
+                                name="pageSize"
+                                value={pagination.limit}
+                                onChange={handlePageSizeChange}
+                                className="block w-20 pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
+                              >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                              </select>
+                            </div>
+                          </div>
+                          <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                            {/* Previous Page Button */}
+                            <button
+                              onClick={() => handlePageChange(pagination.page - 1)}
+                              disabled={pagination.page === 1}
+                              className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${pagination.page === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'}`}
+                            >
+                              <span className="sr-only">Önceki</span>
+                              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                            
+                            {/* Page Numbers */}
+                            {[...Array(Math.min(5, pagination.totalPages))].map((_, idx) => {
+                              // Calculate page numbers to show (current page in the middle when possible)
+                              let pageNum;
+                              if (pagination.totalPages <= 5) {
+                                // If 5 or fewer pages, show all pages
+                                pageNum = idx + 1;
+                              } else if (pagination.page <= 3) {
+                                // If current page is near start, show first 5 pages
+                                pageNum = idx + 1;
+                              } else if (pagination.page >= pagination.totalPages - 2) {
+                                // If current page is near end, show last 5 pages
+                                pageNum = pagination.totalPages - 4 + idx;
+                              } else {
+                                // Otherwise, show 2 pages before and after current page
+                                pageNum = pagination.page - 2 + idx;
+                              }
+                              
+                              return (
+                                <button
+                                  key={pageNum}
+                                  onClick={() => handlePageChange(pageNum)}
+                                  className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                                    pagination.page === pageNum
+                                      ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                                      : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                                  }`}
+                                >
+                                  {pageNum}
+                                </button>
+                              );
+                            })}
+                            
+                            {/* Next Page Button */}
+                            <button
+                              onClick={() => handlePageChange(pagination.page + 1)}
+                              disabled={pagination.page === pagination.totalPages}
+                              className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${pagination.page === pagination.totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'}`}
+                            >
+                              <span className="sr-only">Sonraki</span>
+                              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                          </nav>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

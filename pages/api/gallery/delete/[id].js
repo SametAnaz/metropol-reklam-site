@@ -1,7 +1,5 @@
-import { PrismaClient } from '../../../../lib/generated/prisma';
+import prisma from '../../../../lib/db';
 import { deleteImage } from '../../../../lib/blob';
-
-const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method !== 'DELETE') {

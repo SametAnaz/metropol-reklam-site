@@ -16,6 +16,8 @@ model User {
   isActive      Boolean   @default(false)
   emailVerified DateTime?
   image         String?
+  title         String?   // Job title or role description
+  bio           String?   @db.Text // Biography or about information
   accounts      Account[]
   sessions      Session[]
   // User device and location info

@@ -1,10 +1,5 @@
-import { PrismaClient } from "../../lib/generated/prisma";
+import prisma from "../../lib/db";
 import { getCategoryNameById } from "../../lib/categories";
-
-// Prevent multiple instances of Prisma Client in development
-const globalForPrisma = global;
-const prisma = globalForPrisma.prisma || new PrismaClient();
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {

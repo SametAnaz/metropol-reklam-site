@@ -1,9 +1,7 @@
-import { PrismaClient } from '@/lib/generated/prisma';
+import prisma from '../../../lib/db';
 import bcrypt from 'bcryptjs';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-
-const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

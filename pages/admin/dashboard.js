@@ -133,18 +133,84 @@ export default function AdminDashboard({ session: serverSession }) {
                 </button>
                 
                 {dropdownOpen && (
-                  <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
-                    <Link
-                      href="/settings/change-password"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                    >
-                      Şifre Değiştir
-                    </Link>
+                  <div ref={dropdownRef} className="origin-top-right absolute right-0 mt-2 w-60 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 z-50">
+                    {/* Profile Picture and Name Section */}
+                    <div className="px-4 py-3 border-b border-gray-100">
+                      <div className="flex items-center">
+                        <div className="relative h-12 w-12 rounded-full overflow-hidden bg-gray-200 border border-gray-300 flex-shrink-0">
+                          {session?.user?.image ? (
+                            <Image
+                              src={session.user.image}
+                              alt="Profile"
+                              fill
+                              sizes="48px"
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full w-full text-gray-500">
+                              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                              </svg>
+                            </div>
+                          )}
+                          <div className="absolute bottom-0 right-0 h-4 w-4 bg-green-500 rounded-full border-2 border-white"></div>
+                        </div>
+                        <div className="ml-3 overflow-hidden">
+                          <p className="text-sm font-medium text-gray-900 truncate">{session?.user?.name || 'Admin User'}</p>
+                          <p className="text-xs text-gray-500 truncate">{session?.user?.email || 'admin@example.com'}</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Profile and Account Management */}
+                    <div className="py-1">
+                      <Link
+                        href="/admin/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        <div className="flex items-center">
+                          <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                          Profil Ayarları
+                        </div>
+                      </Link>
+                      <Link
+                        href="/admin/activity-log"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        <div className="flex items-center">
+                          <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Aktivite Günlüğü
+                        </div>
+                      </Link>
+                      <Link
+                        href="/settings/change-password"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      >
+                        <div className="flex items-center">
+                          <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                          </svg>
+                          Şifre Değiştir
+                        </div>
+                      </Link>
+                    </div>
+                    
+                    {/* Logout Section */}
+                    <div className="border-t border-gray-100"></div>
                     <button
                       onClick={() => router.push('/api/auth/signout')}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                      className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full text-left"
                     >
-                      Çıkış Yap
+                      <div className="flex items-center">
+                        <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Çıkış Yap
+                      </div>
                     </button>
                   </div>
                 )}
@@ -223,7 +289,7 @@ export default function AdminDashboard({ session: serverSession }) {
                       Kullanıcılar
                     </h3>
                     <p className="text-gray-600 mb-3">
-                      Kullanıcı bilgilerini ve son giriş tarihlerini görüntüle
+                      Kullanıcı bilgilerini  görüntüle
                     </p>
                     <div className="flex items-center justify-center">
                       <span className="text-gray-500">

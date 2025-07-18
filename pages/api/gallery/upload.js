@@ -2,7 +2,7 @@ import { IncomingForm } from 'formidable';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
-import { PrismaClient } from '../../../lib/generated/prisma';
+import prisma from '../../../lib/db';
 import { uploadImage } from '../../../lib/blob';
 
 export const config = {
@@ -10,8 +10,6 @@ export const config = {
     bodyParser: false,
   },
 };
-
-const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

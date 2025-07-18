@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
 import UserManagement from '../../components/admin/UserManagement';
 import GalleryManagement from '../../components/admin/GalleryManagement';
-import AnalyticsDashboard from '../../components/admin/AnalyticsDashboard';
 import AdminBackground from '../../components/ui/AdminBackground';
 import Script from 'next/script';
 import Image from 'next/image';
@@ -256,16 +255,14 @@ export default function AdminDashboard({ session: serverSession }) {
               >
                 Galeri Yönetimi
               </button>
-              <button
-                onClick={() => setActiveTab('analytics')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                  activeTab === 'analytics'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+              <a 
+                href="https://umami.metropolreklam.net/share/58FPkZcWGOLQRW9M/metropolreklam.net"
+                target="_blank"
+                rel="noopener noreferrer" 
+                className="py-2 px-1 border-b-2 font-medium text-sm transition-colors border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               >
                 Analytics
-              </button>
+              </a>
             </nav>
           </div>
         </div>
@@ -331,9 +328,11 @@ export default function AdminDashboard({ session: serverSession }) {
                     </div>
                   </div>
                   
-                  <div 
+                  <a 
+                    href="https://umami.metropolreklam.net/share/58FPkZcWGOLQRW9M/metropolreklam.net"
+                    target="_blank" 
+                    rel="noopener noreferrer"
                     className="bg-white p-6 rounded-lg shadow cursor-pointer hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-primary"
-                    onClick={() => setActiveTab('analytics')}
                   >
                     <div className="flex items-center justify-center h-10 w-10 bg-blue-500 bg-opacity-10 rounded-lg mx-auto mb-4">
                       <svg className="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -351,7 +350,7 @@ export default function AdminDashboard({ session: serverSession }) {
                         Analytics panelini görmek için tıklayın
                       </span>
                     </div>
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -363,10 +362,6 @@ export default function AdminDashboard({ session: serverSession }) {
 
           {activeTab === 'gallery' && (
             <GalleryManagement />
-          )}
-          
-          {activeTab === 'analytics' && (
-            <AnalyticsDashboard />
           )}
         </div>
       </div>

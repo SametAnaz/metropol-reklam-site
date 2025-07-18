@@ -67,6 +67,14 @@ export default function AdminLayout({ children, title }) {
                 <Link href="/admin/dashboard" className="hover:text-blue-400 transition-colors">
                   Dashboard
                 </Link>
+                <a 
+                  href="https://umami.metropolreklam.net/share/58FPkZcWGOLQRW9M/metropolreklam.net" 
+                  target="_blank"
+                  rel="noopener noreferrer" 
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  Analytics
+                </a>
                 <span className="text-sm text-gray-300">
                   {session.user.name || session.user.email}
                 </span>

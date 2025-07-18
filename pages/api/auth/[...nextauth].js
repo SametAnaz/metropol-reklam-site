@@ -95,8 +95,38 @@ export const authOptions = {
     error: '/admin/login',
   },
   events: {
+    async signIn({ user, account, profile, isNewUser, req }) {
+      try {
+        // Log sign in event
+        await prisma.activityLog.create({
+          data: {
+            userId: parseInt(user.id),
+            action: 'login',
+            details: 'Sisteme giriş yapıldı',
+            ipAddress: req?.headers['x-forwarded-for'] || req?.socket?.remoteAddress || null,
+            userAgent: req?.headers['user-agent'] || null
+          }
+        });
+      } catch (error) {
+        console.error("Error logging sign in activity:", error);
+      }
+    },
     async signOut({ session, token }) {
-      return { url: '/' }
+      try {
+        // Log sign out event if we have user information
+        if (token?.id) {
+          await prisma.activityLog.create({
+            data: {
+              userId: parseInt(token.id),
+              action: 'logout',
+              details: 'Sistemden çıkış yapıldı'
+            }
+          });
+        }
+      } catch (error) {
+        console.error("Error logging sign out activity:", error);
+      }
+      return { url: '/' };
     }
   },
   secret: process.env.NEXTAUTH_SECRET,

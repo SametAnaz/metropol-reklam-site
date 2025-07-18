@@ -56,17 +56,32 @@ export default function ActivityLog() {
   // Fetch activity logs
   const fetchActivities = async (userId = 'all') => {
     setIsLoading(true);
+    setError('');
     try {
       const response = await fetch(`/api/admin/activity-logs?userId=${userId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch activity logs');
-      }
+      
+      // Even if there's an error status, try to parse the response
       const data = await response.json();
-      setActivities(data);
-      setIsLoading(false);
+      
+      // Log response information for debugging
+      console.log(`API yanıtı (${response.status}):`, data);
+      
+      if (!response.ok && !data.length) {
+        // If we have an error status and no valid data
+        setError(`Aktivite günlükleri alınamadı (${response.status}): ${data.message || 'Bilinmeyen hata'}`);
+        setActivities([]);
+      } else {
+        // If we have data (even with an error status) or success status
+        setActivities(data || []);
+        
+        // Artık aktivite günlüğü görüntüleme işlemi için log tutmuyoruz
+        // Bu şekilde gereksiz log kayıtları oluşmasını önlemiş oluyoruz
+      }
     } catch (err) {
       console.error('Error fetching activity logs:', err);
-      setError('Activity log verilerini yüklerken bir hata oluştu.');
+      setError('Aktivite günlükleri yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin veya daha sonra tekrar deneyin.');
+      setActivities([]); // Set empty array so UI can handle it
+    } finally {
       setIsLoading(false);
     }
   };
@@ -136,11 +151,44 @@ export default function ActivityLog() {
             </svg>
           </div>
         );
+      case 'gallery_update':
+        return (
+          <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-blue-100 text-blue-600">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+          </div>
+        );
+      case 'gallery_delete':
+        return (
+          <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-red-100 text-red-600">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </div>
+        );
+      // "view_logs" action artık kullanılmıyor
       case 'change_password':
         return (
           <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-yellow-100 text-yellow-600">
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+          </div>
+        );
+      case 'system_check':
+        return (
+          <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-teal-100 text-teal-600">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+        );
+      case 'system_error':
+        return (
+          <div className="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-md bg-orange-100 text-orange-600">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
         );
@@ -174,12 +222,38 @@ export default function ActivityLog() {
                 <h1 className="text-2xl font-bold text-gray-900">Aktivite Günlüğü</h1>
                 <p className="text-gray-600">Tüm kullanıcıların işlem ve aktivite kayıtları</p>
               </div>
-              <Link href="/admin/dashboard" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Dashboard
-              </Link>
+              <div className="flex space-x-2">
+                <button
+                  onClick={async () => {
+                    try {
+                      setIsLoading(true);
+                      setError('');
+                      const res = await fetch('/api/admin/db-check');
+                      const data = await res.json();
+                      alert(`Veritabanı Durumu:\n\nBağlantı: ${data.connection ? 'Başarılı' : 'Başarısız'}\nTablolar: ${data.tables.join(', ')}\nAktivite Tablosu: ${data.activityTable ? 'Mevcut' : 'Bulunamadı'}\nKullanıcı Sayısı: ${data.userCount}\nLog Sayısı: ${data.logCount}\nTest Logu Oluşturuldu: ${data.testLogCreated ? 'Evet' : 'Hayır'}`);
+                      
+                      // Test log oluşturulduysa sayfayı yeniden yükle
+                      if (data.testLogCreated) {
+                        fetchActivities(selectedUserId);
+                      }
+                    } catch (err) {
+                      console.error('Veritabanı kontrolü hatası:', err);
+                      setError('Veritabanı kontrolü yapılırken bir hata oluştu.');
+                    } finally {
+                      setIsLoading(false);
+                    }
+                  }}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                  DB Test
+                </button>
+                <Link href="/admin/dashboard" className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                  <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                  Dashboard
+                </Link>
+              </div>
             </div>
 
             {error && (

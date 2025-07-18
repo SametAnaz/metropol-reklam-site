@@ -49,6 +49,17 @@ export default function GalleryManagement() {
           id: editingImage.id 
         });
         
+        // Aktivite logu oluştur (hata durumunda işlemi durdurmayacak şekilde)
+        try {
+          await axios.post('/api/admin/activity-logs', {
+            action: 'gallery_update',
+            details: `Galeri resmi güncellendi: ${formData.title} (ID: ${editingImage.id})`
+          });
+        } catch (logError) {
+          console.error('Güncelleme aktivite günlüğü oluşturma hatası:', logError);
+          // Ana işlemin devam etmesine izin ver
+        }
+        
         toast.success('Resim güncellendi!');
         fetchImages();
         resetForm();
@@ -107,6 +118,19 @@ export default function GalleryManagement() {
         
         const dbResponse = await axios.post('/api/admin/gallery', galleryData);
         
+        // Log the activity (hata durumunda işlemi durdurmayacak şekilde)
+        try {
+          await axios.post('/api/admin/activity-logs', {
+            action: 'gallery_upload',
+            details: `Yeni galeri resmi yüklendi: ${formData.title}`
+          });
+          console.log('Aktivite günlüğü başarıyla kaydedildi');
+        } catch (logError) {
+          // Aktivite günlüğü kaydedilmezse bile ana işlemin devam etmesini sağla
+          console.error('Aktivite günlüğü kaydedilirken hata:', logError);
+          // Hata ile devam et, kullanıcı deneyimini bozmayalım
+        }
+        
         toast.success('Resim başarıyla yüklendi');
         fetchImages();
         resetForm();
@@ -127,7 +151,24 @@ export default function GalleryManagement() {
   const handleDelete = async (id) => {
     if (confirm('Bu resmi silmek istediğinizden emin misiniz?')) {
       try {
+        // Resmin başlığını bul (log için)
+        const imageToDelete = images.find(img => img.id === id);
+        const imageTitle = imageToDelete ? imageToDelete.title : 'Bilinmeyen resim';
+        
+        // Resmi sil
         const response = await axios.delete(`/api/gallery/delete/${id}`);
+        
+        // Aktivite logu oluştur (hata durumunda işlemi durdurmayacak şekilde)
+        try {
+          await axios.post('/api/admin/activity-logs', {
+            action: 'gallery_delete',
+            details: `Galeri resmi silindi: ${imageTitle} (ID: ${id})`
+          });
+        } catch (logError) {
+          console.error('Silme aktivite günlüğü oluşturma hatası:', logError);
+          // Ana işlemin devam etmesine izin ver
+        }
+        
         toast.success('Resim başarıyla silindi');
         fetchImages();
       } catch (error) {

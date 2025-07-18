@@ -9,24 +9,25 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
+  id            Int           @id @default(autoincrement())
+  email         String        @unique
   password      String
   name          String
-  isActive      Boolean   @default(false)
+  isActive      Boolean       @default(false)
   emailVerified DateTime?
   image         String?
-  title         String?   // Job title or role description
-  bio           String?   @db.Text // Biography or about information
+  title         String?       // Job title or role description
+  bio           String?       @db.Text // Biography or about information
   accounts      Account[]
   sessions      Session[]
+  activityLogs  ActivityLog[]
   // User device and location info
   ipAddress     String?
-  userAgent     String?   @db.Text
-  location      String?   @db.Text
-  deviceInfo    String?   @db.Text
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  userAgent     String?       @db.Text
+  location      String?       @db.Text
+  deviceInfo    String?       @db.Text
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   @@map("users")
 }
@@ -83,4 +84,17 @@ model Gallery {
   updatedAt   DateTime @updatedAt
 
   @@map("gallery")
+}
+
+model ActivityLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  action      String
+  details     String?  @db.Text
+  ipAddress   String?
+  userAgent   String?  @db.Text
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("activity_logs")
 }

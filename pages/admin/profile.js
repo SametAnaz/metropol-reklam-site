@@ -72,6 +72,18 @@ export default function AdminProfile({ user: serverUser }) {
         throw new Error('Profil güncellenemedi.');
       }
       
+      // Log the activity
+      await fetch('/api/admin/activity-logs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'update_profile',
+          details: 'Profil bilgileri güncellendi'
+        }),
+      });
+      
       const result = await response.json();
       
       // Update the session with new user data

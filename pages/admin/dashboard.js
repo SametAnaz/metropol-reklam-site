@@ -340,7 +340,7 @@ export default function AdminDashboard({ session: serverSession }) {
                       </svg>
                     </div>
                     <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Analytics
+                      Site İstatistikleri
                     </h3>
                     <p className="text-gray-600 mb-3">
                       Site istatistiklerini ve ziyaretçi verilerini görüntüle

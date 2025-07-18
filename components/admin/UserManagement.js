@@ -121,7 +121,7 @@ export default function UserManagement() {
           Kullanıcı Listesi ({users.length})
         </h2>
         <p className="text-gray-600 text-sm mt-1">
-          Sistemdeki tüm kullanıcılar ve adminler
+          Sistemdeki kullanıcıların temel bilgileri
         </p>
       </div>
 
@@ -133,10 +133,7 @@ export default function UserManagement() {
                 Kullanıcı
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Aktivasyon
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Kayıt Tarihi
+                Durum
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Son Giriş
@@ -150,25 +147,17 @@ export default function UserManagement() {
             {users.map((user) => (
               <tr key={user.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">
-                      {user.email}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      ID: {user.uid || user.id}
-                    </div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {user.email}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {getStatusBadge(user.isActive)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {formatDate(user.createdAt)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {formatDate(user.lastLoginAt)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button
                     onClick={() => toggleUserActive(user.id, user.isActive)}
                     disabled={actionLoading}

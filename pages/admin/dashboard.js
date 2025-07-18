@@ -177,7 +177,7 @@ export default function AdminDashboard({ session: serverSession }) {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                Kullanıcı Yönetimi (0)
+                Kullanıcılar
               </button>
               <button
                 onClick={() => setActiveTab('gallery')}
@@ -220,14 +220,14 @@ export default function AdminDashboard({ session: serverSession }) {
                       </svg>
                     </div>
                     <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Kullanıcı Yönetimi
+                      Kullanıcılar
                     </h3>
                     <p className="text-gray-600 mb-3">
-                      Kullanıcıları görüntüle ve listele
+                      Kullanıcı bilgilerini ve son giriş tarihlerini görüntüle
                     </p>
                     <div className="flex items-center justify-center">
                       <span className="text-gray-500">
-                        Kullanıcıları görüntülemek için tıklayın
+                        Kullanıcı listesini görüntülemek için tıklayın
                       </span>
                     </div>
                   </div>

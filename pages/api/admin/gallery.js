@@ -13,10 +13,43 @@ export default async function handler(req, res) {
   switch (req.method) {
     case 'GET':
       try {
-        const images = await prisma.gallery.findMany({
-          orderBy: { order: 'asc' }
+        // Parse pagination parameters
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 12;
+        const category = req.query.category || '';
+        
+        // Calculate skip value
+        const skip = (page - 1) * limit;
+        
+        // Prepare where condition for filtering by category
+        const where = {};
+        if (category && category !== 'all') {
+          where.category = category;
+        }
+        
+        // Get total count for pagination
+        const totalCount = await prisma.gallery.count({
+          where
         });
-        return res.status(200).json(images);
+        
+        // Fetch images with pagination
+        const images = await prisma.gallery.findMany({
+          where,
+          orderBy: { order: 'asc' },
+          skip,
+          take: limit
+        });
+        
+        // Return images with pagination metadata
+        return res.status(200).json({
+          data: images,
+          pagination: {
+            total: totalCount,
+            page,
+            limit,
+            totalPages: Math.ceil(totalCount / limit)
+          }
+        });
       } catch (error) {
         console.error('Gallery fetch error:', error);
         return res.status(500).json({ message: 'Galeri verileri alınamadı' });

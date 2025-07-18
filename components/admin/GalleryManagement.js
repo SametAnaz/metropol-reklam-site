@@ -13,6 +13,13 @@ export default function GalleryManagement() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 12,
+    total: 0,
+    totalPages: 0
+  });
+  const [categoryFilter, setCategoryFilter] = useState('all');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -23,13 +30,33 @@ export default function GalleryManagement() {
   });
 
   useEffect(() => {
-    fetchImages();
+    fetchImages(pagination.page, pagination.limit, categoryFilter);
   }, []);
 
-  const fetchImages = async () => {
+  const fetchImages = async (page = 1, limit = 12, category = 'all') => {
     try {
-      const response = await axios.get('/api/admin/gallery');
-      setImages(response.data);
+      setLoading(true);
+      const response = await axios.get(`/api/admin/gallery?page=${page}&limit=${limit}${category !== 'all' ? `&category=${category}` : ''}`);
+      
+      // Handle response with new pagination format
+      if (response.data.data && response.data.pagination) {
+        setImages(response.data.data);
+        setPagination({
+          page: response.data.pagination.page,
+          limit: response.data.pagination.limit,
+          total: response.data.pagination.total,
+          totalPages: response.data.pagination.totalPages
+        });
+      } else {
+        // Handle legacy response format (backward compatibility)
+        setImages(response.data);
+        setPagination(prev => ({
+          ...prev,
+          page: 1,
+          total: response.data.length,
+          totalPages: Math.ceil(response.data.length / prev.limit)
+        }));
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching images:', error);
@@ -61,7 +88,7 @@ export default function GalleryManagement() {
         }
         
         toast.success('Resim güncellendi!');
-        fetchImages();
+        fetchImages(pagination.page, pagination.limit, categoryFilter); // Maintain current page
         resetForm();
       } catch (error) {
         console.error('Error updating image:', error);
@@ -132,7 +159,7 @@ export default function GalleryManagement() {
         }
         
         toast.success('Resim başarıyla yüklendi');
-        fetchImages();
+        fetchImages(1, pagination.limit, categoryFilter); // Reset to first page after adding
         resetForm();
       } catch (error) {
         console.error('Upload error:', error);
@@ -170,7 +197,14 @@ export default function GalleryManagement() {
         }
         
         toast.success('Resim başarıyla silindi');
-        fetchImages();
+        
+        // If this was the last item on the page, go to the previous page
+        // unless we're already on the first page
+        if (images.length === 1 && pagination.page > 1) {
+          fetchImages(pagination.page - 1, pagination.limit, categoryFilter);
+        } else {
+          fetchImages(pagination.page, pagination.limit, categoryFilter);
+        }
       } catch (error) {
         console.error('Error deleting image:', error);
         toast.error(error.response?.data?.message || 'Resim silinirken bir hata oluştu');
@@ -205,6 +239,27 @@ export default function GalleryManagement() {
     }
   };
 
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    setPagination(prev => ({...prev, page: newPage}));
+    fetchImages(newPage, pagination.limit, categoryFilter);
+  };
+  
+  // Handle page size change
+  const handlePageSizeChange = (e) => {
+    const newLimit = parseInt(e.target.value);
+    setPagination(prev => ({...prev, page: 1, limit: newLimit}));
+    fetchImages(1, newLimit, categoryFilter);
+  };
+  
+  // Handle category filter change
+  const handleCategoryChange = (e) => {
+    const newCategory = e.target.value;
+    setCategoryFilter(newCategory);
+    setPagination(prev => ({...prev, page: 1})); // Reset to first page
+    fetchImages(1, pagination.limit, newCategory);
+  };
+
   const resetForm = () => {
     setShowForm(false);
     setEditingImage(null);
@@ -220,24 +275,58 @@ export default function GalleryManagement() {
     setMessage('');
   };
 
-  if (loading) return <div className="text-center">Yükleniyor...</div>;
+  if (loading && pagination.page === 1) {
+    return (
+      <div className="flex justify-center items-center h-60">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800">Galeri Yönetimi</h2>
-        <button
-          onClick={() => {
-            setShowForm(true);
-            setFormData(prev => ({
-              ...prev,
-              order: images.length + 1 // Otomatik sıra numarası ayarla
-            }));
-          }}
-          className="bg-gradient-to-r from-orange-500 to-blue-500 text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
-        >
-          Yeni Resim Ekle
-        </button>
+      <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between md:items-center mb-6">
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-800">Galeri Yönetimi</h2>
+          <p className="text-sm text-gray-600">
+            {pagination.total > 0 
+              ? `Toplam ${pagination.total} resim` 
+              : 'Henüz resim eklenmemiş'}
+          </p>
+        </div>
+        <div className="flex space-x-4">
+          <div className="w-48">
+            <label htmlFor="categoryFilter" className="sr-only">Kategori Filtresi</label>
+            <select
+              id="categoryFilter"
+              value={categoryFilter}
+              onChange={handleCategoryChange}
+              className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            >
+              <option value="all">Tüm Kategoriler</option>
+              {ALL_CATEGORIES
+                .filter(cat => cat.id !== 'all')
+                .map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))
+              }
+            </select>
+          </div>
+          <button
+            onClick={() => {
+              setShowForm(true);
+              setFormData(prev => ({
+                ...prev,
+                order: (pagination.total || images.length) + 1 // Otomatik sıra numarası ayarla
+              }));
+            }}
+            className="bg-gradient-to-r from-orange-500 to-blue-500 text-white px-4 py-2 rounded hover:opacity-90 transition-opacity"
+          >
+            Yeni Resim Ekle
+          </button>
+        </div>
       </div>
 
       {message && (
@@ -456,22 +545,142 @@ export default function GalleryManagement() {
           </div>
         ))}
       </div>
+      
+      {/* Pagination Component */}
+      {pagination.total > 0 && (
+        <div className="mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+              <div className="text-sm text-gray-700">
+                Gösterilen: <span className="font-medium">{(pagination.page - 1) * pagination.limit + 1}</span> - <span className="font-medium">{Math.min(pagination.page * pagination.limit, pagination.total)}</span> / <span className="font-medium">{pagination.total}</span> resim
+              </div>
+              <div className="flex items-center space-x-2">
+                <label htmlFor="pageSizeGallery" className="text-sm text-gray-700">
+                  Sayfa başına:
+                </label>
+                <select
+                  id="pageSizeGallery"
+                  name="pageSizeGallery"
+                  value={pagination.limit}
+                  onChange={handlePageSizeChange}
+                  className="block w-20 pl-3 pr-10 py-1 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
+                >
+                  <option value="8">8</option>
+                  <option value="12">12</option>
+                  <option value="24">24</option>
+                  <option value="48">48</option>
+                </select>
+              </div>
+            </div>
+            
+            {pagination.totalPages > 1 && (
+              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                {/* Previous Page Button */}
+                <button
+                  onClick={() => handlePageChange(pagination.page - 1)}
+                  disabled={pagination.page === 1}
+                  className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium ${pagination.page === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'}`}
+                >
+                  <span className="sr-only">Önceki</span>
+                  <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                
+                {/* Page Numbers */}
+                {[...Array(Math.min(5, pagination.totalPages))].map((_, idx) => {
+                  // Calculate page numbers to show (current page in the middle when possible)
+                  let pageNum;
+                  if (pagination.totalPages <= 5) {
+                    // If 5 or fewer pages, show all pages
+                    pageNum = idx + 1;
+                  } else if (pagination.page <= 3) {
+                    // If current page is near start, show first 5 pages
+                    pageNum = idx + 1;
+                  } else if (pagination.page >= pagination.totalPages - 2) {
+                    // If current page is near end, show last 5 pages
+                    pageNum = pagination.totalPages - 4 + idx;
+                  } else {
+                    // Otherwise, show 2 pages before and after current page
+                    pageNum = pagination.page - 2 + idx;
+                  }
+                  
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                        pagination.page === pageNum
+                          ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+                
+                {/* Next Page Button */}
+                <button
+                  onClick={() => handlePageChange(pagination.page + 1)}
+                  disabled={pagination.page === pagination.totalPages}
+                  className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium ${pagination.page === pagination.totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'}`}
+                >
+                  <span className="sr-only">Sonraki</span>
+                  <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </nav>
+            )}
+          </div>
+        </div>
+      )}
 
       {images.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">Henüz galeri resmi eklenmemiş.</p>
-          <button
-            onClick={() => {
-              setShowForm(true);
-              setFormData(prev => ({
-                ...prev,
-                order: 1 // İlk resim için sıra numarası 1 olarak ayarla
-              }));
-            }}
-            className="mt-4 bg-gradient-to-r from-orange-500 to-blue-500 text-white px-6 py-2 rounded hover:opacity-90 transition-opacity"
-          >
-            İlk Resmi Ekle
-          </button>
+          {categoryFilter !== 'all' ? (
+            <>
+              <p className="text-gray-500">Bu kategoride resim bulunamadı.</p>
+              <div className="mt-4 flex justify-center space-x-4">
+                <button
+                  onClick={() => handleCategoryChange({ target: { value: 'all' } })}
+                  className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition-colors"
+                >
+                  Tüm Kategorileri Göster
+                </button>
+                <button
+                  onClick={() => {
+                    setShowForm(true);
+                    setFormData(prev => ({
+                      ...prev,
+                      category: categoryFilter,
+                      order: 1
+                    }));
+                  }}
+                  className="bg-gradient-to-r from-orange-500 to-blue-500 text-white px-6 py-2 rounded hover:opacity-90 transition-opacity"
+                >
+                  Bu Kategoriye Resim Ekle
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="text-gray-500">Henüz galeri resmi eklenmemiş.</p>
+              <button
+                onClick={() => {
+                  setShowForm(true);
+                  setFormData(prev => ({
+                    ...prev,
+                    order: 1 // İlk resim için sıra numarası 1 olarak ayarla
+                  }));
+                }}
+                className="mt-4 bg-gradient-to-r from-orange-500 to-blue-500 text-white px-6 py-2 rounded hover:opacity-90 transition-opacity"
+              >
+                İlk Resmi Ekle
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>

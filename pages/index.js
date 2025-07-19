@@ -7,6 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import MainLayout from '../components/layouts/MainLayout';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import InteractivePortfolio from '../components/ui/InteractivePortfolio';
+import ElfsightGoogleReviews from '../components/ui/ElfsightGoogleReviews';
 import styles from '../styles/HeroAnimation.module.css';
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, ClockIcon } from '@heroicons/react/24/outline';
 
@@ -630,62 +631,27 @@ export default function Home() {
             </div>
           </AnimatedSection>
 
-          {/* Testimonials */}
+          {/* Testimonials - Elfsight Google Reviews */}
           <AnimatedSection animation="fade-up">
-            <div className="bg-gray-50 rounded-2xl p-12 mb-12 mt-16">
-              <h3 className="text-3xl font-bold mb-12 text-center text-gray-800">Müşterilerimizin Yorumları</h3>
+            <div className="bg-gray-50 rounded-2xl p-8 mb-12 mt-16">
+              <h3 className="text-3xl font-bold mb-8 text-center text-gray-800">Müşterilerimizin Yorumları</h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <AnimatedSection animation="fade-right" delay={100}>
-                  <div className="bg-white p-6 rounded-lg shadow">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-orange-100 rounded-full mr-4 flex items-center justify-center">
-                        <span className="text-orange-500 font-bold">AY</span>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">Ali Yılmaz</h3>
-                        <p className="text-gray-500 text-sm">XYZ Şirketi CEO'su</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic">
-                      "Metropol Reklam ile çalışmak gerçekten profesyonel bir deneyimdi. Mağazalarımız için tasarladıkları tabelalar beklentilerimizin ötesinde oldu."
-                    </p>
-                  </div>
-                </AnimatedSection>
-                
-                <AnimatedSection animation="fade-up" delay={200}>
-                  <div className="bg-white p-6 rounded-lg shadow">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-blue-100 rounded-full mr-4 flex items-center justify-center">
-                        <span className="text-blue-500 font-bold">SD</span>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">Selin Demir</h3>
-                        <p className="text-gray-500 text-sm">ABC Restaurant Sahibi</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic">
-                      "Restoranımız için yaptıkları özel tasarım yönlendirme tabelaları müşterilerimizden çok olumlu geri dönüşler aldı."
-                    </p>
-                  </div>
-                </AnimatedSection>
-                
-                <AnimatedSection animation="fade-left" delay={300}>
-                  <div className="bg-white p-6 rounded-lg shadow">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-full mr-4 flex items-center justify-center">
-                        <span className="text-green-500 font-bold">MK</span>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">Mehmet Kaya</h3>
-                        <p className="text-gray-500 text-sm">123 Nakliyat Genel Müdürü</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 italic">
-                      "Araç filomuz için yaptıkları giydirme çalışması olağanüstüydü. Araçlarımız artık şehrin her yerinde dikkat çekiyor."
-                    </p>
-                  </div>
-                </AnimatedSection>
+              {/* Elfsight Google Reviews Widget */}
+              <div className="w-full overflow-hidden">
+                <ElfsightGoogleReviews />
+              </div>
+              
+              {/* Additional info below reviews */}
+              <div className="text-center mt-8">
+                <p className="text-gray-600 italic">
+                  Hizmetlerimiz hakkında daha fazla bilgi almak için bizimle iletişime geçin.
+                </p>
+                <Link href="/contact" className="inline-flex items-center space-x-2 mt-4 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200">
+                  <span>Bize Ulaşın</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
               </div>
             </div>
           </AnimatedSection>

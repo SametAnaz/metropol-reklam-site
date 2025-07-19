@@ -154,43 +154,54 @@ export default function About() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Team Member 1 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-md">
-              <div className="h-64 bg-gray-300 flex items-center justify-center">
-                <p className="text-gray-500">Kişi Görseli</p>
+            <div className="bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl">
+              <div className="h-64 bg-gray-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-1 text-gray-800">Nurullah Anaz</h3>
                 <p className="text-primary font-medium mb-3">Kurucu & Genel Müdür</p>
                 <p className="text-gray-600 mb-4">
-                  20 yıllık sektör deneyimiyle Metropol Reklam'ı kurmuş ve büyütmüştür.
+                  20 yıllık sektör deneyimiyle Metropol Reklam'ı kurmuş ve büyütmüştür. Vizyoner yaklaşımı ve sektör tecrübesiyle firmanın sürekli büyümesini sağlamıştır.
                 </p>
               </div>
             </div>
             
             {/* Team Member 2 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-md">
-              <div className="h-64 bg-gray-300 flex items-center justify-center">
-                <p className="text-gray-500">Kişi Görseli</p>
+            <div className="bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl">
+              <div className="h-64 relative overflow-hidden">
+                <Image 
+                  src="/team/samet-anaz.jpg" 
+                  alt="Samet Anaz - Yazılım Mühendisi"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  priority
+                  className="object-cover transition-transform duration-500 hover:scale-105"
+                />
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-1 text-gray-800">Samet Anaz</h3>
-                <p className="text-primary font-medium mb-3">Tasarım Direktörü</p>
+                <p className="text-primary font-medium mb-3">Yazılım Mühendisi & Dijital Stratejist</p>
                 <p className="text-gray-600 mb-4">
-                  Yaratıcı tasarımlarıyla müşterilerimizin hayallerini gerçeğe dönüştürür.
+                  Modern web teknolojileri konusundaki uzmanlığıyla, işletmelerin dijital dönüşümlerine öncülük ediyor. React ve Next.js ekosisteminde geliştirdiği yenilikçi çözümlerle markaların online varlığını güçlendiriyor ve kullanıcı deneyimini optimize ediyor.
                 </p>
               </div>
             </div>
             
             {/* Team Member 3 */}
-            <div className="bg-white rounded-lg overflow-hidden shadow-md">
-              <div className="h-64 bg-gray-300 flex items-center justify-center">
-                <p className="text-gray-500">Kişi Görseli</p>
+            <div className="bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl">
+              <div className="h-64 bg-gray-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-1 text-gray-800">Mırtaza Yanaz</h3>
                 <p className="text-primary font-medium mb-3">Üretim Müdürü</p>
                 <p className="text-gray-600 mb-4">
-                  Teknik bilgi ve tecrübesiyle en kaliteli üretimi garantiler.
+                  15+ yıllık üretim tecrübesi ile sektörün inceliklerini bilen, yüksek kalite standartlarını koruyarak müşteri memnuniyetini en üst seviyede tutan üretim süreçlerinin sorumlusu.
                 </p>
               </div>
             </div>

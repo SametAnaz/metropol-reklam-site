@@ -211,9 +211,20 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-10 pt-8 border-t border-gray-700">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
-              &copy; {currentYear} <span className="font-medium text-gray-300">Metropol Reklam</span>. Tüm hakları saklıdır.
-            </p>
+            <div>
+              <p className="text-gray-400 text-sm">
+                &copy; {currentYear} <span className="font-medium text-gray-300">Metropol Reklam</span>. Tüm hakları saklıdır.
+              </p>
+              <div className="flex flex-wrap gap-4 mt-2 text-xs text-gray-500">
+                <Link href="/privacy-policy" className="hover:text-primary transition-colors">
+                  Gizlilik Politikası
+                </Link>
+                <span className="text-gray-600">|</span>
+                <Link href="/privacy-policy-en" className="hover:text-primary transition-colors">
+                  Privacy Policy
+                </Link>
+              </div>
+            </div>
             <div className="mt-4 md:mt-0">
               <p className="text-gray-400 text-sm">
                 Profesyonel reklam çözümleri ile markanızı güçlendiriyoruz.

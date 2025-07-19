@@ -90,7 +90,7 @@ export default function PrivacyPolicy() {
             <li>Kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme.</li>
           </ul>
           <p>
-            Bu haklarınızı kullanmak için bizimle <a href="mailto:info@metropolreklam.net" className="text-primary hover:underline">info@metropolreklam.net</a> e-posta adresi üzerinden iletişime geçebilirsiniz.
+            Bu haklarınızı kullanmak için bizimle <a href="mailto:metropolreklam@hotmail.com" className="text-primary hover:underline">metropolreklam@hotmail.com</a> e-posta adresi üzerinden iletişime geçebilirsiniz.
           </p>
 
           <h2 className="text-xl font-semibold mt-8 mb-4">7. Politika Değişiklikleri</h2>

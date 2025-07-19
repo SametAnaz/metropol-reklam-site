@@ -90,7 +90,7 @@ export default function PrivacyPolicyEn() {
             <li>To request compensation for damages arising from the unlawful processing of your data.</li>
           </ul>
           <p>
-            To exercise these rights, you can contact us at <a href="mailto:info@metropolreklam.net" className="text-primary hover:underline">info@metropolreklam.net</a>. Users residing in the European Union may have additional rights under the GDPR.
+            To exercise these rights, you can contact us at <a href="mailto:metropolreklam@hotmail.com" className="text-primary hover:underline">metropolreklam@hotmail.com</a>. Users residing in the European Union may have additional rights under the GDPR.
           </p>
 
           <h2 className="text-xl font-semibold mt-8 mb-4">7. Changes to This Policy</h2>

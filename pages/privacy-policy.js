@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
         canonical="https://metropolreklam.net/privacy-policy"
       />
 
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
+      <div className="container mx-auto px-4 py-20 max-w-5xl">
         <div className="mb-8 flex flex-col items-center">
           <h1 className="text-3xl font-bold text-center">METROPOL REKLAM GİZLİLİK POLİTİKASI</h1>
           <p className="text-sm text-gray-500 mt-2 text-center">Son Güncelleme: 19 Temmuz 2025</p>

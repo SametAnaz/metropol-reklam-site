@@ -2,6 +2,25 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import prisma from "../../../lib/db";
 
+// Yardımcı fonksiyon - User Agent'dan basit işletim sistemi bilgisini çıkarır
+function extractSimpleDeviceInfo(userAgent) {
+  if (!userAgent) return 'Bilinmiyor';
+  
+  const osMatch = userAgent.match(/\((Windows NT [0-9.]+; Win64; x64|Macintosh; Intel Mac OS X [0-9_]+|Linux|Android [0-9.]+|iOS [0-9.]+|iPhone OS [0-9_]+)[^)]*\)/);
+  if (osMatch && osMatch[1]) {
+    return `(${osMatch[1]})`;
+  }
+  
+  // Eğer regex eşleşmezse, basit bir kontrol yapalım
+  if (userAgent.includes('Windows')) return '(Windows)';
+  if (userAgent.includes('Mac OS')) return '(macOS)';
+  if (userAgent.includes('Linux')) return '(Linux)';
+  if (userAgent.includes('Android')) return '(Android)';
+  if (userAgent.includes('iOS') || userAgent.includes('iPhone')) return '(iOS)';
+  
+  return 'Bilinmiyor';
+}
+
 export default async function handler(req, res) {
   // Check authentication
   const session = await getServerSession(req, res, authOptions);
@@ -83,7 +102,7 @@ export default async function handler(req, res) {
               description: log.details,
               timestamp: log.createdAt.toISOString(),
               ipAddress: log.ipAddress || 'Bilinmiyor',
-              deviceInfo: log.userAgent || 'Bilinmiyor'
+              deviceInfo: extractSimpleDeviceInfo(log.userAgent)
             }));
           } else {
             console.log("ActivityLog tablosu bulunamadı, örnek veriler döndürülüyor");
@@ -99,7 +118,7 @@ export default async function handler(req, res) {
                 description: 'Sisteme giriş yapıldı', 
                 timestamp: new Date().toISOString(),
                 ipAddress: '192.168.1.1',
-                deviceInfo: 'Chrome / Windows 10'
+                deviceInfo: '(Windows NT 10.0; Win64; x64)'
               },
               { 
                 id: 2, 
@@ -110,7 +129,7 @@ export default async function handler(req, res) {
                 description: 'Profil bilgileri güncellendi', 
                 timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
                 ipAddress: '192.168.1.1',
-                deviceInfo: 'Chrome / Windows 10'
+                deviceInfo: '(Windows NT 10.0; Win64; x64)'
               }
             ];
             

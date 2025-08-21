@@ -3,6 +3,7 @@ import MainLayout from '../components/layouts/MainLayout';
 import Hero from '../components/ui/Hero';
 import AnimatedSection from '../components/ui/AnimatedSection';
 import InteractivePortfolio from '../components/ui/InteractivePortfolio';
+import ElfsightGoogleReviews from '../components/ui/ElfsightGoogleReviews';
 
 // Portfolio projeleri - Buradan içerikleri düzenleyebilirsiniz
 const projects = [
@@ -216,68 +217,29 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-16 bg-gray-50">
+      {/* Testimonials - Elfsight Google Reviews */}
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <AnimatedSection animation="fade-up">
-            <h2 className="text-3xl font-bold mb-12 text-center">Müşterilerimizin Yorumları</h2>
+            <div className="bg-gray-50 rounded-2xl p-8 mb-12">
+              <h3 className="text-3xl font-bold mb-8 text-center text-gray-800">Müşterilerimizin Yorumları</h3>
+              
+              {/* Elfsight Google Reviews Widget */}
+              <div className="w-full overflow-hidden">
+                <ElfsightGoogleReviews />
+              </div>
+              
+              {/* Additional info below reviews */}
+              <div className="text-center mt-8">
+                <p className="text-gray-600 italic">
+                  Hizmetlerimiz hakkında daha fazla bilgi almak için bizimle iletişime geçin.
+                </p>
+                <a href="/contact" className="inline-flex items-center space-x-2 mt-4 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200">
+                  <span>Bize Ulaşın</span>
+                </a>
+              </div>
+            </div>
           </AnimatedSection>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Testimonial 1 */}
-            <AnimatedSection animation="fade-right" delay={100}>
-              <div className="bg-white p-6 rounded-lg shadow">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full mr-4 flex items-center justify-center">
-                    <span className="text-primary font-bold">AY</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-800">Ali Yılmaz</h3>
-                    <p className="text-gray-500 text-sm">XYZ Şirketi CEO'su</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 italic">
-                  "Metropol Reklam ile çalışmak gerçekten profesyonel bir deneyimdi. Mağazalarımız için tasarladıkları tabelalar beklentilerimizin ötesinde oldu. Zamanında teslimat ve kaliteli hizmet için teşekkürler."
-                </p>
-              </div>
-            </AnimatedSection>
-            
-            {/* Testimonial 2 */}
-            <AnimatedSection animation="fade-up" delay={200}>
-              <div className="bg-white p-6 rounded-lg shadow">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-secondary/10 rounded-full mr-4 flex items-center justify-center">
-                    <span className="text-secondary font-bold">SD</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-800">Selin Demir</h3>
-                    <p className="text-gray-500 text-sm">ABC Restaurant Sahibi</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 italic">
-                  "Restoranımız için yaptıkları özel tasarım yönlendirme tabelaları müşterilerimizden çok olumlu geri dönüşler aldı. Yaratıcı çözümleri ve müşteri odaklı yaklaşımları için Metropol Reklam'a teşekkür ederiz."
-                </p>
-              </div>
-            </AnimatedSection>
-            
-            {/* Testimonial 3 */}
-            <AnimatedSection animation="fade-left" delay={300}>
-              <div className="bg-white p-6 rounded-lg shadow">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-full mr-4 flex items-center justify-center">
-                    <span className="text-green-500 font-bold">MK</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-800">Mehmet Kaya</h3>
-                    <p className="text-gray-500 text-sm">123 Nakliyat Genel Müdürü</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 italic">
-                  "Araç filomuz için yaptıkları giydirme çalışması olağanüstüydü. Araçlarımız artık şehrin her yerinde dikkat çekiyor ve bu sayede marka bilinirliğimiz arttı. Metropol Reklam ekibine teşekkürler."
-                </p>
-              </div>
-            </AnimatedSection>
-          </div>
         </div>
       </section>
 
